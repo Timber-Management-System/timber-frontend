@@ -8,7 +8,7 @@ The system follows timber through its whole life:
 
 Every log gets a unique ID and QR tag, so any piece of timber can be traced back to its tree and permit.
 
-This repo is **only the frontend**. Business rules, quota checks and calculations live in the **backend API** (a separate repository). The frontend talks to it through `NEXT_PUBLIC_API_URL`.
+This repo is **only the frontend**. Business rules, quota checks and calculations live in the **backend API** (`timber-backend`, a separate repository, planned as Java Spring Boot + PostgreSQL). The frontend talks to it through `NEXT_PUBLIC_API_URL`.
 
 > 🚧 **Status: project setup.** Every file is an empty placeholder. Pick a module, open its files and start building.
 
@@ -24,12 +24,14 @@ This repo is **only the frontend**. Business rules, quota checks and calculation
 | **Tailwind CSS** | Styling (responsive, phone → desktop) |
 | **PWA** (service worker + IndexedDB) | Offline field mode with later sync |
 | ESLint + Prettier | Code quality and formatting |
+| **GitHub Actions** | CI pipeline: lint, build and dependency security checks |
+| **Vercel** | Hosting (preview per PR, production from `main`) |
 
 ---
 
 ## 🚀 Getting Started
 
-You need **Node.js 20+**, **Git** and access to the [Timber-Management-System](https://github.com/Timber-Management-System) organization.
+You need **Node.js 22 LTS**, **Git**, 2FA turned on for your GitHub account and access to the [Timber-Management-System](https://github.com/Timber-Management-System) organization.
 
 ```bash
 # 1. Clone
@@ -58,24 +60,25 @@ Open <http://localhost:3000>.
 
 Each module has **one route folder** (pages) and **one feature folder** (components, API calls, types). Pick a module and work only inside its folders. This is the main way we avoid merge conflicts.
 
-| Area | URL | Page folder `src/app/(dashboard)/…` | Feature folder `src/features/…` | Requirements | Phase |
+| Area | URL / page folder `src/app/(dashboard)/…` | Feature folder `src/features/…` | Backend module `modules/…` | Requirements | Phase |
 | --- | --- | --- | --- | --- | --- |
-| A. Login & users | `/login`, `/admin/users` | `(auth)/`, `admin/users/` | `auth/`, `admin/` | FR-01 – 03 | 1 |
-| B. Licences & permits | `/licences`, `/permits` | `licences/`, `permits/` | `permits/` | FR-04 – 09 | 1 |
-| C. Sites & trees | `/sites`, `/trees` | `sites/`, `trees/` | `sites-trees/` | FR-10 – 14 | 1 |
-| D. Felling & logs | `/felling`, `/logs` | `felling/`, `logs/` | `felling/`, `logs/` | FR-15 – 19 | 1–2 |
-| E. Transport | `/transport` | `transport/` | `transport/` | FR-20 – 23 | 2 |
-| F. Sawmill production | `/production` | `production/` | `production/` | FR-24 – 28 | 2 |
-| G. Inventory | `/inventory` | `inventory/` | `inventory/` | FR-29 – 34 | 1 |
-| H. Customers & sales | `/sales` | `sales/` | `sales/` | FR-35 – 43 | 1–3 |
-| I. Procurement | `/procurement` | `procurement/` | `procurement/` | FR-44 – 45 | 2 |
-| J. Finance & costing | `/finance` | `finance/` | `finance/` | FR-46 – 49 | 2–3 |
-| K. Reports & dashboard | `/dashboard`, `/reports` | `dashboard/`, `reports/` | `dashboard/`, `reports/` | FR-50 – 55 | 1 |
-| L. Notifications & admin | `/notifications`, `/admin` | `notifications/`, `admin/` | `notifications/`, `admin/` | FR-56 – 58 | 1 |
-| Offline field mode | `/field` | `src/app/(field)/field/` | `field/` | FR-19, WR-05 | 2 |
-| Customer portal | `/portal` | `src/app/(portal)/portal/` | `portal/` | FR-42, WR-09 | 2 |
+| A. Login & users | `(auth)/`, `admin/users/` | `auth/`, `admin/` | `useraccess` | FR-01 – 02 | 1 |
+| B. Licences & permits | `licences/`, `permits/` | `permits/` | `licencepermit` | FR-04 – 09 | 1 |
+| C. Sites & trees | `sites/`, `trees/` | `sites-trees/` | `sitetree` | FR-10 – 14 | 1 |
+| D. Felling & logs | `felling/`, `logs/` | `felling/`, `logs/` | `felling` | FR-15 – 19 | 1–2 |
+| E. Transport | `transport/` | `transport/` | `transport` (+ `licencepermit/fr08`) | FR-20 – 23 | 2 |
+| F. Sawmill production | `production/` | `production/` | `sawmill` | FR-24 – 28 | 2 |
+| G. Inventory | `inventory/` | `inventory/` | `inventory` | FR-29 – 34 | 1 |
+| H. Customers & sales | `sales/` | `sales/` | `sales` | FR-35 – 43 | 1–3 |
+| I. Procurement | `procurement/` | `procurement/` | `procurement` | FR-44 – 45 | 2 |
+| J. Finance & costing | `finance/` | `finance/` | `finance` | FR-46 – 49 | 2–3 |
+| K. Dashboard & reports | `dashboard/`, `reports/` | `dashboard/`, `reports/` | `dashboard`, `reports` | WR-02, FR-50 – 55 | 1 |
+| L. Notifications & admin | `notifications/`, `admin/` | `notifications/`, `admin/` | `auditadmin` | FR-03, FR-56 – 58 | 1 |
+| Global search | (top bar) | `components/shared/GlobalSearch.tsx` | `search` | WR-03 | 1 |
+| Offline field mode | `src/app/(field)/field/` | `field/` | `sync` (+ `felling/fr19`) | FR-19, WR-05 | 2 |
+| Customer portal | `src/app/(portal)/portal/` | `portal/` | `sales/fr42` | FR-42, WR-09 | 2 |
 
-Requirement IDs (FR-xx, WR-xx, BR-xx) come from the project proposal document.
+Requirement IDs (FR-xx, WR-xx, BR-xx) come from the project proposal. The backend uses the same IDs in its folder names (e.g. `licencepermit/fr06_quota_tracking`), so you can always find the matching API.
 
 ---
 
@@ -118,6 +121,9 @@ timber-frontend/
 │
 ├── public/                     # icons, images, service worker (sw.js)
 ├── tests/                      # unit tests (calculations) and e2e
+├── .github/                    # CI pipeline, CODEOWNERS, PR/issue templates (admins only)
+├── .npmrc                      # npm security settings (don't edit)
+├── SECURITY.md                 # how to report security problems
 └── .env.example                # copy to .env.local
 ```
 
@@ -127,7 +133,7 @@ timber-frontend/
 
 ## 🔀 Daily Git Workflow
 
-**Never push straight to `main`.** Always use a branch and a Pull Request.
+`main` is protected. **Developers can't push or merge to `main`.** You open a Pull Request, the CI pipeline runs, an admin reviews it, and **only an admin merges it**.
 
 ```bash
 # 1. Get the latest main
@@ -148,9 +154,11 @@ git pull origin main
 git push -u origin feature/inventory-stock-table
 ```
 
-6. On GitHub, open a **Pull Request** into `main`. The PR template will show a short checklist.
-7. A teammate reviews it, then you click **Squash and merge**.
-8. Go back to `main` and pull again:
+6. On GitHub, open a **Pull Request** into `main` and fill in the checklist.
+7. Wait for the **CI checks** (✅ Lint & Build, ✅ Dependency Review) to pass. Fix anything red by pushing more commits to the same branch.
+8. An **admin reviews** your PR. If they ask for changes, push fixes to the same branch.
+9. The admin **merges** it (squash and merge). The branch is deleted automatically.
+10. Go back to `main` and pull again:
 
 ```bash
 git checkout main
@@ -198,6 +206,21 @@ If `git pull origin main` says **CONFLICT**:
 
 Not sure which version is right? Ask the teammate who wrote the other change.
 To cancel and go back: `git merge --abort`.
+
+---
+
+## 🔒 Security Rules (public repo)
+
+This repo is public so it can deploy on Vercel. Anyone can see the code, so:
+
+1. **No secrets in code.** Real values go in `.env.local` (local) or Vercel settings (deployed). Never put a secret in a `NEXT_PUBLIC_` variable, because those are sent to the browser.
+2. **Don't add npm packages without admin approval.** Check the exact spelling, weekly downloads, age and maintainer first. Fake look-alike names are common malware.
+3. **Don't edit `.npmrc`** (it blocks install scripts, which is where most npm malware runs) **or `.github/`.**
+4. **Use `npm ci`** after pulling. It installs exactly what `package-lock.json` says.
+5. **Never download or run** files or links posted in issues, comments or PRs by strangers, even if they say "fix". Report them to an admin.
+6. **Never clone and run** a random repo someone sends you, such as a "test task" or "job interview" repo.
+7. **Turn on 2FA** for GitHub and use only trusted VS Code extensions.
+8. Found a security problem? Follow [SECURITY.md](SECURITY.md). Don't open a public issue.
 
 ---
 

@@ -1,0 +1,93 @@
+# CI pipeline - runs on every Pull Request into main.
+# The job names below ("Lint & Build", "Dependency Review") are the
+# required status checks in the main branch ruleset. Don't rename them
+# without updating the ruleset.
+#
+# Security notes:
+# - Actions are pinned to a full commit SHA (a hijacked tag can't inject code).
+# - The token is read-only; never switch this to pull_request_target.
+# - npm install scripts are disabled (see .npmrc) - most npm malware runs there.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      # Until the base setup task adds package.json + package-lock.json,
+      # the remaining steps are skipped so the check still passes.
+      - name: Check project setup
+        id: setup
+        run: |
+          if [ -s package.json ] && [ -s package-lock.json ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::package.json / package-lock.json not set up yet - skipping install, lint and build."
+          fi
+
+      - name: Install (no install scripts)
+        if: steps.setup.outputs.ready == 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Verify package signatures
+        if: steps.setup.outputs.ready == 'true'
+        run: npm audit signatures
+
+      - name: Audit for known vulnerabilities
+        if: steps.setup.outputs.ready == 'true'
+        run: npm audit --audit-level=high --omit=dev
+
+      - name: Lint
+        if: steps.setup.outputs.ready == 'true'
+        run: npm run lint --if-present
+
+      - name: Type check
+        if: steps.setup.outputs.ready == 'true'
+        run: npm run typecheck --if-present
+
+      - name: Build
+        if: steps.setup.outputs.ready == 'true'
+        run: npm run build
+
+  dependency-review:
+    name: Dependency Review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Fails the PR if it adds or upgrades a dependency that has a
+      # known security advisory.
+      - name: Dependency review
+        uses: actions/dependency-review-action@bbc44d14a204704ccc493733616cd1e93a0321ec # v5.0.1
+        with:
+          fail-on-severity: moderate

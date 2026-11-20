@@ -1,0 +1,21 @@
+# Dependabot keeps npm packages and GitHub Actions up to date.
+# "cooldown" waits a few days before suggesting a new version, so
+# freshly published malicious versions are usually caught and removed first.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    labels: [dependencies]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    labels: [dependencies, ci]

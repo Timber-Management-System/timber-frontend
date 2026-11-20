@@ -1,0 +1,15 @@
+# Code owners must approve every Pull Request into main.
+# Add the second admin's GitHub username on each line below,
+# e.g.  *  @chathuka55 @second-admin-username
+# (or use an org team such as @Timber-Management-System/frontend-admins)
+
+*                    @chathuka55
+
+# Sensitive files - extra care when reviewing
+/.github/            @chathuka55
+/package.json        @chathuka55
+/package-lock.json   @chathuka55
+/.npmrc              @chathuka55
+/next.config.ts      @chathuka55
+/src/middleware.ts   @chathuka55
+/src/lib/            @chathuka55
