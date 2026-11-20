@@ -1,0 +1,408 @@
+/* TimberTrack sidebar – navigation Option B (accordion).
+ * Only tokens from src/styles/tokens/ are used here. Translucent lines use color-mix(). */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 252px;
+  height: 100vh;
+  flex-shrink: 0;
+  padding: 20px 14px 14px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tt-nav-hover) transparent;
+  background: var(--tt-sidebar-bg);
+  color: var(--tt-sidebar-text);
+  font-family: var(--font-heading);
+}
+
+/* ---------- Brand ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 8px 20px;
+}
+.brandMark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--tt-amber-500) 35%, transparent);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--tt-amber-500) 12%, transparent);
+  color: var(--tt-amber-500);
+}
+.brandText strong {
+  display: block;
+  color: var(--tt-text-on-primary);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: -.3px;
+  line-height: 1.1;
+}
+.brandText small {
+  display: block;
+  margin-top: 3px;
+  color: var(--tt-sidebar-label);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* ---------- Groups ---------- */
+.group {
+  margin-bottom: 14px;
+}
+.groupLabel {
+  margin: 4px 12px 6px;
+  color: var(--tt-sidebar-label);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+.list,
+.subnav,
+.flyoutList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Main items ---------- */
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  height: 38px;
+  padding: 0 10px 0 12px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--tt-sidebar-text);
+  font: inherit;
+  font-size: var(--text-base);
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .15s, color .15s;
+}
+.item:hover {
+  background: var(--tt-nav-hover);
+  color: var(--tt-text-on-primary);
+}
+.item:focus-visible,
+.subLink:focus-visible {
+  outline: 2px solid var(--tt-nav-indicator);
+  outline-offset: 2px;
+}
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chevron {
+  opacity: .55;
+  transition: opacity .15s, transform .15s;
+}
+.item[aria-expanded='true'] .chevron {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+/* Active page = same green as hover, bold text and a slim light-green marker */
+.active,
+.parentActive {
+  color: var(--tt-text-on-primary);
+  font-weight: 700;
+}
+.active {
+  background: var(--tt-nav-hover);
+}
+.active::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--tt-nav-indicator);
+}
+.active > svg:first-child,
+.parentActive > svg:first-child {
+  color: var(--tt-nav-icon-active);
+}
+
+.badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: var(--radius-full);
+  background: var(--tt-amber-200);
+  color: var(--tt-text-on-amber);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ---------- Sub-pages (accordion) ---------- */
+.subnav {
+  gap: 1px;
+  margin: 2px 0 6px 21px;
+  padding-left: 12px;
+  border-left: 1px solid color-mix(in srgb, var(--tt-sidebar-text) 14%, transparent);
+}
+.subLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: var(--radius-control);
+  color: var(--tt-sidebar-text);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.subLink span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.subLink:hover,
+.subActive {
+  background: var(--tt-nav-hover);
+  color: var(--tt-text-on-primary);
+}
+.subActive {
+  font-weight: 700;
+}
+.subActive::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-left: -4px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  background: var(--tt-nav-indicator);
+}
+.subBadge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--tt-amber-200);
+  color: var(--tt-text-on-amber);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+/* ---------- Profile ---------- */
+.bottom {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--tt-sidebar-text) 10%, transparent);
+}
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: var(--radius-item);
+  background: color-mix(in srgb, var(--tt-text-on-primary) 6%, transparent);
+  color: var(--tt-text-on-primary);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--radius-control);
+  background: var(--tt-green-500);
+  color: var(--tt-text-on-primary);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.profileText b {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.profileText small {
+  display: block;
+  color: var(--tt-sidebar-label);
+  font-size: var(--text-xs);
+}
+
+/* ---------- Flyout (phone icon rail) ---------- */
+.flyout {
+  position: fixed;
+  z-index: 60;
+  width: 264px;
+  max-width: calc(100vw - 96px);
+  max-height: calc(100vh - 16px);
+  padding: 8px;
+  overflow-y: auto;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-item);
+  background: var(--tt-surface-card);
+  box-shadow: var(--shadow-pop);
+  color: var(--tt-text-secondary);
+}
+.flyoutHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  padding: 6px 8px 10px;
+  border-bottom: 1px solid var(--tt-divider);
+}
+.flyoutIcon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-control);
+  background: var(--ok-soft);
+  color: var(--tt-green-700);
+}
+.flyoutHead b {
+  display: block;
+  color: var(--tt-text-primary);
+  font-size: var(--text-base);
+  font-weight: 800;
+  line-height: 1.2;
+}
+.flyoutHead small {
+  display: block;
+  color: var(--tt-text-muted);
+  font-size: var(--text-xs);
+}
+.flyoutLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: var(--radius-control);
+  color: var(--tt-text-secondary);
+  font-size: var(--text-base);
+  font-weight: 500;
+  text-decoration: none;
+}
+.flyoutLink span:first-child {
+  flex: 1;
+}
+.flyoutLink:hover {
+  background: var(--tt-bg-page);
+  color: var(--tt-text-primary);
+}
+.flyoutLink:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px var(--tt-green-400);
+}
+.flyoutActive {
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+  font-weight: 700;
+}
+.flyoutBadge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ---------- Phone: icon rail (keep in sync with RAIL_QUERY in Sidebar.tsx) ---------- */
+@media (max-width: 760px) {
+  .sidebar {
+    width: 72px;
+    padding: 16px 10px;
+  }
+  .brand {
+    justify-content: center;
+    padding: 0 0 16px;
+  }
+  .brandText,
+  .label,
+  .chevron,
+  .badge,
+  .profileText,
+  .subnav {
+    display: none;
+  }
+  /* Group headings become thin dividers (still read by screen readers) */
+  .groupLabel {
+    height: 1px;
+    margin: 6px 8px 8px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--tt-sidebar-text) 12%, transparent);
+    font-size: 0;
+  }
+  .item {
+    justify-content: center;
+    padding: 0;
+  }
+  .parentActive {
+    background: var(--tt-nav-hover);
+  }
+  .parentActive::before {
+    content: '';
+    position: absolute;
+    top: 9px;
+    bottom: 9px;
+    left: 0;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--tt-nav-indicator);
+  }
+  .hasBadge::after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    right: 9px;
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--tt-sidebar-bg);
+    border-radius: var(--radius-full);
+    background: var(--tt-amber-400);
+  }
+  .profile {
+    justify-content: center;
+    padding: 6px;
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .chevron {
+    transition: none;
+  }
+}

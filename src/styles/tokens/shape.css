@@ -1,0 +1,12 @@
+/* TimberTrack – radius & shadow tokens (Option B) */
+:root {
+  --radius-xs: 6px;
+  --radius-control: 10px;   /* inputs, buttons */
+  --radius-item: 12px;      /* active sidebar item, list rows */
+  --radius-card: 14px;
+  --radius-panel: 16px;
+  --radius-full: 999px;     /* pills, badges */
+
+  --shadow-card: 0 1px 2px rgba(42, 31, 24, .04), 0 4px 14px rgba(42, 31, 24, .05);
+  --shadow-pop: 0 18px 40px rgba(42, 31, 24, .18), 0 2px 6px rgba(42, 31, 24, .08);
+}
