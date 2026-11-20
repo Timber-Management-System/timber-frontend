@@ -55,6 +55,72 @@ Open <http://localhost:3000>.
 > `npm install` and `npm run dev` will work once the base setup task is done. That task fills in `package.json` and the config files.
 
 ---
+
+## 🎨 Design System - colours, fonts, buttons, sidebar
+
+The design is **confirmed**. Build every screen with these building blocks, and don't invent new colours, buttons or menus.
+
+| What | Where to find it |
+| --- | --- |
+| **Colour palette** | `src/styles/tokens/colors.css`: use the `--tt-*` variables (preview below) |
+| **Fonts & text sizes** | `src/styles/tokens/typography.css` and `src/styles/fonts.ts` |
+| **Corners & shadows** | `src/styles/tokens/shape.css` |
+| **Button** | `src/shared/components/ui/Button.tsx` |
+| **Icons** | `src/shared/components/ui/Icon.tsx` |
+| **Sidebar** | `src/shared/components/layout/Sidebar.tsx`, with the menu in `src/shared/config/navigation.ts` |
+| **Full guide with code examples** | 📘 [docs/design-system.md](docs/design-system.md) |
+| **Wireframes (Figma, confirmed)** | [Timber Management System wireframes](https://www.figma.com/design/FZkul22RJVLOX665De4ZNa/Timber-Management-System) |
+| **Instructions for AI assistants** | [docs/code-prompts-helper.md](docs/code-prompts-helper.md) |
+
+**Fonts:**
+
+| Use | Font |
+| --- | --- |
+| Headings | Plus Jakarta Sans |
+| Body text | Inter |
+| IDs and codes (`PER-010`, `LOG-001`) | JetBrains Mono |
+| Sinhala | Iskoola Pota, with Noto Sans Sinhala as fallback |
+| Tamil | Noto Sans Tamil |
+
+### Colour palette
+
+![TimberTrack colour palette: brand green, amber accent, surfaces, text, wood and status colours with their token names](docs/assets/design-system/palette.svg)
+
+```css
+/* Always use the token name, never the hex value */
+.card  { background: var(--tt-surface-card); border: 1px solid var(--tt-border-default); border-radius: var(--radius-card); }
+.title { color: var(--tt-text-primary); font-family: var(--font-heading); }
+.badge { background: var(--warn-bg); color: var(--warn-fg); }
+```
+
+### Buttons
+
+![Button variants (primary, secondary, ghost, danger), sizes (sm, md, lg), icon-only and loading](docs/assets/design-system/buttons.svg)
+
+```tsx
+import { Button } from '@/shared/components/ui/Button';
+import { Icon } from '@/shared/components/ui/Icon';
+
+<Button leftIcon={<Icon name="plus" />}>New permit</Button>         {/* primary (amber) */}
+<Button variant="secondary">Filters</Button>
+<Button variant="ghost" size="sm">View all</Button>
+<Button variant="danger">Block felling</Button>
+```
+
+### Sidebar
+
+![Sidebar on desktop (accordion) and on phone (icon rail with pop-out menu)](docs/assets/design-system/sidebar.svg)
+
+The sidebar is already in `src/app/(app)/layout.tsx`, so every logged-in page gets it. To add or rename a menu page, edit `src/shared/config/navigation.ts`, which is a shared file, so ask an admin first.
+
+**Quick rules**
+1. **No hex colours in components.** Use the `--tt-*` tokens. If a colour is missing, ask an admin to add a token.
+2. **Amber (`primary`) is for the one main action** on a screen. Everything else uses `secondary` or `ghost`.
+3. **Use the status pairs** (`--ok-*`, `--warn-*`, `--crit-*`) for badges and alerts.
+4. **Don't set Sinhala or Tamil fonts yourself.** They switch automatically with the language.
+5. **All text the user sees goes through i18n.**
+
+---
 ## 🧩 Modules - who builds what
 
 **One requirement = one folder = one page.** Every functional requirement (FR-01 … FR-58) in the proposal has:
@@ -224,6 +290,7 @@ timber-frontend/
 │
 ├── docs/
 │   ├── design-system.md             # how to use tokens, Button, Sidebar
+│   ├── assets/design-system/        # palette, button and sidebar previews
 │   ├── code-prompts-helper.md       # instructions for AI assistants
 │   ├── wireframes/                  # Figma sources (+ screen index)
 │   ├── decisions/                   # tech decisions (made / still open)

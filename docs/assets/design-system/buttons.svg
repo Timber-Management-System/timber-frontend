@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="330" viewBox="0 0 900 330" font-family="Plus Jakarta Sans, Inter, Segoe UI, Arial, sans-serif">
+<rect width="900" height="330" rx="16" fill="#f8f1e7" stroke="#e6dacb"/>
+<text x="24" y="40" font-size="20" font-weight="800" fill="#22180f">Buttons</text>
+<text x="24" y="60" font-size="12" fill="#594b3f">import { Button } from '@/shared/components/ui/Button'. Source: src/shared/components/ui/Button.tsx</text>
+<rect x="24" y="92" width="131" height="40" rx="10" fill="#f5a11b"/>
+<g transform="translate(40 104.0) scale(0.6666666666666666)" fill="none" stroke="#1f1608" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></g>
+<text x="64" y="116.55" font-size="13" font-weight="700" fill="#1f1608">New permit</text>
+<text x="24" y="156" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">variant="primary"</text>
+<text x="24" y="172" font-size="11" fill="#594b3f">One main action per screen</text>
+<rect x="239" y="92" width="108" height="40" rx="10" fill="#fffbf5" stroke="#e6dacb"/>
+<g transform="translate(255 104.0) scale(0.6666666666666666)" fill="none" stroke="#4a3d33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></g>
+<text x="279" y="116.55" font-size="13" font-weight="600" fill="#4a3d33">Filters</text>
+<text x="239" y="156" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">variant="secondary"</text>
+<text x="239" y="172" font-size="11" fill="#594b3f">Filters, export, cancel</text>
+<rect x="454" y="92" width="92" height="40" rx="10" fill="#f8f1e7"/>
+<text x="470" y="116.55" font-size="13" font-weight="700" fill="#2a6246">View all</text>
+<text x="454" y="156" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">variant="ghost"</text>
+<text x="454" y="172" font-size="11" fill="#594b3f">Small text actions</text>
+<rect x="669" y="92" width="130" height="40" rx="10" fill="#b42e3a"/>
+<text x="685" y="116.55" font-size="13" font-weight="700" fill="#ffffff">Block felling</text>
+<text x="669" y="156" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">variant="danger"</text>
+<text x="669" y="172" font-size="11" fill="#594b3f">Destructive (confirm first)</text>
+<line x1="24" y1="196" x2="876" y2="196" stroke="#e6dacb"/>
+<text x="24" y="222" font-size="13" font-weight="700" fill="#2a1f18">Sizes</text>
+<rect x="24" y="246.0" width="51" height="32" rx="10" fill="#f5a11b"/>
+<text x="36" y="266.2" font-size="12" font-weight="700" fill="#1f1608">Save</text>
+<text x="24" y="306" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">size="sm" · 32px</text>
+<rect x="174" y="242.0" width="62" height="40" rx="10" fill="#f5a11b"/>
+<text x="190" y="266.55" font-size="13" font-weight="700" fill="#1f1608">Save</text>
+<text x="174" y="306" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">size="md" · 40px</text>
+<rect x="324" y="238.0" width="72" height="48" rx="10" fill="#f5a11b"/>
+<text x="344" y="266.9" font-size="14" font-weight="700" fill="#1f1608">Save</text>
+<text x="324" y="306" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">size="lg" · 48px</text>
+<text x="490" y="222" font-size="13" font-weight="700" fill="#2a1f18">Icon only · loading</text>
+<rect x="490" y="242" width="40" height="40" rx="10" fill="#fffbf5" stroke="#e6dacb"/>
+<g transform="translate(500 252) scale(0.8333333333333334)" fill="none" stroke="#4a3d33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></g>
+<text x="490" y="306" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">iconOnly + aria-label</text>
+<rect x="680" y="242" width="112" height="40" rx="10" fill="#f5a11b" opacity=".55"/>
+<circle cx="702" cy="262" r="6" fill="none" stroke="#1f1608" stroke-width="2" stroke-dasharray="28 10"/>
+<text x="716" y="267" font-size="13" font-weight="700" fill="#1f1608">Saving…</text>
+<text x="680" y="306" font-size="11" font-family="JetBrains Mono, Consolas, monospace" fill="#2a1f18">loading</text>
+</svg>
