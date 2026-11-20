@@ -1,0 +1,131 @@
+/* ============================================================================
+ * TimberTrack – colour tokens                         (CONFIRMED palette: Option B)
+ *
+ * Two layers:
+ *   1. Primitives  --forest-*, --amber-*, --cream-*, ...   straight from the approved
+ *                  Option_B.html. Do not use these directly in components.
+ *   2. Semantic    --tt-*  =  the 55 variables of the Figma "Timber Theme" collection
+ *                  (name "bg/page" -> --tt-bg-page, "text/on-primary" -> --tt-text-on-primary).
+ *                  USE THESE in components. They match the wireframes 1:1.
+ *   3. Status      --ok-* / --warn-* / --crit-*  pairs (bg / fg / line / solid) for badges & alerts.
+ *
+ * Never hard-code a hex value in a component. Need a new colour? Add it here and in Figma.
+ * Contrast: text pairs below meet WCAG AA (4.5:1 text, 3:1 graphics).
+ * The SE team's Figma colours are NOT confirmed and are not used here.
+ * ========================================================================= */
+:root {
+  /* ---- 1. Primitives (Option B) ---- */
+  --forest-950: #031f15;
+  --forest-900: #042b1e;
+  --forest-800: #0d3d2a;
+  --forest-700: #154934;
+  --forest-600: #2a6246;
+  --forest-500: #3b7a56;
+  --amber-500: #f5a11b;
+  --amber-400: #f8b545;
+  --amber-200: #fbdba4;
+  --amber-100: #fdf0d8;
+  --cream-50: #fffbf5;
+  --cream-100: #f8f1e7;
+  --cream-200: #efe5d7;
+  --ink: #2a1f18;
+  --ink-2: #4a3d33;
+  --brown-600: #a45d2d;
+  --brown-300: #e2bd90;
+  --line: #e6dacb;
+  --line-soft: #f0e7da;
+  --muted: #594b3f;
+  --placeholder: #786858;
+
+  /* ---- 2. Semantic tokens = Figma "Timber Theme" (55 variables) ---- */
+  /* Backgrounds & surfaces */
+  --tt-bg-page: var(--cream-100);  /* #f8f1e7 */
+  --tt-bg-sidebar: #f4eadc;
+  --tt-bg-canvas: var(--cream-200);  /* #efe5d7 */
+  --tt-surface-card: var(--cream-50);  /* #fffbf5 */
+  --tt-surface-subtle: #fdf7ee;
+  --tt-surface-header: #f4eadc;
+  --tt-surface-track: var(--cream-200);  /* #efe5d7 */
+  --tt-surface-muted: #f0e7da;
+
+  /* Borders */
+  --tt-border-default: #e6dacb;
+  --tt-border-strong: #d7c6b1;
+  --tt-divider: #f0e7da;
+
+  /* Text */
+  --tt-text-primary: var(--ink);  /* #2a1f18 */
+  --tt-text-secondary: var(--ink-2);  /* #4a3d33 */
+  --tt-text-muted: #594b3f;
+  --tt-text-placeholder: #786858;
+  --tt-text-on-primary: #ffffff;
+  --tt-text-link: var(--forest-600);  /* #2a6246 */
+  --tt-text-on-amber: #1f1608;
+
+  /* Brand green (forest) */
+  --tt-green-900: var(--forest-900);  /* #042b1e */
+  --tt-green-700: var(--forest-700);  /* #154934 */
+  --tt-green-500: var(--forest-600);  /* #2a6246 */
+  --tt-green-400: var(--forest-500);  /* #3b7a56 */
+  --tt-green-100: #e3eee2;
+  --tt-green-50: #eef4ec;
+
+  /* Wood / brown */
+  --tt-wood-800: #4a2f18;
+  --tt-wood-600: var(--brown-600);  /* #a45d2d */
+  --tt-wood-500: #b9895c;
+  --tt-wood-300: var(--brown-300);  /* #e2bd90 */
+  --tt-wood-200: #f1dfc4;
+  --tt-wood-100: #fbf1e2;
+
+  /* Amber (accent) */
+  --tt-amber-500: var(--amber-500);  /* #f5a11b */
+  --tt-amber-400: var(--amber-400);  /* #f8b545 */
+  --tt-amber-200: var(--amber-200);  /* #fbdba4 */
+  --tt-amber-100: var(--amber-100);  /* #fdf0d8 */
+
+  /* Status – danger / critical */
+  --tt-danger-700: #8c1c2b;
+  --tt-danger-100: #fbe6e4;
+  --tt-crit-50: #fdf3f2;
+  --tt-crit-200: #f2c9c5;
+  --tt-crit-600: #b42e3a;
+
+  /* Status – warning */
+  --tt-warn-700: #6e3c0b;
+  --tt-warn-400: var(--amber-500);  /* #f5a11b */
+  --tt-warn-100: #fcead0;
+  --tt-warn-line: #f1d3a6;
+
+  /* Sidebar & navigation */
+  --tt-sidebar-bg: var(--forest-900);  /* #042b1e */
+  --tt-sidebar-text: #dfe9e2;
+  --tt-sidebar-label: #a8c7b4;
+  --tt-sidebar-line: var(--forest-800);  /* #0d3d2a */
+  --tt-nav-hover: #174d36;
+  --tt-nav-indicator: #8fd1a6;
+  --tt-nav-icon-active: #b9e6c8;
+
+  /* Charts */
+  --tt-chart-bar: var(--brown-600);  /* #a45d2d */
+  --tt-chart-bar-light: var(--brown-300);  /* #e2bd90 */
+  --tt-chart-bar-out: var(--amber-500);  /* #f5a11b */
+  --tt-chart-bar-out-edge: #b8740a;
+
+  /* Overlay */
+  --tt-overlay: #1a140f;
+
+  /* ---- 3. Status pairs (Option B) ---- */
+  --ok-bg: #e3eee2;   --ok-fg: #285a3a;   --ok-soft: #e4eee4;
+  --warn-bg: #fcead0; --warn-fg: #6e3c0b; --warn-line: #f1d3a6; --warn-solid: #f5a11b; --warn-soft: #fdf0d8; --warn-icon: #8a4f12;
+  --crit-50: #fdf3f2; --crit-100: #fbe6e4; --crit-200: #f2c9c5; --crit-600: #b42e3a; --crit-700: #8c1c2b;
+  --crit-bg: var(--crit-100); --crit-fg: var(--crit-700); --crit-line: var(--crit-200); --crit-solid: var(--crit-600);
+
+  /* ---- Chart colours ---- */
+  --chart-in: #a45d2d;         /* inbound  (logs in)  */
+  --chart-out: #f5a11b;        /* outbound (logs out) */
+  --chart-out-edge: #b8740a;
+  --chart-text: #3d3128;
+  --chart-grid: #e6dacb;
+  --chart-base: #c9b8a2;
+}

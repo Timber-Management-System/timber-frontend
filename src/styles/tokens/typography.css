@@ -1,0 +1,49 @@
+/* ============================================================================
+ * TimberTrack – typography tokens                      (CONFIRMED: Font Selection, Option A)
+ *
+ *   heading  Plus Jakarta Sans   titles, KPI numbers, buttons
+ *   body     Inter               forms, tables, paragraphs
+ *   mono     JetBrains Mono      IDs & codes  (PER-010 · LOG-001 · BKP-0128), quantities
+ *   sinhala  Iskoola Pota        Sinhala script   (free fallback: Noto Sans Sinhala)
+ *   tamil    Noto Sans Tamil     Tamil script
+ *
+ * The --ff-* variables are set by next/font in src/styles/fonts.ts (put the class
+ * `fontVariables` on <html>). Each stack still works without them (system fallbacks).
+ *
+ * Iskoola Pota is a Microsoft system font: it is NOT on Google Fonts and its licence does not
+ * allow bundling it with the app. It is therefore only *referenced* by name – it shows on
+ * Windows, and other devices fall back to Noto Sans Sinhala (loaded by next/font).
+ * ========================================================================= */
+:root {
+  --font-heading: var(--ff-heading, 'Plus Jakarta Sans'), system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --font-body: var(--ff-body, 'Inter'), system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --font-mono: var(--ff-mono, 'JetBrains Mono'), ui-monospace, SFMono-Regular, Consolas, monospace;
+  --font-sinhala: 'Iskoola Pota', var(--ff-sinhala, 'Noto Sans Sinhala'), 'Noto Sans Sinhala', 'Nirmala UI', sans-serif;
+  --font-tamil: var(--ff-tamil, 'Noto Sans Tamil'), 'Noto Sans Tamil', 'Latha', 'Nirmala UI', sans-serif;
+
+  /* type scale (px as rem @16) */
+  --text-xs: 0.75rem;   /* 12 */
+  --text-sm: 0.8125rem; /* 13 */
+  --text-base: 0.875rem;/* 14 – default UI size, line-height 1.5 */
+  --text-md: 1rem;      /* 16 */
+  --text-lg: 1.125rem;  /* 18 */
+  --text-xl: 1.375rem;  /* 22 */
+  --text-2xl: 1.75rem;  /* 28 */
+  --leading-base: 1.5;
+}
+
+html { font-family: var(--font-body); font-size: 100%; }
+body { font-size: var(--text-base); line-height: var(--leading-base); color: var(--tt-text-primary); background: var(--tt-bg-page); }
+h1, h2, h3, h4, h5, h6, .font-heading { font-family: var(--font-heading); }
+code, kbd, samp, pre, .font-mono, .tabular-id { font-family: var(--font-mono); }
+.tabular-id { font-variant-numeric: tabular-nums; }
+
+/* Multi-language (WR-08). Latin letters/digits keep Inter / Plus Jakarta; only the
+ * Sinhala / Tamil glyphs fall through to the script font – so mixed text such as
+ * "PER-010 ලයිසන්පත" renders correctly. Set <html lang="si|ta|en">. */
+:lang(si) { font-family: var(--font-body), var(--font-sinhala); }
+:lang(si) :is(h1, h2, h3, h4, h5, h6, .font-heading) { font-family: var(--font-heading), var(--font-sinhala); }
+:lang(ta) { font-family: var(--font-body), var(--font-tamil); }
+:lang(ta) :is(h1, h2, h3, h4, h5, h6, .font-heading) { font-family: var(--font-heading), var(--font-tamil); }
+/* Sinhala & Tamil have tall glyphs – give them more line height */
+:lang(si), :lang(ta) { line-height: 1.65; }
