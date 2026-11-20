@@ -29,6 +29,12 @@ pnpm-debug.log*
 # vercel
 .vercel
 
+# AI assistant files stay local - shared instructions live in docs/code-prompts-helper.md
+CLAUDE.md
+**/CLAUDE.md
+CLAUDE.local.md
+.claude/
+
 # OS / editor
 .DS_Store
 Thumbs.db

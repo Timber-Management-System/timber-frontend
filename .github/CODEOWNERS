@@ -1,13 +1,15 @@
 # Code owners must approve every Pull Request into main.
 # Admins: @chathuka55 and @Pasinduteshan7 (either one can approve).
 
-*                    @chathuka55 @Pasinduteshan7
+*                       @chathuka55 @Pasinduteshan7
 
 # Sensitive files - extra care when reviewing
-/.github/            @chathuka55 @Pasinduteshan7
-/package.json        @chathuka55 @Pasinduteshan7
-/package-lock.json   @chathuka55 @Pasinduteshan7
-/.npmrc              @chathuka55 @Pasinduteshan7
-/next.config.ts      @chathuka55 @Pasinduteshan7
-/src/middleware.ts   @chathuka55 @Pasinduteshan7
-/src/lib/            @chathuka55 @Pasinduteshan7
+/.github/               @chathuka55 @Pasinduteshan7
+/package.json           @chathuka55 @Pasinduteshan7
+/package-lock.json      @chathuka55 @Pasinduteshan7
+/.npmrc                 @chathuka55 @Pasinduteshan7
+/next.config.ts         @chathuka55 @Pasinduteshan7
+/src/middleware.ts      @chathuka55 @Pasinduteshan7
+/src/shared/            @chathuka55 @Pasinduteshan7
+/src/styles/            @chathuka55 @Pasinduteshan7
+/src/business-rules/    @chathuka55 @Pasinduteshan7
