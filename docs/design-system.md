@@ -11,6 +11,8 @@ Everything here follows the **confirmed** design: the Option B palette and navig
 | `src/styles/tokens/shape.css` | Corner radius and shadows (`--radius-control`, `--radius-card`, `--shadow-card` …) |
 | `src/styles/fonts.ts` | Loads the fonts with `next/font`. Already wired into `src/app/layout.tsx`. |
 
+![TimberTrack colour palette with token names](assets/design-system/palette.svg)
+
 ```css
 /* MyTable.module.css */
 .header { background: var(--tt-surface-header); color: var(--tt-text-secondary); }
@@ -35,6 +37,8 @@ Rules:
 
 Sizes: `sm` (32px), `md` (40px, default), `lg` (48px, for field screens and big touch targets).
 
+![Button variants, sizes, icon-only and loading](assets/design-system/buttons.svg)
+
 ```tsx
 import { Button, buttonClassName } from '@/shared/components/ui/Button';
 import { Icon } from '@/shared/components/ui/Icon';
@@ -56,6 +60,8 @@ import { Icon } from '@/shared/components/ui/Icon';
 This is navigation Option B:
 - **Desktop:** one module opens at a time, with its pages listed under it.
 - **Phone (≤ 760px):** the sidebar becomes an icon rail, and tapping a module shows its pages in a pop-out.
+
+![Sidebar on desktop and on phone](assets/design-system/sidebar.svg)
 
 ```tsx
 import { Sidebar } from '@/shared/components/layout/Sidebar';
