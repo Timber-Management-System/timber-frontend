@@ -5,14 +5,17 @@ Technical choices that have been made, or are still open, for the frontend. Add 
 ## Decided
 | Topic | Choice |
 | --- | --- |
-| Framework | Next.js (App Router) + React + TypeScript |
-| Hosting | Vercel (public repo) |
+| Framework | Next.js 16 (App Router) + React 19 + TypeScript 5 |
+| Package manager | npm, with exact versions (`.npmrc` `save-exact`) and `npm ci` from `package-lock.json` |
+| Linting and formatting | ESLint 9 (`eslint-config-next`) + Prettier (`.prettierrc`) |
+| Hosting | Vercel |
 | Colours, fonts, shapes | `src/styles/tokens/` (confirmed Option B palette, Font Selection Option A) |
 | Navigation | Sidebar Option B (accordion; icon rail on phones) |
-| Styling of shared components | CSS Modules + design tokens (no UI library) |
+| Styling | CSS Modules + design tokens. **No Tailwind** for now: the tokens already cover it. Can be revisited. |
+
+**Why TypeScript 5 and not 7:** the lint tooling (`typescript-eslint`) supports TypeScript only below 6.1. Upgrade when it supports newer versions.
 
 ## Not decided yet (ask before adding anything)
-- Package manager (npm is assumed in the README and CI)
 - UI component library
 - Form library and validation library
 - Data fetching / caching library

@@ -9,7 +9,7 @@
 /package-lock.json      @chathuka55 @Pasinduteshan7
 /.npmrc                 @chathuka55 @Pasinduteshan7
 /next.config.ts         @chathuka55 @Pasinduteshan7
-/src/middleware.ts      @chathuka55 @Pasinduteshan7
+/src/proxy.ts           @chathuka55 @Pasinduteshan7
 /src/shared/            @chathuka55 @Pasinduteshan7
 /src/styles/            @chathuka55 @Pasinduteshan7
 /src/business-rules/    @chathuka55 @Pasinduteshan7
