@@ -10,7 +10,7 @@ Every log gets a unique ID and QR tag, so any piece of timber can be traced back
 
 This repo is **only the frontend**. Business rules, quota checks and calculations live in the **backend API** (`timber-backend`, a separate repository, planned as Java Spring Boot + PostgreSQL). The frontend talks to it through `NEXT_PUBLIC_API_URL`.
 
-> 🚧 **Status: project setup.** Every file is an empty placeholder. Pick a module, open its files and start building.
+> 🚧 **Status: ready for development.** The app installs and runs. Every page shows a placeholder that names its requirement and the folder to build it in. Pick an FR, open its folders and start building.
 
 ---
 
@@ -18,12 +18,12 @@ This repo is **only the frontend**. Business rules, quota checks and calculation
 
 | Technology | Used for |
 | --- | --- |
-| **Next.js** (App Router) | Pages, routing, layouts |
-| **React** | UI |
-| **TypeScript** | Type safety |
-| **Tailwind CSS** | Styling (responsive, phone → desktop) |
+| **Next.js 16** (App Router) | Pages, routing, layouts |
+| **React 19** | UI |
+| **TypeScript 5** | Type safety |
+| **CSS Modules + design tokens** | Styling (responsive, phone → desktop). See [Design System](#-design-system---colours-fonts-buttons-sidebar). |
 | **PWA** (service worker + IndexedDB) | Offline field mode with later sync |
-| ESLint + Prettier | Code quality and formatting |
+| ESLint 9 + Prettier | Code quality and formatting |
 | **GitHub Actions** | CI pipeline: lint, build and dependency security checks |
 | **Vercel** | Hosting (preview per PR, production from `main`) |
 
@@ -31,7 +31,7 @@ This repo is **only the frontend**. Business rules, quota checks and calculation
 
 ## 🚀 Getting Started
 
-You need **Node.js 22 LTS**, **Git**, 2FA turned on for your GitHub account and access to the [Timber-Management-System](https://github.com/Timber-Management-System) organization.
+You need **Node.js 22 or newer** (an LTS version), **Git**, 2FA turned on for your GitHub account and access to the [Timber-Management-System](https://github.com/Timber-Management-System) organization.
 
 ```bash
 # 1. Clone
@@ -45,14 +45,23 @@ git config --global user.email "your-github-email"
 # 3. Create your local env file and fill in the values
 cp .env.example .env.local
 
-# 4. Install and run
-npm install
+# 4. Install (exact versions from package-lock.json) and run
+npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000>.
+Open <http://localhost:3000>. It goes straight to `/dashboard`.
 
-> `npm install` and `npm run dev` will work once the base setup task is done. That task fills in `package.json` and the config files.
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the development server with hot reload |
+| `npm run build` | Build for production (CI runs this on every PR) |
+| `npm run start` | Run the production build |
+| `npm run lint` | Check the code with ESLint |
+| `npm run typecheck` | Check TypeScript types |
+| `npm run format` | Format the code in `src/` with Prettier |
+
+Use `npm ci`, not `npm install`, after cloning or pulling. Only admins add or update packages (see [Security Rules](#-security-rules-public-repo)).
 
 ---
 
@@ -286,7 +295,7 @@ timber-frontend/
 │   ├── site/                        # public website code
 │   ├── styles/                      # design tokens (colours, fonts, shapes)
 │   ├── i18n/                        # English, Sinhala, Tamil text
-│   └── middleware.ts                # blocks pages for users not logged in
+│   └── proxy.ts                     # (added with login) blocks pages for users not logged in
 │
 ├── docs/
 │   ├── design-system.md             # how to use tokens, Button, Sidebar

@@ -15,7 +15,9 @@ workflow and the business rules (BR-01…BR-15).
 ## Stack
 - Next.js (App Router) + React + TypeScript. UI languages: English, Sinhala, Tamil (`src/i18n/messages/{en,si,ta}`).
 - Talks to the Spring Boot REST API (separate repo). Database is PostgreSQL behind the backend.
-- Package manager, UI library, form/data libraries and test runner are **not decided yet** (see `docs/decisions/`). Do not add one without asking.
+- npm is the package manager (Next.js 16, React 19, TypeScript 5, ESLint 9, Prettier). Styling is CSS Modules + design tokens, with no Tailwind.
+- UI library, form/data libraries, i18n library and test runner are **not decided yet** (see `docs/decisions/`). Do not add one without asking.
+- Before pushing: `npm run lint`, `npm run typecheck`, `npm run build`.
 
 ## Where code goes
 - A feature (FR-xx) → `src/modules/<domain>/fr-xx-<name>/{components,hooks,api,schemas,types,__tests__}`. The module's public exports go in its `index.ts`.
