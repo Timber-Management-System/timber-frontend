@@ -1,0 +1,32 @@
+{
+  "name": "timber-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TimberTrack - Timber Management System frontend (Next.js)",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "prettier": "3.10.1",
+    "typescript": "^5.9"
+  }
+}
