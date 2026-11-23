@@ -1,0 +1,63 @@
+.card {
+  background: var(--tt-surface-card);
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--tt-text-primary);
+  margin: 0 0 20px;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--tt-text-secondary);
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-control);
+  background: var(--tt-surface-card);
+  color: var(--tt-text-primary);
+  font: inherit;
+}
+
+.input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 16px;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+}

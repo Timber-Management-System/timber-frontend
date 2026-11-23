@@ -1,5 +1,5 @@
-import { PagePlaceholder } from '@/shared/components/layout/PagePlaceholder';
+import { ReplantingRecordsList } from '@/modules/site-tree/fr-14-replanting/components/ReplantingRecordsList';
 
 export default function Page() {
-  return <PagePlaceholder title="Replanting" requirement="FR-14" codeFolder="src/modules/site-tree/fr-14-replanting" />;
+  return <ReplantingRecordsList />;
 }
