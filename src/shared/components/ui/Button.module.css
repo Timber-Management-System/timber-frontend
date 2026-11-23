@@ -16,7 +16,11 @@
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
 }
 
 .button svg {
@@ -33,7 +37,7 @@
 
 .button:disabled {
   cursor: not-allowed;
-  opacity: .55;
+  opacity: 0.55;
 }
 
 /* ---------- Variants ---------- */
@@ -110,14 +114,20 @@
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: var(--radius-full);
-  animation: spin .7s linear infinite;
+  animation: spin 0.7s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .button { transition: none; }
-  .spinner { animation-duration: 2s; }
+  .button {
+    transition: none;
+  }
+  .spinner {
+    animation-duration: 2s;
+  }
 }

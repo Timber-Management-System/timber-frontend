@@ -2,7 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type KeyboardEvent,
+} from 'react';
 
 import { Icon, type IconName } from '@/shared/components/ui/Icon';
 
@@ -76,16 +85,21 @@ const RAIL_QUERY = '(max-width: 760px)';
 const fallbackOnly: Translate = (_key, fallback) => fallback;
 const cx = (...names: Array<string | false | null | undefined>) => names.filter(Boolean).join(' ');
 
+/** True while the media query matches. On the server it is always false (desktop layout). */
 function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const update = () => setMatches(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, [query]);
-  return matches;
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const mq = window.matchMedia(query);
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    },
+    [query],
+  );
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
 }
 
 /** The longest href that matches the current path wins, so /reports/permits beats /reports. */
@@ -131,16 +145,15 @@ export function Sidebar({ groups, user, badges = {}, t = fallbackOnly }: Sidebar
   const badgeFor = (item: NavItem) =>
     badges[item.id] ?? (item.children ?? []).reduce((sum, c) => sum + (badges[c.id] ?? 0), 0);
 
-  // After navigating: open the active module and close any flyout.
-  useEffect(() => {
-    setExpanded(activeParent);
+  // Reset during render (React's recommended pattern, no extra effect):
+  // after navigating, open the active module and close any flyout; switching
+  // between phone and desktop width also closes the flyout.
+  const [seen, setSeen] = useState({ pathname, rail });
+  if (seen.pathname !== pathname || seen.rail !== rail) {
+    setSeen({ pathname, rail });
+    if (seen.pathname !== pathname) setExpanded(activeParent);
     setFlyout(null);
-  }, [pathname, activeParent]);
-
-  // Leaving phone width closes the flyout.
-  useEffect(() => {
-    if (!rail) setFlyout(null);
-  }, [rail]);
+  }
 
   // Flyout: keep it on screen, focus the first page, close on outside click / Escape / resize / scroll.
   useEffect(() => {

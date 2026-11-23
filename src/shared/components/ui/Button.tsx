@@ -43,7 +43,14 @@ export function buttonClassName({
   fullWidth = false,
   className,
 }: ButtonStyleOptions = {}): string {
-  return [styles.button, styles[variant], styles[size], iconOnly && styles.iconOnly, fullWidth && styles.fullWidth, className]
+  return [
+    styles.button,
+    styles[variant],
+    styles[size],
+    iconOnly && styles.iconOnly,
+    fullWidth && styles.fullWidth,
+    className,
+  ]
     .filter(Boolean)
     .join(' ');
 }
@@ -58,7 +65,20 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, Om
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant, size, iconOnly, fullWidth, leftIcon, rightIcon, loading = false, disabled, className, children, type = 'button', ...rest },
+  {
+    variant,
+    size,
+    iconOnly,
+    fullWidth,
+    leftIcon,
+    rightIcon,
+    loading = false,
+    disabled,
+    className,
+    children,
+    type = 'button',
+    ...rest
+  },
   ref,
 ) {
   return (
