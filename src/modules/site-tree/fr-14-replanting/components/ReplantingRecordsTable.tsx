@@ -1,4 +1,6 @@
+
 import styles from './ReplantingRecordsTable.module.css';
+import { Button } from '@/shared/components/ui/Button';
 
 type ReplantingRecord = {
   id: string;
@@ -49,8 +51,42 @@ export function ReplantingRecordsTable({
                   <td>{record.site}</td>
                   <td>{record.species}</td>
                   <td>{record.treeCount}</td>
-                  <td>{record.status}</td>
-                  <td>—</td>
+
+                  <td>
+                    <span
+                      className={`${styles.statusBadge} ${
+                        record.status === 'Completed'
+                          ? styles.completed
+                          : record.status === 'In Progress'
+                            ? styles.inProgress
+                            : styles.pending
+                      }`}
+                    >
+                      {record.status}
+                    </span>
+                  </td>
+
+                  <td>
+                    <div className={styles.actions}>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        disabled
+                      >
+                        View
+                      </Button>
+
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        disabled
+                      >
+                        Edit
+                      </Button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}

@@ -60,3 +60,39 @@
     padding: 16px;
   }
 }
+
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.completed {
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+}
+
+.inProgress {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+.pending {
+  background: var(--tt-surface-page);
+  color: var(--tt-text-secondary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.table th:last-child {
+  text-align: center;
+}
