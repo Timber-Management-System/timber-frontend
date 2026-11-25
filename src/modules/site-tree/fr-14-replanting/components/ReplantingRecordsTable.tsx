@@ -1,15 +1,7 @@
-
 import styles from './ReplantingRecordsTable.module.css';
 import { Button } from '@/shared/components/ui/Button';
+import type { ReplantingRecord } from '../types/replanting.types';
 
-type ReplantingRecord = {
-  id: string;
-  plantingDate: string;
-  site: string;
-  species: string;
-  treeCount: number;
-  status: string;
-};
 
 type ReplantingRecordsTableProps = {
   records: ReplantingRecord[];

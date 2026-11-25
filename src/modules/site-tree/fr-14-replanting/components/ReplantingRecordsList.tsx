@@ -5,36 +5,11 @@ import styles from './ReplantingRecordsList.module.css';
 import { ReplantingFilters } from './ReplantingFilters';
 import { ReplantingRecordsTable } from './ReplantingRecordsTable';
 import { useState } from 'react';
-
-const sampleRecords = [
-  {
-    id: 'RP-001',
-    plantingDate: '2026-11-20',
-    site: 'Site A',
-    species: 'Teak',
-    treeCount: 150,
-    status: 'Completed',
-  },
-  {
-    id: 'RP-002',
-    plantingDate: '2026-11-21',
-    site: 'Site B',
-    species: 'Mahogany',
-    treeCount: 100,
-    status: 'In Progress',
-  },
-  {
-    id: 'RP-003',
-    plantingDate: '2026-11-22',
-    site: 'Site C',
-    species: 'Pine',
-    treeCount: 200,
-    status: 'Pending',
-  },
-];
+import { useReplantingRecords } from '../hooks/useReplantingRecords';
 
 
 export function ReplantingRecordsList() {
+  const { items, loading, error } = useReplantingRecords();
   const [filters, setFilters] = useState({
   dateFrom: '',
   dateTo: '',
@@ -45,7 +20,7 @@ export function ReplantingRecordsList() {
 });
 
 
-const filteredRecords = sampleRecords.filter((record) => {
+const filteredRecords = items.filter((record) => {
   return (
     (!filters.dateFrom || record.plantingDate >= filters.dateFrom) &&
     (!filters.dateTo || record.plantingDate <= filters.dateTo) &&
@@ -74,7 +49,15 @@ const filteredRecords = sampleRecords.filter((record) => {
         </Button>
       </header>
       <ReplantingFilters onSearch={setFilters} />
-      <ReplantingRecordsTable records={filteredRecords} />
+      {loading && <p>Loading replanting records...</p>}
+
+{Boolean(error) && (
+  <p role="alert">Could not load replanting records.</p>
+)}
+
+{!loading && !error && (
+  <ReplantingRecordsTable records={filteredRecords} />
+)}
     </section>
   );
 }
