@@ -62,6 +62,20 @@
   outline-offset: 2px;
 }
 
+.validationErrors {
+  grid-column: 1 / -1;
+  padding: 12px 16px;
+  border-radius: var(--radius-control);
+  background: var(--crit-bg);
+  color: var(--crit-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+}
+
+.validationErrors p {
+  margin: 4px 0;
+}
+
 .actions {
   grid-column: 1 / -1;
   display: flex;

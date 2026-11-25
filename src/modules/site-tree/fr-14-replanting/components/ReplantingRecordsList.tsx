@@ -6,9 +6,11 @@ import { ReplantingFilters } from './ReplantingFilters';
 import { ReplantingRecordsTable } from './ReplantingRecordsTable';
 import { useState } from 'react';
 import { useReplantingRecords } from '../hooks/useReplantingRecords';
+import { useRouter } from 'next/navigation';
 
 
 export function ReplantingRecordsList() {
+  const router = useRouter();
   const { items, loading, error } = useReplantingRecords();
   const [filters, setFilters] = useState({
   dateFrom: '',
@@ -44,9 +46,13 @@ const filteredRecords = items.filter((record) => {
           </p>
         </div>
 
-        <Button type="button">
-          Add Replanting Record
-        </Button>
+        <Button
+  type="button"
+  onClick={() => router.push('/site-tree/replanting/add')}
+>
+  Add Replanting Record
+</Button>
+
       </header>
       <ReplantingFilters onSearch={setFilters} />
       {loading && <p>Loading replanting records...</p>}
