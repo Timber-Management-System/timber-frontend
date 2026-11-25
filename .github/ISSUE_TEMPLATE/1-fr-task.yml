@@ -1,0 +1,86 @@
+name: FR task (new feature)
+description: A screen or feature for one requirement (FR-xx or WR-xx). One issue = one branch.
+title: "feat(fr-xx): "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **One issue = one FR = one branch.** Assign the issue to yourself before you start.
+
+        Branch name: `feature/fr-<number>-<short-name>`, e.g. `feature/fr-12-tree-approval` (small letters and dashes only).
+        Full guide: [CONTRIBUTING.md](https://github.com/Timber-Management-System/timber-frontend/blob/main/CONTRIBUTING.md). Module template: `docs/templates/fr-module/`.
+  - type: input
+    id: requirement
+    attributes:
+      label: Requirement
+      description: FR or WR number from the proposal (see README › Modules).
+      placeholder: FR-12
+    validations:
+      required: true
+  - type: input
+    id: folder
+    attributes:
+      label: Module folder
+      description: Where the code goes. Only change files in this folder and its page.
+      placeholder: src/modules/site-tree/fr-12-tree-approval
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch name
+      placeholder: feature/fr-12-tree-approval
+    validations:
+      required: true
+  - type: input
+    id: figma
+    attributes:
+      label: Figma screen link
+      description: The confirmed wireframe for this screen (file FZkul22RJVLOX665De4ZNa).
+      placeholder: https://www.figma.com/design/FZkul22RJVLOX665De4ZNa/Timber-Management-System?node-id=...
+  - type: textarea
+    id: what
+    attributes:
+      label: What to build
+      description: Screens, fields, buttons, what the user can do.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How we know it's done. One checkbox per point.
+      value: |
+        - [ ] Matches the Figma screen (desktop and phone)
+        - [ ] Uses the design system (tokens, Button, Icon), no hex colours
+        - [ ] Loading, empty and error states
+        - [ ]
+    validations:
+      required: true
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Business rules this feature must respect
+      description: Tick every rule that applies. Import the check from src/business-rules/, don't copy the logic.
+      options:
+        - label: BR-01 permit quota
+        - label: BR-02 protected species
+        - label: BR-03 log traceability
+        - label: BR-04 transport permit
+        - label: BR-05 no negative stock
+        - label: BR-06 expired licence block
+        - label: BR-07 approvals
+        - label: BR-08 credit limit
+        - label: BR-09 no delete, adjust only
+        - label: BR-10 entry deadline
+        - label: BR-11 transport tolerance
+        - label: BR-12 export documents
+        - label: BR-13 volume method
+        - label: BR-14 yield & wastage
+        - label: BR-15 bark basis
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options: ["1", "2", "3"]
