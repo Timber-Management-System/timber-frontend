@@ -11,6 +11,8 @@ Every log gets a unique ID and QR tag, so any piece of timber can be traced back
 This repo is **only the frontend**. Business rules, quota checks and calculations live in the **backend API** (`timber-backend`, a separate repository, planned as Java Spring Boot + PostgreSQL). The frontend talks to it through `NEXT_PUBLIC_API_URL`.
 
 > 🚧 **Status: ready for development.** The app installs and runs. Every page shows a placeholder that names its requirement and the folder to build it in. Pick an FR, open its folders and start building.
+>
+> 👋 **New developer?** Follow [CONTRIBUTING.md](CONTRIBUTING.md): set up your work environment, pick an issue, name your branch, and start from the templates in `docs/templates/`.
 
 ---
 
@@ -301,6 +303,7 @@ timber-frontend/
 │   ├── design-system.md             # how to use tokens, Button, Sidebar
 │   ├── assets/design-system/        # palette, button and sidebar previews
 │   ├── code-prompts-helper.md       # instructions for AI assistants
+│   ├── templates/                   # copy-ready FR module + business rule templates
 │   ├── wireframes/                  # Figma sources (+ screen index)
 │   ├── decisions/                   # tech decisions (made / still open)
 │   └── api/                         # backend API contract (when available)
@@ -308,6 +311,7 @@ timber-frontend/
 ├── tests/e2e/                       # end-to-end tests
 ├── .github/                         # CI pipeline, CODEOWNERS, PR/issue templates (admins only)
 ├── .npmrc                           # npm security settings (don't edit)
+├── CONTRIBUTING.md                  # developer guide: branches, commits, PRs, templates
 ├── SECURITY.md                      # how to report security problems
 └── .env.example                     # copy to .env.local
 ```
@@ -322,41 +326,26 @@ timber-frontend/
 
 ## 🔀 Daily Git Workflow
 
+> 📘 **Full step-by-step guide: [CONTRIBUTING.md](CONTRIBUTING.md)**. It covers branch names, commit messages, PRs and how to start a new FR from the templates.
+
 `main` is protected. **Developers can't push or merge to `main`.** You open a Pull Request, the CI pipeline runs, an admin reviews it, and **only an admin merges it**.
 
 ```bash
-# 1. Get the latest main
-git checkout main
-git pull origin main
-
-# 2. Make a branch for your task
-git checkout -b feature/fr-29-stock-table
-
-# 3. Work, then save your changes
-git add .
-git commit -m "feat(fr-29): add stock table"
-
-# 4. Get the newest main into your branch BEFORE pushing
-git pull origin main
-
-# 5. Push your branch
-git push -u origin feature/fr-29-stock-table
+git checkout main && git pull origin main                 # 1. start from the newest main
+git checkout -b feature/fr-12-tree-approval               # 2. one branch per FR task
+npm run lint && npm run typecheck && npm run build        # 3. check before committing
+git add . && git commit -m "feat(fr-12): add tree approval list table"
+git pull origin main                                      # 4. newest main BEFORE pushing
+git push -u origin feature/fr-12-tree-approval            # 5. push, then open a PR on GitHub
 ```
 
-6. On GitHub, open a **Pull Request** into `main` and fill in the checklist.
-7. Wait for the **CI checks** (✅ Lint & Build, ✅ Dependency Review) to pass. Fix anything red by pushing more commits to the same branch.
-8. An **admin reviews** your PR. If they ask for changes, push fixes to the same branch.
-9. The admin **merges** it (squash and merge). The branch is deleted automatically.
-10. Go back to `main` and pull again:
+| | Format | Example |
+| --- | --- | --- |
+| **Branch** | `type/fr-number-short-name` | `feature/fr-12-tree-approval`, `fix/fr-12-approval-button-disabled`, `feature/br-05-no-negative-stock` |
+| **Commit** | `type(fr-number): what you did` | `feat(fr-12): add approval status badge` |
+| **PR title** | same as a commit | `feat(fr-12): tree approval list` |
 
-```bash
-git checkout main
-git pull origin main
-git branch -d feature/fr-29-stock-table
-```
-
-**Branch names:** `feature/…`, `fix/…`, `docs/…`, `refactor/…`
-**Commit messages:** `feat(fr-29): …`, `fix(fr-29): …`, `docs: …`, `style: …`, `chore: …`
+**Issues:** create tasks with the issue forms (**FR task**, **Business rule**, **Bug**). They ask for the requirement, folder and branch name.
 
 ---
 
