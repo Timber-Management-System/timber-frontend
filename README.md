@@ -26,7 +26,7 @@ This repo is **only the frontend**. Business rules, quota checks and calculation
 | **CSS Modules + design tokens** | Styling (responsive, phone → desktop). See [Design System](#-design-system---colours-fonts-buttons-sidebar). |
 | **PWA** (service worker + IndexedDB) | Offline field mode with later sync |
 | ESLint 9 + Prettier | Code quality and formatting |
-| **GitHub Actions** | CI pipeline: lint, build and dependency security checks |
+| **GitHub Actions** | CI: lint, type check, build, Dependency Review, Repo safety scan, CodeQL |
 | **Vercel** | Hosting (preview per PR, production from `main`) |
 
 ---

@@ -100,7 +100,12 @@ git push -u origin feature/fr-12-tree-approval
 ## 5. Then on GitHub
 
 1. Open a **Pull Request** into `main` with the title `feat(fr-12): tree approval list`. Fill in the template and write `Closes #<issue number>`.
-2. Wait for the two checks to turn green: **Lint & Build** and **Dependency Review**. If one is red, push more commits to the same branch to fix it.
+2. Wait for every check to turn green. If one is red, open **Details**, fix the problem and push more commits to the same branch.
+   - **Lint & Build**: lint, type check and production build
+   - **Dependency Review**: no new npm package with a known security problem
+   - **Repo safety scan**: blocks hidden-malware tricks (auto-run VS Code tasks, fake font files, install scripts, unpinned actions)
+   - **CodeQL**: security scan of the code
+   - **Vercel**: preview deployment. Open its link to see your change running.
 3. An **admin reviews** the PR. If they ask for changes, push more commits to the same branch.
 4. The **admin squash-merges** it, and the branch is deleted automatically. Developers can't merge.
 
