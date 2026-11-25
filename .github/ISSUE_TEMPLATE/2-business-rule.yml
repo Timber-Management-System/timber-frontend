@@ -1,0 +1,67 @@
+name: Business rule (BR-xx)
+description: Write one business-rule check that FR screens can import.
+title: "feat(br-xx): "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A business rule is **one pure function** in `src/business-rules/br-xx-<name>/index.ts`. It returns `pass()` or `fail(...)` and never calls the API.
+        Template and worked example (BR-05): `docs/templates/business-rule/index.ts`.
+
+        Branch name: `feature/br-<number>-<short-name>`, e.g. `feature/br-05-no-negative-stock`.
+  - type: dropdown
+    id: rule
+    attributes:
+      label: Rule
+      options:
+        - BR-01 permit quota
+        - BR-02 protected species
+        - BR-03 log traceability
+        - BR-04 transport permit
+        - BR-05 no negative stock
+        - BR-06 expired licence block
+        - BR-07 approvals
+        - BR-08 credit limit
+        - BR-09 no delete, adjust only
+        - BR-10 entry deadline
+        - BR-11 transport tolerance
+        - BR-12 export documents
+        - BR-13 volume method
+        - BR-14 yield & wastage
+        - BR-15 bark basis
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch name
+      placeholder: feature/br-05-no-negative-stock
+    validations:
+      required: true
+  - type: input
+    id: used-by
+    attributes:
+      label: Used by which FRs
+      placeholder: FR-31, FR-36, FR-38
+  - type: textarea
+    id: cases
+    attributes:
+      label: Cases (input → expected result)
+      description: Include the edge cases. These become the tests.
+      value: |
+        | Input | Expected |
+        | --- | --- |
+        |  | ok |
+        |  | fail: CODE |
+    validations:
+      required: true
+  - type: checkboxes
+    id: done
+    attributes:
+      label: Done when
+      options:
+        - label: Pure function, no API calls, no React
+        - label: Returns pass() / fail() from src/business-rules/rule-result.ts
+        - label: Messages are i18n keys
+        - label: Cases checked and listed in the PR

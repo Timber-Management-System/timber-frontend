@@ -28,6 +28,9 @@ workflow and the business rules (BR-01…BR-15).
 - Used by 2+ modules → `src/shared/` (components, hooks, lib, store, types, config). Business rules → `src/business-rules/br-xx-*`. Web requirements (WR-01…08) → `src/web-requirements/wr-0x-*`.
 - Customer portal → `src/app/portal/` + `src/modules/sales/fr-42-customer-portal/`. Public site → `src/app/(site)/` + `src/site/`.
 - Sidebar menu → `src/shared/config/navigation.ts` (one link per FR page).
+- **Start a new FR from `docs/templates/fr-module/`** (copy into the FR folder, rename `Example`). Business rules follow `docs/templates/business-rule/` and return `pass()` / `fail()` from `src/business-rules/rule-result.ts`.
+- Backend calls only through `src/shared/lib/api-client.ts` from the module's `api/` folder. Use the `USE_MOCK` switch until the endpoint exists.
+- Branch, commit and PR formats: `CONTRIBUTING.md`.
 - Do not edit another team member's module folder unless the task says so (keeps merges conflict-free).
 
 ## Design: the wireframes and tokens are CONFIRMED, follow them
