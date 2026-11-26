@@ -15,10 +15,17 @@ import styles from './Topbar.module.css';
  * Text comes in through `t`, and the language switch through `languageSwitcher`, so this shared
  * component never imports a module.
  */
+export interface TopbarUser extends SidebarUser {
+  /** Site / team, shown in the account menu header. */
+  site?: string;
+}
+
 export interface TopbarProps {
-  user: SidebarUser | null;
+  user: TopbarUser | null;
   t: Translate;
   languageSwitcher?: ReactNode;
+  /** The bell + notification panel (NotificationCenter). Falls back to a plain link. */
+  notifications?: ReactNode;
   onSignOut: () => void;
 }
 
@@ -39,10 +46,22 @@ function useOnline(): boolean {
   );
 }
 
-export function Topbar({ user, t, languageSwitcher, onSignOut }: TopbarProps) {
+export function Topbar({ user, t, languageSwitcher, notifications, onSignOut }: TopbarProps) {
   const router = useRouter();
   const online = useOnline();
   const [query, setQuery] = useState('');
+
+  // Ctrl+K / Cmd+K jumps to the global search (as in the wireframes and Option B).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        document.getElementById('global-search')?.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
 
   function search(e: FormEvent) {
     e.preventDefault();
@@ -64,7 +83,11 @@ export function Topbar({ user, t, languageSwitcher, onSignOut }: TopbarProps) {
           placeholder={t('topbar.searchPlaceholder', 'Search logs, permits, customers, orders…')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          aria-keyshortcuts="Control+K"
         />
+        <kbd className={styles.kbd} aria-hidden="true">
+          Ctrl K
+        </kbd>
       </form>
       <Link href="/search" className={styles.searchMobile} aria-label={t('topbar.search', 'Search')}>
         <Icon name="search" size={18} />
@@ -76,20 +99,22 @@ export function Topbar({ user, t, languageSwitcher, onSignOut }: TopbarProps) {
           {online ? t('topbar.online', 'Online') : t('topbar.offline', 'Offline')}
         </span>
         {languageSwitcher}
-        <Link
-          href="/audit-admin/notifications"
-          className={styles.iconButton}
-          aria-label={t('topbar.notifications', 'Notifications')}
-        >
-          <Icon name="bell" size={18} />
-        </Link>
+        {notifications ?? (
+          <Link
+            href="/audit-admin/notifications"
+            className={styles.iconButton}
+            aria-label={t('topbar.notifications', 'Notifications')}
+          >
+            <Icon name="bell" size={18} />
+          </Link>
+        )}
         {user && <AccountMenu user={user} t={t} onSignOut={onSignOut} />}
       </div>
     </header>
   );
 }
 
-function AccountMenu({ user, t, onSignOut }: { user: SidebarUser; t: Translate; onSignOut: () => void }) {
+function AccountMenu({ user, t, onSignOut }: { user: TopbarUser; t: Translate; onSignOut: () => void }) {
   const [open, setOpen] = useState(false);
   const menuId = useId();
   const wrap = useRef<HTMLDivElement>(null);
@@ -130,11 +155,30 @@ function AccountMenu({ user, t, onSignOut }: { user: SidebarUser; t: Translate; 
         </span>
       </button>
       {open && (
-        <div id={menuId} role="menu" className={styles.menu}>
+        <div id={menuId} role="menu" className={styles.menu} aria-label={user.name}>
+          <div className={styles.menuHead}>
+            <span className={styles.avatar} aria-hidden="true">
+              {user.initials}
+            </span>
+            <span>
+              <b>{user.name}</b>
+              <small>{user.site ? `${user.role} · ${user.site}` : user.role}</small>
+            </span>
+          </div>
           <Link href="/user-access/profile" role="menuitem" className={styles.menuItem} onClick={() => setOpen(false)}>
             <Icon name="user" size={16} />
             {t('topbar.profile', 'My profile')}
           </Link>
+          <Link
+            href="/user-access/profile#notifications"
+            role="menuitem"
+            className={styles.menuItem}
+            onClick={() => setOpen(false)}
+          >
+            <Icon name="bell" size={16} />
+            {t('topbar.notificationPrefs', 'Notification preferences')}
+          </Link>
+          <div className={styles.menuSep} role="separator" />
           <button
             type="button"
             role="menuitem"

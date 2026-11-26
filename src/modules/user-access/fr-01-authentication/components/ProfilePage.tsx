@@ -138,7 +138,7 @@ function DetailsCard({ profile, onSaved }: { profile: MyProfile; onSaved: (p: My
             { value: 'ta', label: 'தமிழ்' },
           ]}
         />
-        <fieldset className={styles.fieldset}>
+        <fieldset className={styles.fieldset} id="notifications">
           <legend className={styles.legend}>{t('profile.notifyBy')}</legend>
           <Checkbox
             label={t('profile.notifyInApp')}

@@ -38,6 +38,28 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   management: {
     screen: 'S-01.4',
     title: 'Dashboard',
+    intro: 'Permits, stock, production and sales across all sites.',
+    quickActions: [
+      { label: 'View reports', hint: 'Permit, production and sales reports', href: '/reports', icon: 'chart' },
+      {
+        label: 'Check inventory',
+        hint: 'Stock by species, grade and location',
+        href: '/inventory/stock-overview',
+        icon: 'box',
+      },
+      {
+        label: 'Permit expiry',
+        hint: 'Permits and licences that need renewal',
+        href: '/licence-permit/expiry-alerts',
+        icon: 'file',
+      },
+      {
+        label: 'Sales & receivables',
+        hint: 'Sales, overdue payments and customers',
+        href: '/reports/sales-receivables',
+        icon: 'wallet',
+      },
+    ],
     kpis: [
       {
         label: 'Active permits',
@@ -78,10 +100,25 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
         title: 'Alerts',
         viewAllHref: '/audit-admin/notifications',
         items: [
-          { text: 'Permit PER-010 expires in 7 days', tone: 'warn' },
-          { text: 'Quota 80% used – PER-010 (20 m³ left)', tone: 'warn' },
-          { text: 'TRP-014: 2 logs missing at sawmill', tone: 'crit' },
-          { text: 'Low stock: Teak 25 mm Grade A', tone: 'warn' },
+          {
+            title: 'Logs missing at sawmill',
+            text: 'TRP-014: 2 logs were not received.',
+            tone: 'crit',
+            time: '45 min ago',
+          },
+          { title: 'Permit expiring soon', text: 'Permit PER-010 expires in 7 days.', tone: 'warn', time: 'Today' },
+          {
+            title: 'Quota nearing limit',
+            text: 'PER-010 has used 80% of its quota (20 m³ left).',
+            tone: 'warn',
+            time: 'Today',
+          },
+          {
+            title: 'Low stock',
+            text: 'Teak 25 mm Grade A is below its reorder level.',
+            tone: 'warn',
+            time: 'Yesterday',
+          },
         ],
       },
       {
@@ -97,6 +134,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
         ],
       },
       SPECIES,
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -104,6 +142,23 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   admin: {
     screen: 'S-17.2',
     title: 'Administration dashboard',
+    intro: 'Users, roles, security and system health.',
+    quickActions: [
+      {
+        label: 'Manage users',
+        hint: 'Add, unlock, reset or deactivate users',
+        href: '/user-access/user-management',
+        icon: 'users',
+      },
+      { label: 'Roles & permissions', hint: 'Who can see and change what', href: '/user-access/roles', icon: 'shield' },
+      { label: 'Audit log', hint: 'Who changed what and when', href: '/audit-admin/audit-log', icon: 'clipboard' },
+      {
+        label: 'Backup & configuration',
+        hint: 'Backups, restore and system settings',
+        href: '/audit-admin/backup-config',
+        icon: 'refresh',
+      },
+    ],
     kpis: [
       { label: 'Active users', value: '42', href: '/user-access/user-management' },
       { label: 'Locked accounts', value: '1', tone: 'warn', href: '/user-access/user-management' },
@@ -163,6 +218,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           { text: 'Label printer registered for Site C', tone: 'ok' },
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -170,6 +226,28 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   owner: {
     screen: 'S-17.1',
     title: 'Owner overview',
+    intro: 'Revenue, margin, stock value and the risks that need your decision.',
+    quickActions: [
+      {
+        label: 'Profitability',
+        hint: 'Margin by site, product and customer',
+        href: '/finance/profitability',
+        icon: 'wallet',
+      },
+      {
+        label: 'Traceability & audit',
+        hint: 'Trace any timber back to its tree and permit',
+        href: '/reports/traceability-audit',
+        icon: 'search',
+      },
+      {
+        label: 'Credit control',
+        hint: 'Customers over their credit limit',
+        href: '/sales/credit-control',
+        icon: 'cart',
+      },
+      { label: 'Reports hub', hint: 'All standard reports', href: '/reports', icon: 'chart' },
+    ],
     kpis: [
       { label: 'Revenue (YTD)', value: 'Rs. 48.2M' },
       { label: 'Gross margin', value: '27.2%', tone: 'ok' },
@@ -212,6 +290,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
         ],
       },
       SPECIES,
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -219,6 +298,33 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   compliance: {
     screen: 'S-13.1',
     title: 'Compliance dashboard',
+    intro: 'Permits, quotas, protected species and regulator deadlines.',
+    quickActions: [
+      {
+        label: 'Add a permit',
+        hint: 'Felling permit with species and quota',
+        href: '/licence-permit/felling-permit',
+        icon: 'plus',
+      },
+      {
+        label: 'Quota tracking',
+        hint: 'Volume used and remaining per permit',
+        href: '/licence-permit/quota-tracking',
+        icon: 'chart',
+      },
+      {
+        label: 'Expiry alerts',
+        hint: 'Licences and permits expiring soon',
+        href: '/licence-permit/expiry-alerts',
+        icon: 'warning',
+      },
+      {
+        label: 'Permit documents',
+        hint: 'Upload documents, compliance reports',
+        href: '/licence-permit/permit-documents',
+        icon: 'file',
+      },
+    ],
     kpis: [
       { label: 'Active permits', value: '12', href: '/licence-permit/felling-permit' },
       { label: 'Expiring ≤ 30 days', value: '2', tone: 'warn', href: '/licence-permit/expiry-alerts' },
@@ -284,6 +390,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           { text: 'Annual replanting report', meta: '31 Dec' },
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -291,6 +398,28 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   yard: {
     screen: 'S-13.2',
     title: 'Yard & mill dashboard',
+    intro: 'Log arrivals, processing and stock in the yard.',
+    quickActions: [
+      {
+        label: 'Receive logs',
+        hint: 'Scan arriving logs against the delivery note',
+        href: '/sawmill/log-receiving',
+        icon: 'plus',
+      },
+      {
+        label: 'Stock movements',
+        hint: 'Receive, transfer, issue or adjust stock',
+        href: '/inventory/stock-movements',
+        icon: 'box',
+      },
+      {
+        label: 'Stock take',
+        hint: 'Count stock and check low-stock alerts',
+        href: '/inventory/stock-take-alerts',
+        icon: 'clipboard',
+      },
+      { label: 'Processing orders', hint: 'Logs to sawn timber', href: '/sawmill/processing-orders', icon: 'factory' },
+    ],
     kpis: [
       { label: 'Logs in yard', value: '248', hint: '162.4 m³', href: '/inventory/stock-overview' },
       { label: 'Trips arriving today', value: '2', href: '/transport/trips' },
@@ -336,6 +465,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         series: [{ name: 'Output', values: [5.1, 6.3, 5.8, 6.9, 5.3, 3.2] }],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -343,6 +473,33 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   transport: {
     screen: 'S-13.3',
     title: 'Transport dashboard',
+    intro: 'Trips, permits, vehicles and deliveries.',
+    quickActions: [
+      {
+        label: 'Create a trip',
+        hint: 'Vehicle, driver, logs and transport permit',
+        href: '/transport/trips',
+        icon: 'plus',
+      },
+      {
+        label: 'Delivery notes',
+        hint: 'Print delivery notes with permit reference',
+        href: '/transport/delivery-notes',
+        icon: 'file',
+      },
+      {
+        label: 'Arrival & reconciliation',
+        hint: 'Loaded vs received check',
+        href: '/transport/reconciliation',
+        icon: 'truck',
+      },
+      {
+        label: 'Vehicles & drivers',
+        hint: 'Licences, service and fuel',
+        href: '/transport/vehicles-drivers',
+        icon: 'clipboard',
+      },
+    ],
     kpis: [
       { label: 'Trips today', value: '4', href: '/transport/trips' },
       { label: 'In transit', value: '3' },
@@ -380,6 +537,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           ['N. Dias', 'Driving licence renewal', '20 Dec'],
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -387,6 +545,23 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   sales: {
     screen: 'S-13.4',
     title: 'Sales dashboard',
+    intro: 'Quotations, orders, stock to sell and deliveries.',
+    quickActions: [
+      {
+        label: 'New quotation',
+        hint: 'Check stock and reserve it on a quote',
+        href: '/sales/quotations-orders',
+        icon: 'plus',
+      },
+      { label: 'Customers', hint: 'Contacts, credit and history', href: '/sales/customers', icon: 'users' },
+      {
+        label: 'Delivery & dispatch',
+        hint: 'Plan deliveries and print dispatch notes',
+        href: '/sales/dispatch',
+        icon: 'truck',
+      },
+      { label: 'Price lists', hint: 'Prices by species, grade and size', href: '/sales/pricing', icon: 'file' },
+    ],
     kpis: [
       { label: 'Sales (month)', value: 'Rs. 4.2M', tone: 'ok' },
       { label: 'Open quotations', value: '7', href: '/sales/quotations-orders' },
@@ -434,6 +609,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           ['Wed 18', 'SO-115', 'Lanka Furniture Mart', badge('On hold', 'warn')],
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -441,6 +617,33 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   accountant: {
     screen: 'S-13.5',
     title: 'Finance dashboard',
+    intro: 'Invoices, payments, receivables and costs.',
+    quickActions: [
+      {
+        label: 'Invoices & payments',
+        hint: 'Issue invoices from dispatches, record payments',
+        href: '/sales/invoicing-payments',
+        icon: 'file',
+      },
+      {
+        label: 'Credit control',
+        hint: 'Overdue balances and credit holds',
+        href: '/sales/credit-control',
+        icon: 'wallet',
+      },
+      {
+        label: 'Cost per log & m³',
+        hint: 'Felling, transport, processing and overhead',
+        href: '/finance/costing',
+        icon: 'chart',
+      },
+      {
+        label: 'Accounting export',
+        hint: 'Send invoices and payments to accounts',
+        href: '/finance/accounting-export',
+        icon: 'download',
+      },
+    ],
     kpis: [
       { label: 'Receivables', value: 'Rs. 18.6M', href: '/reports/sales-receivables' },
       { label: 'Overdue', value: 'Rs. 2.5M', tone: 'crit', href: '/sales/credit-control' },
@@ -488,6 +691,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           { label: 'Overhead', value: 11 },
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -495,6 +699,18 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   forestry: {
     screen: 'S-17.3',
     title: 'Forestry dashboard',
+    intro: 'Tree surveys, approvals and felling work orders.',
+    quickActions: [
+      { label: 'Tree survey', hint: 'Record a tree with GPS and photo', href: '/site-tree/tree-survey', icon: 'plus' },
+      { label: 'Approval queue', hint: 'Approve trees for felling', href: '/site-tree/tree-approval', icon: 'check' },
+      { label: 'Work orders', hint: 'Felling teams, dates and equipment', href: '/felling/work-orders', icon: 'axe' },
+      {
+        label: 'Replanting',
+        hint: 'Replanting and reforestation records',
+        href: '/site-tree/replanting',
+        icon: 'tree',
+      },
+    ],
     kpis: [
       { label: 'Trees surveyed (month)', value: '64', href: '/site-tree/tree-survey' },
       { label: 'Awaiting my approval', value: '9', tone: 'warn', href: '/site-tree/tree-approval' },
@@ -549,6 +765,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
         text: 'The map is part of the map view.',
         requirement: 'WR-06',
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -556,6 +773,33 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   sawmill: {
     screen: 'S-17.4',
     title: 'Sawmill dashboard',
+    intro: 'Processing orders, yield, wastage and machines.',
+    quickActions: [
+      {
+        label: 'Processing orders',
+        hint: 'Logs to sawn timber, planks and beams',
+        href: '/sawmill/processing-orders',
+        icon: 'plus',
+      },
+      {
+        label: 'Output, yield & wastage',
+        hint: 'Record output and see yield per log',
+        href: '/sawmill/production-output',
+        icon: 'chart',
+      },
+      {
+        label: 'Machine usage',
+        hint: 'Usage, downtime and operators',
+        href: '/sawmill/machine-usage',
+        icon: 'factory',
+      },
+      {
+        label: 'Quality grading',
+        hint: 'Grading and inspection records',
+        href: '/sawmill/quality-grading',
+        icon: 'check',
+      },
+    ],
     kpis: [
       { label: 'Orders in progress', value: '2', href: '/sawmill/processing-orders' },
       { label: 'Input today', value: '8.6 m³' },
@@ -606,6 +850,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           { label: 'Defects', value: 16 },
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -613,6 +858,28 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   purchasing: {
     screen: 'S-17.5',
     title: 'Purchasing dashboard',
+    intro: 'Low stock, purchase orders and supplier payments.',
+    quickActions: [
+      {
+        label: 'Purchase orders',
+        hint: 'Order from suppliers',
+        href: '/procurement/suppliers-purchase-orders',
+        icon: 'plus',
+      },
+      {
+        label: 'Goods received',
+        hint: 'Record deliveries and supplier payments',
+        href: '/procurement/goods-received',
+        icon: 'box',
+      },
+      {
+        label: 'Low stock',
+        hint: 'Items below their reorder level',
+        href: '/inventory/stock-take-alerts',
+        icon: 'warning',
+      },
+      { label: 'Reports hub', hint: 'Purchases and inventory reports', href: '/reports', icon: 'chart' },
+    ],
     kpis: [
       { label: 'Low-stock items', value: '3', tone: 'warn', href: '/inventory/stock-take-alerts' },
       { label: 'Open purchase orders', value: '3', href: '/procurement/suppliers-purchase-orders' },
@@ -670,6 +937,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           ['Ratnapura Log Traders', '13 Dec', 'Rs. 3,773,000'],
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 
@@ -677,6 +945,28 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
   auditor: {
     screen: 'S-17.6',
     title: 'Audit & traceability overview',
+    intro: 'Read-only view of permits, traceability and blocked attempts.',
+    quickActions: [
+      {
+        label: 'Traceability & audit',
+        hint: 'Trace timber back to its tree and permit',
+        href: '/reports/traceability-audit',
+        icon: 'search',
+      },
+      {
+        label: 'Permit utilisation',
+        hint: 'Quota used and expiry per permit',
+        href: '/reports/permit-utilization',
+        icon: 'file',
+      },
+      {
+        label: 'Inventory & ageing',
+        hint: 'Stock by species, grade and age',
+        href: '/reports/inventory-ageing',
+        icon: 'box',
+      },
+      { label: 'Reports hub', hint: 'All standard reports', href: '/reports', icon: 'chart' },
+    ],
     notice: 'Read-only access. You can view, search and export. Nothing can be changed from this role.',
     kpis: [
       { label: 'Active permits', value: '12' },
@@ -715,6 +1005,7 @@ export const DASHBOARDS: Record<DashboardId, Dashboard> = {
           ['02 Nov', badge('BR-06 expired permit', 'crit'), 'FEL-198', 'K. Perera'],
         ],
       },
+      { type: 'actions', title: 'Quick actions', span: 'full' },
     ],
   },
 

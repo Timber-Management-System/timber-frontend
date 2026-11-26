@@ -37,7 +37,8 @@
     "offline": "නොබැඳියි",
     "notifications": "දැනුම්දීම්",
     "profile": "මගේ පැතිකඩ",
-    "signOut": "ඉවත් වන්න"
+    "signOut": "ඉවත් වන්න",
+    "notificationPrefs": "දැනුම්දීම් මනාප"
   },
   "nav": {
     "aria": "ප්‍රධාන සංචාලනය",
@@ -527,6 +528,52 @@
     "home": "මුල් පිටුව",
     "keyFigures": "ප්‍රධාන සංඛ්‍යා",
     "trace": "සොයා බලන්න",
-    "comingWith": "{requirement} සමඟ ලැබේ."
+    "comingWith": "{requirement} සමඟ ලැබේ.",
+    "atAGlance": "සාරාංශය",
+    "sampleData": "නියැදි දත්ත",
+    "critical": "බරපතළ",
+    "criticalCount": "බරපතළ {count}",
+    "updateCount": "යාවත්කාලීන {count}",
+    "updateCountOne": "යාවත්කාලීන {count}",
+    "greeting": {
+      "morning": "සුබ උදෑසනක්, {name}",
+      "afternoon": "සුබ දහවලක්, {name}",
+      "evening": "සුබ සන්ධ්‍යාවක්, {name}"
+    }
+  },
+  "notifications": {
+    "title": "දැනුම්දීම්",
+    "bell": "දැනුම්දීම්, නොකියවූ {count}",
+    "bellCritical": "දැනුම්දීම්, නොකියවූ {count}, බරපතළ {critical}",
+    "caughtUp": "ඔබ සියල්ල බලා ඇත",
+    "unread": "නොකියවූ {count}",
+    "unreadCritical": "නොකියවූ {count} · බරපතළ {critical}",
+    "markAllRead": "සියල්ල කියවූ ලෙස සලකුණු කරන්න",
+    "filter": "දැනුම්දීම් පෙරන්න",
+    "tabs": {
+      "all": "සියල්ල",
+      "unread": "නොකියවූ",
+      "critical": "බරපතළ"
+    },
+    "clear": "සියල්ල ඉවත් කරන්න",
+    "empty": {
+      "all": "තවම දැනුම්දීම් නැත.",
+      "unread": "නොකියවූ දැනුම්දීම් නැත.",
+      "critical": "බරපතළ ඇඟවීම් නැත."
+    },
+    "level": {
+      "critical": "බරපතළ",
+      "warn": "අවවාදය",
+      "ok": "සම්පූර්ණයි",
+      "info": "තොරතුරු"
+    },
+    "time": {
+      "justNow": "දැන්",
+      "minutes": "මිනිත්තු {n}කට පෙර",
+      "hours": "පැය {n}කට පෙර",
+      "days": "දින {n}කට පෙර"
+    },
+    "viewAll": "සියලු දැනුම්දීම් බලන්න",
+    "unreadMark": "නොකියවූ"
   }
 }

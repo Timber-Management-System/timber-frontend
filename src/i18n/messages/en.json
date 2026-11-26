@@ -37,7 +37,8 @@
     "offline": "Offline",
     "notifications": "Notifications",
     "profile": "My profile",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "notificationPrefs": "Notification preferences"
   },
   "nav": {
     "aria": "Main navigation",
@@ -306,6 +307,52 @@
     "home": "Home",
     "keyFigures": "Key figures",
     "trace": "Trace",
-    "comingWith": "Coming with {requirement}."
+    "comingWith": "Coming with {requirement}.",
+    "atAGlance": "At a glance",
+    "sampleData": "Sample data",
+    "critical": "Critical",
+    "criticalCount": "{count} critical",
+    "updateCount": "{count} updates",
+    "updateCountOne": "{count} update",
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
+      "evening": "Good evening, {name}"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "bell": "Notifications, {count} unread",
+    "bellCritical": "Notifications, {count} unread, {critical} critical",
+    "caughtUp": "You're all caught up",
+    "unread": "{count} unread",
+    "unreadCritical": "{count} unread · {critical} critical",
+    "markAllRead": "Mark all as read",
+    "filter": "Filter notifications",
+    "tabs": {
+      "all": "All",
+      "unread": "Unread",
+      "critical": "Critical"
+    },
+    "clear": "Clear all",
+    "empty": {
+      "all": "No notifications yet.",
+      "unread": "No unread notifications.",
+      "critical": "No critical alerts."
+    },
+    "level": {
+      "critical": "Critical",
+      "warn": "Warning",
+      "ok": "Done",
+      "info": "Info"
+    },
+    "time": {
+      "justNow": "Just now",
+      "minutes": "{n} min ago",
+      "hours": "{n} h ago",
+      "days": "{n} days ago"
+    },
+    "viewAll": "View all notifications",
+    "unreadMark": "Unread"
   }
 }
