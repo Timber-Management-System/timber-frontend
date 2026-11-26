@@ -1,6 +1,7 @@
 import styles from './ReplantingRecordsTable.module.css';
 import { Button } from '@/shared/components/ui/Button';
 import type { ReplantingRecord } from '../types/replanting.types';
+import { useRouter } from 'next/navigation';
 
 
 type ReplantingRecordsTableProps = {
@@ -10,6 +11,7 @@ type ReplantingRecordsTableProps = {
 export function ReplantingRecordsTable({
   records,
 }: ReplantingRecordsTableProps) {
+  const router = useRouter();
   return (
     <section className={styles.card} aria-label="Replanting records">
       <h2 className={styles.title}>Replanting Records List</h2>
@@ -61,10 +63,11 @@ export function ReplantingRecordsTable({
                   <td>
                     <div className={styles.actions}>
                       <Button
-                        type="button"
                         variant="secondary"
                         size="sm"
-                        disabled
+                        onClick={() =>
+                          router.push(`/site-tree/replanting/${record.id}`)
+                        }
                       >
                         View
                       </Button>

@@ -57,3 +57,13 @@ export async function createReplantingRecord(
 
   throw new Error('Backend API is not available yet.');
 }
+
+export async function getReplantingRecord(
+  id: string
+): Promise<ReplantingRecord | null> {
+  if (USE_MOCK) {
+    return MOCK_RECORDS.find((record) => record.id === id) ?? null;
+  }
+
+  throw new Error('Backend API is not available yet.');
+}
