@@ -1,10 +1,11 @@
 import type { NavGroup } from '@/shared/components/layout/Sidebar';
+import { AREAS, can, canOpenPath, type Area, type PermissionSet } from '@/shared/lib/auth/permissions';
 
 /**
  * Sidebar menu (navigation Option B). One link per requirement: each href is the route of
  * that FR's page in src/app/(app)/<domain>/<feature>/, which wraps src/modules/<domain>/fr-xx-<name>/.
  *
- * - `id` is also the i18n key (`nav.<id>`) and the badge key passed to <Sidebar badges={…} />.
+ * - `id` is also the i18n key (`nav.<id>.label`) and the badge key passed to <Sidebar badges={…} />.
  * - `label` is the English fallback until the i18n library is chosen.
  */
 export const NAVIGATION: NavGroup[] = [
@@ -341,6 +342,7 @@ export const NAVIGATION: NavGroup[] = [
             label: 'Notification settings',
             href: '/audit-admin/notifications',
             requirement: 'FR-56',
+            area: 'users-settings',
           },
           {
             id: 'admin.backup-config',
@@ -353,3 +355,28 @@ export const NAVIGATION: NavGroup[] = [
     ],
   },
 ];
+
+/** A link is shown if the user may read its `area` (when given), otherwise the page itself. */
+function canSeeLink(permissions: PermissionSet | undefined, link: { href: string; area?: string }): boolean {
+  if (link.area && (AREAS as readonly string[]).includes(link.area)) return can(permissions, link.area as Area, 'R');
+  return canOpenPath(permissions, link.href);
+}
+
+/**
+ * The menu for one user: only pages their role may open (FR-01). A module with no
+ * readable pages is hidden completely.
+ */
+export function filterNavigation(groups: NavGroup[], permissions: PermissionSet | undefined): NavGroup[] {
+  return groups
+    .map((group) => ({
+      ...group,
+      items: group.items
+        .map((item) =>
+          item.children ? { ...item, children: item.children.filter((c) => canSeeLink(permissions, c)) } : item,
+        )
+        .filter((item) =>
+          item.children ? item.children.length > 0 : !item.href || canOpenPath(permissions, item.href),
+        ),
+    }))
+    .filter((group) => group.items.length > 0);
+}

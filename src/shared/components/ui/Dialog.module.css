@@ -1,0 +1,96 @@
+.dialog {
+  width: calc(100% - 32px);
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-panel);
+  background: var(--tt-surface-card);
+  color: var(--tt-text-primary);
+  box-shadow: var(--shadow-pop);
+}
+
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--tt-overlay) 55%, transparent);
+}
+
+.sm {
+  max-width: 440px;
+}
+
+.md {
+  max-width: 560px;
+}
+
+.lg {
+  max-width: 760px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 50px);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px 14px;
+  border-bottom: 1px solid var(--tt-divider);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 800;
+}
+
+.description {
+  margin: 6px 0 0;
+  color: var(--tt-text-muted);
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--tt-text-muted);
+  cursor: pointer;
+}
+
+.close:hover {
+  background: var(--tt-surface-muted);
+}
+
+.close:focus-visible {
+  outline: 3px solid var(--tt-green-400);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 24px 20px;
+  border-top: 1px solid var(--tt-divider);
+}
+
+@media (max-width: 480px) {
+  .foot > * {
+    flex: 1;
+  }
+}
