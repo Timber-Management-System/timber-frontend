@@ -1,7 +1,5 @@
-import { PagePlaceholder } from '@/shared/components/layout/PagePlaceholder';
+import { FelledTreesPage } from '@/modules/felling/fr-16-felled-trees';
 
 export default function Page() {
-  return (
-    <PagePlaceholder title="Felled trees" requirement="FR-16" codeFolder="src/modules/felling/fr-16-felled-trees" />
-  );
+  return <FelledTreesPage />;
 }
