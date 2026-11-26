@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/shared/components/ui/Button';
 import { Icon } from '@/shared/components/ui/Icon';
 
@@ -15,6 +16,89 @@ const STATUS_CLASS: Record<FellingStatus, string> = {
 
 export function FelledTreesPage() {
   const { items, loading, error } = useFelledTrees();
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [siteLocation, setSiteLocation] = useState('');
+  const [treeId, setTreeId] = useState('');
+  const [status, setStatus] = useState('');
+  const [recordId, setRecordId] = useState('');
+
+  // Store applied filter values.
+  const [appliedFilters, setAppliedFilters] = useState({
+    dateFrom: '',
+    dateTo: '',
+    siteLocation: '',
+    treeId: '',
+    status: '',
+    recordId: '',
+  });
+
+
+  // Store date validation error.
+  const [filterError, setFilterError] = useState('');
+
+  // Validate and apply selected filters.
+  function handleSearch() {
+    if (dateFrom && dateTo && dateFrom > dateTo) {
+      setFilterError('From date cannot be later than To date.');
+      return;
+    }
+
+    setFilterError('');
+
+    setAppliedFilters({
+      dateFrom,
+      dateTo,
+      siteLocation: siteLocation.trim(),
+      treeId: treeId.trim(),
+      status,
+      recordId: recordId.trim(),
+    });
+  }
+
+  // Clear all filter values.
+  function handleReset() {
+    setDateFrom('');
+    setDateTo('');
+    setSiteLocation('');
+    setTreeId('');
+    setStatus('');
+    setRecordId('');
+    setFilterError('');
+
+    setAppliedFilters({
+      dateFrom: '',
+      dateTo: '',
+      siteLocation: '',
+      treeId: '',
+      status: '',
+      recordId: '',
+    });
+  }
+
+  // Filter records using the applied filter values.
+  const filteredItems = items.filter((item) => {
+    return (
+      (!appliedFilters.dateFrom ||
+        item.fellingDate >= appliedFilters.dateFrom) &&
+      (!appliedFilters.dateTo ||
+        item.fellingDate <= appliedFilters.dateTo) &&
+      (!appliedFilters.siteLocation ||
+        item.siteLocation.toLowerCase().includes(
+          appliedFilters.siteLocation.toLowerCase()
+        )) &&
+      (!appliedFilters.treeId ||
+        item.treeId.toLowerCase().includes(
+          appliedFilters.treeId.toLowerCase()
+        )) &&
+      (!appliedFilters.status ||
+        item.status === appliedFilters.status) &&
+      (!appliedFilters.recordId ||
+        item.recordId.toLowerCase().includes(
+          appliedFilters.recordId.toLowerCase()
+        ))
+    );
+  });
 
   return (
     <section className={styles.page} aria-labelledby="felled-trees-title">
@@ -30,6 +114,100 @@ export function FelledTreesPage() {
           Add Felled Tree
         </Button>
       </header>
+
+      <div className={styles.filterCard}>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleSearch();
+          }}
+  >
+      <div className={styles.filterGrid}>
+        <label className={styles.filterField}>
+          Felling Date From
+          <input
+            type="date"
+            value={dateFrom}
+            onChange={(event) => setDateFrom(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.filterField}>
+          Felling Date To
+          <input
+            type="date"
+            value={dateTo}
+            onChange={(event) => setDateTo(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.filterField}>
+          Site / Location
+          <input
+            type="text"
+            placeholder="Enter site or location"
+            value={siteLocation}
+            onChange={(event) => setSiteLocation(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.filterField}>
+          Tree ID
+          <input
+            type="text"
+            placeholder="e.g. TREE-001"
+            value={treeId}
+            onChange={(event) => setTreeId(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.filterField}>
+          Status
+          <select
+            value={status}
+            onChange={(event) => setStatus(event.target.value)}
+          >
+            <option value="">All statuses</option>
+            <option value="PENDING">Pending</option>
+            <option value="COMPLETED">Completed</option>
+          </select>
+        </label>
+
+        <label className={styles.filterField}>
+          Record ID
+          <input
+            type="text"
+            placeholder="e.g. FR-001"
+            value={recordId}
+            onChange={(event) => setRecordId(event.target.value)}
+          />
+        </label>
+      </div>
+
+    {filterError && (
+      <p className={styles.filterError} role="alert">
+        {filterError}
+      </p>
+    )}
+
+    <div className={styles.filterActions}>
+      <Button
+        type="submit"
+        variant="secondary"
+        leftIcon={<Icon name="search" />}
+      >
+        Search
+      </Button>
+
+      <Button
+        variant="secondary"
+        onClick={handleReset}
+      >
+        Reset
+      </Button>
+    </div>
+  </form>
+</div>
 
       <div className={styles.card}>
         {loading && <p className={styles.muted}>Loading records...</p>}
@@ -57,7 +235,7 @@ export function FelledTreesPage() {
                 </thead>
 
                 <tbody>
-                  {items.map((item, index) => (
+                  {filteredItems.map((item, index) => (
                     <tr key={item.id}>
                       <td>{index + 1}</td>
 
@@ -102,7 +280,7 @@ export function FelledTreesPage() {
                     </tr>
                   ))}
 
-                  {items.length === 0 && (
+                  {filteredItems.length === 0 && (
                     <tr>
                       <td colSpan={9}>No felled tree records found.</td>
                     </tr>
@@ -112,7 +290,7 @@ export function FelledTreesPage() {
             </div>
 
             <p className={styles.muted}>
-              Total records: {items.length}
+              Total records: {filteredItems.length}
             </p>
           </>
         )}

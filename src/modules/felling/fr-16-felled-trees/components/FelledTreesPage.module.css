@@ -121,3 +121,79 @@
   margin: 16px 0 0;
   font-size: var(--text-xs);
 }
+
+/* Filter section */
+.filterCard {
+  padding: 22px;
+  margin-bottom: 16px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-card);
+  background: var(--tt-surface-card);
+  box-shadow: var(--shadow-card);
+}
+
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--tt-text-primary);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.filterField input,
+.filterField select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  padding: 10px 12px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: 8px;
+  background: var(--tt-surface-card);
+  color: var(--tt-text-primary);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.filterField input::placeholder {
+  color: var(--tt-text-muted);
+}
+
+.filterActions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.filterError {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--crit-bg);
+  color: var(--crit-fg);
+  font-size: var(--text-xs);
+}
+
+/* Responsive filter layout */
+@media (max-width: 1000px) {
+  .filterGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .filterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filterActions {
+    justify-content: flex-start;
+  }
+}
