@@ -1,1 +1,311 @@
-{}
+{
+  "common": {
+    "actions": "Actions",
+    "all": "All",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "close": "Close",
+    "edit": "Edit",
+    "export": "Export",
+    "language": "Language",
+    "loadError": "Could not load the data. Please try again.",
+    "loading": "Loading…",
+    "next": "Next",
+    "off": "Off",
+    "on": "On",
+    "pagination": "Pages",
+    "prev": "Prev",
+    "saveChanges": "Save changes",
+    "savedOk": "Saved.",
+    "search": "Search",
+    "undo": "Undo",
+    "viewAll": "View all"
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "minLength": "Enter at least {min} characters."
+  },
+  "time": {
+    "today": "Today",
+    "yesterday": "Yesterday"
+  },
+  "topbar": {
+    "search": "Search",
+    "searchPlaceholder": "Search logs, permits, customers, orders…",
+    "online": "Online",
+    "offline": "Offline",
+    "notifications": "Notifications",
+    "profile": "My profile",
+    "signOut": "Sign out"
+  },
+  "nav": {
+    "aria": "Main navigation",
+    "pageCount": "{n} pages",
+    "brand": {
+      "tagline": "Management system"
+    }
+  },
+  "areas": {
+    "users-settings": "Users & settings",
+    "licences-permits": "Licences & permits",
+    "trees-felling": "Trees & felling",
+    "transport": "Transport",
+    "production": "Production",
+    "inventory": "Inventory",
+    "customers-sales": "Customers & sales",
+    "invoices-payments": "Invoices & payments",
+    "procurement": "Procurement",
+    "reports": "Reports"
+  },
+  "roles": {
+    "ADMIN": "Administrator",
+    "MANAGEMENT": "Management",
+    "OWNER": "Company Owner",
+    "COMPLIANCE": "Compliance Officer",
+    "FORESTRY_SUPERVISOR": "Forestry Supervisor",
+    "FIELD_TEAM": "Field Team",
+    "TRANSPORT": "Transport Coordinator",
+    "YARD_MANAGER": "Yard / Mill Manager",
+    "SAWMILL_MANAGER": "Sawmill Manager",
+    "SALES": "Sales Officer",
+    "ACCOUNTANT": "Accountant",
+    "PURCHASING": "Purchasing Officer",
+    "CUSTOMER": "Customer (portal)",
+    "AUDITOR": "Auditor / Regulator",
+    "title": "Roles & permissions",
+    "list": "Roles",
+    "userCount": "{count} users",
+    "userCountOne": "{count} user",
+    "external": "External",
+    "readOnly": "Read-only",
+    "matrixTitle": "Permission matrix – {role}",
+    "legend": "C = create · R = read · U = update · A = approve · D = delete",
+    "area": "Area",
+    "actions": {
+      "C": "Create",
+      "R": "Read",
+      "U": "Update",
+      "A": "Approve",
+      "D": "Delete"
+    },
+    "deleteOff": "Delete is always off: records are deactivated or corrected by a logged adjustment (BR-09).",
+    "deleteNote": "Pre-filled from proposal section 12. Delete stays off for permit-linked records (BR-09). Changes apply at the user's next sign-in.",
+    "saved": "Permissions saved. They apply at each user's next sign-in.",
+    "customerNote": "Customers only see their own orders, invoices and delivery status in the portal.",
+    "new": {
+      "title": "New role",
+      "note": "Permissions are then set in the matrix.",
+      "name": "Role name",
+      "namePlaceholder": "e.g. Quality Inspector",
+      "copyFrom": "Copy permissions from",
+      "startEmpty": "Start with no permissions",
+      "description": "Description",
+      "descriptionPlaceholder": "What this role is for",
+      "mfa": "Require MFA for this role",
+      "create": "Create role"
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "sections": "Administration sections",
+    "auditLog": "Audit log"
+  },
+  "auth": {
+    "footer": "© Quick Solutions (Pvt) Ltd · Help · Privacy",
+    "backToSignIn": "Back to sign in",
+    "signOut": "Sign out",
+    "login": {
+      "title": "Sign in",
+      "intro": "Use your company account. What you can see depends on your role.",
+      "identifier": "Username or email",
+      "password": "Password",
+      "remember": "Remember this device",
+      "forgot": "Forgot password?",
+      "submit": "Sign in",
+      "timedOut": "You were signed out because of inactivity. Unsaved field records are still on this device.",
+      "signedOut": "You have signed out."
+    },
+    "mfa": {
+      "title": "Two-step verification",
+      "intro": "Enter the 6-digit code from your authenticator app.",
+      "introBackup": "Enter one of your backup codes.",
+      "codeLabel": "Verification code",
+      "backupLabel": "Backup code",
+      "codeInvalid": "Enter the 6-digit code.",
+      "backupInvalid": "Enter your backup code.",
+      "trust": "Trust this device for 30 days",
+      "submit": "Verify",
+      "useBackup": "Use a backup code instead",
+      "useApp": "Use the authenticator app instead"
+    },
+    "reset": {
+      "title": "Reset password",
+      "introRequest": "Enter your company email. We will send you a code to reset your password.",
+      "introCode": "If {email} has an account, a code has been sent to it. Enter the code and choose a new password.",
+      "email": "Email",
+      "sendCode": "Send code",
+      "code": "Code",
+      "submit": "Reset password",
+      "resend": "Send a new code",
+      "doneTitle": "Password changed",
+      "doneText": "You can now sign in with your new password."
+    },
+    "password": {
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "show": "Show password",
+      "rulesTitle": "Password rules",
+      "ruleLength": "At least 8 characters",
+      "ruleNumber": "At least one number",
+      "ruleSymbol": "At least one symbol",
+      "ruleMet": "(done)",
+      "ruleNotMet": "(not yet)",
+      "notStrong": "The password does not meet all the rules.",
+      "mismatch": "The passwords do not match."
+    },
+    "errors": {
+      "INVALID_CREDENTIALS": "The username or password is wrong. After 5 failed attempts the account is locked.",
+      "ACCOUNT_LOCKED": "This account is locked after 5 failed sign-in attempts. Ask an administrator to unlock it, or reset your password.",
+      "ACCOUNT_DEACTIVATED": "This account has been deactivated. Ask an administrator if you need access.",
+      "INVALID_CODE": "The code is wrong or has expired. Try again.",
+      "PASSWORD_POLICY": "The password does not meet all the rules.",
+      "WRONG_CURRENT_PASSWORD": "Your current password is wrong.",
+      "ROLE_EXISTS": "A role with this name already exists.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    },
+    "denied": {
+      "title": "You do not have access to this page",
+      "text": "Your role ({role}) cannot open {area}. Ask an administrator if you need access.",
+      "thisPage": "this page",
+      "back": "Back to dashboard"
+    },
+    "timeout": {
+      "title": "Still there?",
+      "text": "You will be signed out in {seconds} seconds because of inactivity. Unsaved field records stay on this device and will sync after you sign in again.",
+      "stay": "Stay signed in"
+    }
+  },
+  "profile": {
+    "title": "My profile",
+    "details": "Personal details",
+    "fullName": "Full name",
+    "employeeId": "Employee ID",
+    "email": "Email",
+    "role": "Role",
+    "siteTeam": "Site / team",
+    "adminManaged": "Name, email, role and site are managed by an administrator.",
+    "mobile": "Mobile",
+    "mobileHint": "Used for SMS alerts.",
+    "notifyBy": "Receive alerts by",
+    "notifyInApp": "In-app",
+    "notifyEmail": "Email",
+    "notifySms": "SMS",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "updatePassword": "Update password",
+    "passwordChanged": "Your password has been changed.",
+    "mustChangeTitle": "Please change your password",
+    "mustChangeText": "You signed in with a temporary password. Choose a new password to continue.",
+    "sessions": "Active sessions",
+    "device": "Device",
+    "location": "Location",
+    "lastActive": "Last active",
+    "thisDevice": "This device",
+    "when": {
+      "now": "Now",
+      "yesterday": "Yesterday"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "add": "Add user",
+    "searchPlaceholder": "Name, email or phone",
+    "empty": "No users match these filters.",
+    "neverSignedIn": "Never",
+    "showing": "Showing {from}–{to} of {total}",
+    "menuFor": "Actions for {name}",
+    "col": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "siteTeam": "Site / team",
+      "lastLogin": "Last login",
+      "mfa": "MFA",
+      "status": "Status"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "LOCKED": "Locked",
+      "DEACTIVATED": "Deactivated",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "deactivateTitle": "Deactivate user?",
+      "reactivateTitle": "Reactivate user?",
+      "deactivateText": "{name} will no longer be able to sign in. Records and audit history stay unchanged, and the user can be reactivated later.",
+      "reactivateText": "{name} will be able to sign in again with their existing role.",
+      "openItems": "Open items",
+      "noOpenItems": "None",
+      "reason": "Reason",
+      "deactivatedMsg": "{name} has been deactivated.",
+      "reactivatedMsg": "{name} has been reactivated."
+    },
+    "openItems": {
+      "plannedTrips": "{count} planned trips will need a new owner",
+      "workOrders": "{count} open work orders will need a new owner"
+    },
+    "form": {
+      "addTitle": "Add user",
+      "editTitle": "Edit user · {name}",
+      "note": "Permissions come from the role. Per-user overrides are out of scope for Phase 1.",
+      "fullName": "Full name",
+      "employeeId": "Employee ID",
+      "email": "Email",
+      "mobile": "Mobile (for SMS alerts)",
+      "mobileInvalid": "Enter a Sri Lankan mobile number, e.g. +94 77 123 4567.",
+      "role": "Role",
+      "selectRole": "Select role",
+      "siteTeam": "Site / team",
+      "selectSite": "Select or type a site / team",
+      "language": "Preferred language",
+      "status": "Status",
+      "inactive": "Inactive",
+      "security": "Security",
+      "sendInvite": "Send invite email with temporary password",
+      "forceChange": "Force password change at first login",
+      "requireMfa": "Require MFA",
+      "mfaMandatory": "Mandatory for this role.",
+      "create": "Add user",
+      "created": "User added.",
+      "updated": "User updated."
+    },
+    "reset": {
+      "action": "Reset password",
+      "title": "Reset password · {name}",
+      "method": "Method",
+      "methodLink": "Email a reset link",
+      "methodTemp": "Set a temporary password",
+      "sendTo": "Send to {email}",
+      "tempPassword": "Temporary password",
+      "unlock": "Unlock the account",
+      "isLocked": "This account is locked after failed sign-ins.",
+      "forceChange": "Force password change at next login",
+      "submit": "Reset password",
+      "linkSent": "A reset link has been sent to {name}.",
+      "tempSet": "A temporary password has been set for {name}."
+    },
+    "errors": {
+      "EMAIL_TAKEN": "Another user already has this email.",
+      "EMPLOYEE_ID_TAKEN": "Another user already has this employee ID.",
+      "LAST_ADMIN": "This is the last active administrator. Add another administrator first.",
+      "PASSWORD_POLICY": "The password does not meet all the rules.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    }
+  },
+  "dashboard": {
+    "home": "Home",
+    "keyFigures": "Key figures",
+    "trace": "Trace",
+    "comingWith": "Coming with {requirement}."
+  }
+}
