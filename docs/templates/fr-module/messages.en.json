@@ -1,0 +1,30 @@
+{
+  "example": {
+    "title": "Example records",
+    "description": "Create, review and approve records without leaving this page.",
+    "new": "New record",
+    "createTitle": "New record",
+    "editTitle": "Edit {ref}",
+    "viewTitle": "Record {ref}",
+    "selectSite": "Select a site",
+    "approveTitle": "Approve {ref}?",
+    "approveText": "The record is locked after approval.",
+    "rejectTitle": "Reject {ref}?",
+    "rejectText": "Tell the team why, so they can fix it and send it again.",
+    "reasonOptional": "Optional. Saved in the audit log.",
+    "createdMsg": "{ref} was created.",
+    "updatedMsg": "{ref} was saved.",
+    "approvedMsg": "{ref} was approved.",
+    "rejectedMsg": "{ref} was rejected.",
+    "field": {
+      "reference": "Reference",
+      "name": "Name",
+      "site": "Site",
+      "quantity": "Quantity",
+      "note": "Note",
+      "status": "Status",
+      "updatedAt": "Last updated",
+      "decisionReason": "Decision note"
+    }
+  }
+}

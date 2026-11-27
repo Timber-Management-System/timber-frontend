@@ -97,19 +97,28 @@ import { NAVIGATION } from '@/shared/config/navigation';
 
 All in `src/shared/components/` and built on the tokens. Text is passed in already translated with `t()`.
 
-| Component                | Use for                                               | Example                                                                                           |
-| ------------------------ | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `TextField`              | Text, email, password (`revealable` adds show/hide)   | `<TextField label={t('users.form.email')} type="email" error={errors.email} required />`          |
-| `SelectField`            | Drop-downs                                            | `<SelectField label={t('users.col.role')} options={roleOptions} placeholder={t('common.all')} />` |
-| `Checkbox`, `RadioGroup` | Yes/no and one-of-many                                | `<RadioGroup legend={t('users.reset.method')} name="m" options={…} value={v} onChange={setV} />`  |
-| `Dialog`                 | Popups (wireframe section 18)                         | `<Dialog open={open} onClose={close} title={…} footer={<Button>…</Button>}>…</Dialog>`            |
-| `Badge`                  | Status pills                                          | `<Badge tone="ok">{t('users.status.ACTIVE')}</Badge>`                                             |
-| `Callout`                | Error / warning / success messages                    | `<Callout tone="crit">{t('auth.errors.ACCOUNT_LOCKED')}</Callout>`                                |
-| `Card`                   | Content boxes                                         | `<Card title={t('profile.details')}>…</Card>`                                                     |
-| `LinkTabs`               | Tabs that are separate pages                          | `<LinkTabs label="…" tabs={[{ href, label }]} />`                                                 |
-| `PageHeader`             | Breadcrumb + title + actions at the top of every page | `<PageHeader breadcrumb={[…]} title={t('users.title')} actions={…} />`                            |
+| Component                | Use for                                               | Example                                                                                                                                                                                    |
+| ------------------------ | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `TextField`              | Text, email, password (`revealable` adds show/hide)   | `<TextField label={t('users.form.email')} type="email" error={errors.email} required />`                                                                                                   |
+| `SelectField`            | Drop-downs                                            | `<SelectField label={t('users.col.role')} options={roleOptions} placeholder={t('common.all')} />`                                                                                          |
+| `Checkbox`, `RadioGroup` | Yes/no and one-of-many                                | `<RadioGroup legend={t('users.reset.method')} name="m" options={…} value={v} onChange={setV} />`                                                                                           |
+| `Dialog`                 | Popups (wireframe section 18)                         | `<Dialog open={open} onClose={close} title={…} footer={<Button>…</Button>}>…</Dialog>`                                                                                                     |
+| `ConfirmDialog`          | Approve / reject / cancel, with an optional reason    | `<ConfirmDialog open onClose={close} title={…} confirmLabel={t('common.reject')} tone="danger" reason={{ label: t('common.reason'), required: true }} onConfirm={(r) => reject(id, r)} />` |
+| `RowMenu`                | The ••• actions menu on a table row                   | `<RowMenu label={t('common.moreActions', { name: ref })} items={[{ label: t('common.view'), icon: 'eye', onSelect }]} />`                                                                  |
+| `Badge`                  | Status pills                                          | `<Badge tone="ok">{t('users.status.ACTIVE')}</Badge>`                                                                                                                                      |
+| `Callout`                | Error / warning / success messages                    | `<Callout tone="crit">{t('auth.errors.ACCOUNT_LOCKED')}</Callout>`                                                                                                                         |
+| `Card`                   | Content boxes                                         | `<Card title={t('profile.details')}>…</Card>`                                                                                                                                              |
+| `LinkTabs`               | Tabs that are separate pages                          | `<LinkTabs label="…" tabs={[{ href, label }]} />`                                                                                                                                          |
+| `PageHeader`             | Breadcrumb + title + actions at the top of every page | `<PageHeader breadcrumb={[…]} title={t('users.title')} actions={…} />`                                                                                                                     |
 
 Real examples: `src/modules/user-access/fr-01-authentication/` and `fr-02-user-management/`.
+
+**Popups for record actions.** Create, view, edit, approve and reject records in popups on the list
+page, so users don't wait for page loads. The FR template (`docs/templates/fr-module/`) does this
+already. Use a full page instead for long forms, offline field capture, or records people need to
+link to or print. The table "Popup or page?" in `docs/templates/fr-module/README.md` has the details.
+Shared words for these actions are in `common.*` (`view`, `edit`, `approve`, `reject`, `reason`, `save`) and
+`status.*` (`pending`, `approved`, `rejected`).
 
 ## 5. Icons: `src/shared/components/ui/Icon.tsx`
 
