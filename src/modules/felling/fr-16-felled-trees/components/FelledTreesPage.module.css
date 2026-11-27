@@ -60,9 +60,9 @@
 }
 
 .ref {
-  color: var(--tt-text-primary);
-  font-family: var(--font-mono);
-  font-weight: 600;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
 }
 
 .status {

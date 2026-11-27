@@ -1,0 +1,100 @@
+.form {
+  padding: 24px;
+  background: var(--tt-surface-card);
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.title {
+  margin: 0 0 24px;
+  color: var(--tt-text-primary);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--tt-text-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  padding: 10px 12px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: 8px;
+  background: var(--tt-surface-card);
+  color: var(--tt-text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--tt-text-muted);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--tt-wood-800);
+  outline-offset: 2px;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.fieldError {
+  color: var(--crit-fg);
+  font-size: var(--text-xs);
+  font-weight: 400;
+}
+
+.submitError {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--crit-bg);
+  color: var(--crit-fg);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--tt-divider);
+}
+
+/* Responsive form layout */
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    padding: 16px;
+  }
+}

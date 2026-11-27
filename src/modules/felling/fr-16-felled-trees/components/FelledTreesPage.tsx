@@ -1,8 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { FelledTreeForm } from './FelledTreeForm';
 import { Button } from '@/shared/components/ui/Button';
 import { Icon } from '@/shared/components/ui/Icon';
+import { createFelledTree } from '../api/felled-trees.api';
+import type { FelledTreeCreateInput } from '../types/felled-trees.types';
 
 import { useFelledTrees } from '../hooks/useFelledTrees';
 import type { FellingStatus } from '../types/felled-trees.types';
@@ -15,7 +18,8 @@ const STATUS_CLASS: Record<FellingStatus, string> = {
 };
 
 export function FelledTreesPage() {
-  const { items, loading, error } = useFelledTrees();
+  const [showAddForm, setShowAddForm] = useState(false);
+  const { items, loading, error, setItems } = useFelledTrees();
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [siteLocation, setSiteLocation] = useState('');
@@ -37,6 +41,16 @@ export function FelledTreesPage() {
   // Store date validation error.
   const [filterError, setFilterError] = useState('');
 
+  // Save a new record and update the list
+  async function handleCreateRecord(values: FelledTreeCreateInput) {
+    const newRecord = await createFelledTree(values);
+
+    setItems((previous) => [...previous, newRecord]);
+
+    handleReset();
+    setShowAddForm(false);
+  }
+  
   // Validate and apply selected filters.
   function handleSearch() {
     if (dateFrom && dateTo && dateFrom > dateTo) {
@@ -100,8 +114,20 @@ export function FelledTreesPage() {
     );
   });
 
+  if (showAddForm) {
   return (
-    <section className={styles.page} aria-labelledby="felled-trees-title">
+    <section className={styles.page}>
+      <FelledTreeForm
+        mode="add"
+        onSubmit={handleCreateRecord}
+        onCancel={() => setShowAddForm(false)}
+      />
+    </section>
+  );
+}
+
+return (
+  <section className={styles.page} aria-labelledby="felled-trees-title">
       <header className={styles.head}>
         <div>
           <p className={styles.kicker}>FR-16</p>
@@ -110,7 +136,10 @@ export function FelledTreesPage() {
           </h1>
         </div>
 
-        <Button leftIcon={<Icon name="plus" />} disabled>
+        <Button
+          leftIcon={<Icon name="plus" />}
+          onClick={() => setShowAddForm(true)}
+>
           Add Felled Tree
         </Button>
       </header>

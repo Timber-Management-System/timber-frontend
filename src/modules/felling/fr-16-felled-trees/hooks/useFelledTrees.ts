@@ -30,5 +30,5 @@ export function useFelledTrees() {
     };
   }, []);
 
-  return { items, loading, error };
+  return { items, loading, error, setItems };
 }
