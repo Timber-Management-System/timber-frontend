@@ -1,0 +1,55 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.dialog {
+  background: var(--tt-surface-card);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  width: 100%;
+  max-width: 440px;
+  color: var(--tt-text-primary);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  margin: 0;
+}
+
+.close {
+  border: 1px solid var(--tt-border-default);
+  background: transparent;
+  color: var(--tt-text-primary);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 8px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
