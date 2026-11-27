@@ -7,7 +7,8 @@ import { Icon } from './Icon';
 
 /**
  * Modal dialog (wireframe section 18 "Manage popups"). Uses the native <dialog> element, so focus
- * is trapped and Escape closes it. Closing by clicking the backdrop is on by default.
+ * is trapped and Escape closes it. Clicking outside the popup does NOT close it (people lose typed data
+ * that way): only the close button, Cancel or Escape do.
  *
  *   <Dialog open={open} onClose={() => setOpen(false)} title={t('users.addUser')}
  *     footer={<><Button variant="secondary" onClick={close}>{t('common.cancel')}</Button><Button>{t('common.save')}</Button></>}>
@@ -72,9 +73,6 @@ export function Dialog({
       onCancel={(e) => {
         e.preventDefault();
         if (dismissible) onClose();
-      }}
-      onClick={(e) => {
-        if (dismissible && e.target === e.currentTarget) onClose();
       }}
     >
       {open && (
