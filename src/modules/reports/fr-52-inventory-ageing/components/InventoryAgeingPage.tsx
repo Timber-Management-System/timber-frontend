@@ -38,8 +38,6 @@ export function InventoryAgeingPage() {
       <InventoryHeader
         viewState={viewState}
         onSimulateState={simulateState}
-        onExportPdf={handleExportPdf}
-        onExportExcel={handleExportExcel}
       />
 
       <StockFilters

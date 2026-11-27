@@ -9,18 +9,12 @@ import styles from './InventoryHeader.module.css';
 interface InventoryHeaderProps {
   viewState: ViewState;
   onSimulateState?: (state: ViewState) => void;
-  onExportPdf?: () => void;
-  onExportExcel?: () => void;
 }
 
 export function InventoryHeader({
   viewState,
   onSimulateState,
-  onExportPdf,
-  onExportExcel,
 }: InventoryHeaderProps) {
-  const isLoading = viewState === 'loading';
-
   return (
     <header className={styles.header}>
       <div className={styles.topRow}>
@@ -82,26 +76,10 @@ export function InventoryHeader({
 
         <div className={styles.actions}>
           <Link href="/reports/inventory-ageing/locations">
-            <Button variant="secondary" leftIcon={<Icon name="grid" />}>
+            <Button variant="secondary" leftIcon={<Icon name="grid" size={14} />}>
               Storage locations
             </Button>
           </Link>
-          <Button
-            variant="secondary"
-            disabled={isLoading}
-            onClick={onExportPdf}
-            leftIcon={<Icon name="file" />}
-          >
-            Export PDF
-          </Button>
-          <Button
-            variant="secondary"
-            disabled={isLoading}
-            onClick={onExportExcel}
-            leftIcon={<Icon name="arrowUpRight" />}
-          >
-            Export Excel
-          </Button>
         </div>
       </div>
     </header>
