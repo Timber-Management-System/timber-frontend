@@ -57,9 +57,26 @@ jobs:
         if: steps.setup.outputs.ready == 'true'
         run: npm ci --ignore-scripts
 
+      # Fails on an invalid or missing signature (a tampered package).
+      # Only "registry key not found" (EMISSINGSIGNATUREKEY) becomes a visible
+      # warning, because it is an npm/registry key problem, not a bad package.
+      # Agreed by the repo admins. npm ci has already checked every tarball
+      # against the sha512 hashes in package-lock.json, and install scripts
+      # stay disabled.
       - name: Verify package signatures
         if: steps.setup.outputs.ready == 'true'
-        run: npm audit signatures
+        run: |
+          set +e
+          out="$(npm audit signatures 2>&1)"
+          code=$?
+          set -e
+          echo "$out"
+          if [ "$code" -ne 0 ] && echo "$out" | grep -q 'EMISSINGSIGNATUREKEY' \
+             && ! echo "$out" | grep -qiE 'invalid|EINTEGRITYSIGNATURE|missing registry signature'; then
+            echo "::warning title=Package signatures not verified::npm could not find the registry key for a package attestation (EMISSINGSIGNATUREKEY). This is an npm/registry key issue, not a tampered package. Lockfile hashes were still checked by npm ci."
+            exit 0
+          fi
+          exit "$code"
 
       - name: Audit for known vulnerabilities
         if: steps.setup.outputs.ready == 'true'
