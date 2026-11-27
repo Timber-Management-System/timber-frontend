@@ -1,16 +1,20 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/shared/components/ui/Button';
 import { useTrees } from '../hooks/useTrees';
+import type { Tree } from '../types/tree';
+import { RejectDialog } from './RejectDialog';
 import styles from './ApprovalTable.module.css';
 
 export function ApprovalTable() {
   const { trees, loading, error, approve, reject } = useTrees();
+  const [rejectTarget, setRejectTarget] = useState<Tree | null>(null);
 
-  function handleReject(id: number) {
-    const reason = window.prompt('Reason for rejection?');
-    if (reason !== null) {
-      reject(id, reason);
+  function handleConfirmReject(reason: string) {
+    if (rejectTarget) {
+      reject(rejectTarget.id, reason);
+      setRejectTarget(null);
     }
   }
 
@@ -61,7 +65,7 @@ export function ApprovalTable() {
                       <Button
                         size="sm"
                         variant="danger"
-                        onClick={() => handleReject(tree.id)}
+                        onClick={() => setRejectTarget(tree)}
                       >
                         Reject
                       </Button>
@@ -74,6 +78,14 @@ export function ApprovalTable() {
           </tbody>
         </table>
       </div>
+
+      {rejectTarget && (
+        <RejectDialog
+          treeCode={rejectTarget.treeCode}
+          onConfirm={handleConfirmReject}
+          onClose={() => setRejectTarget(null)}
+        />
+      )}
     </div>
   );
 }
