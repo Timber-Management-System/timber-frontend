@@ -28,7 +28,12 @@
     "details": "Details",
     "moreActions": "More actions for {name}",
     "saveError": "Could not save. Please try again.",
-    "noRecords": "No records found."
+    "noRecords": "No records found.",
+    "back": "Back",
+    "continue": "Continue",
+    "saveDraft": "Save as draft",
+    "progress": "Progress",
+    "completed": "completed"
   },
   "validation": {
     "required": "This field is required.",
@@ -40,7 +45,8 @@
   "status": {
     "pending": "Pending",
     "approved": "Approved",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "draft": "Draft"
   },
   "time": {
     "today": "Today",

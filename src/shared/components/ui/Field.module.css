@@ -58,6 +58,17 @@
   cursor: not-allowed;
 }
 
+/* Values the system fills in (e.g. an ID "Generated automatically"). */
+.input:read-only:not(:disabled) {
+  background: var(--tt-surface-header);
+  color: var(--tt-text-secondary);
+}
+
+.input:read-only:not(:disabled):focus {
+  border-color: var(--tt-border-strong);
+  box-shadow: none;
+}
+
 .hasIcon {
   padding-left: 38px;
 }

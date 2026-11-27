@@ -18,9 +18,18 @@ export interface DialogProps {
   open: boolean;
   onClose: () => void;
   title: ReactNode;
+  /** Small green label above the title, e.g. the module name ("Inventory control"). */
+  eyebrow?: ReactNode;
   description?: ReactNode;
+  /** Fixed band under the header that doesn't scroll, e.g. a <Stepper>. */
+  subheader?: ReactNode;
   children?: ReactNode;
+  /** Buttons on the right of the footer (main action last). */
   footer?: ReactNode;
+  /** Footer content on the left, e.g. a Cancel button. */
+  footerStart?: ReactNode;
+  /** 'sections' gives the body the page colour, so <FormSection> cards stand out. */
+  bodyTone?: 'plain' | 'sections';
   size?: 'sm' | 'md' | 'lg';
   closeLabel?: string;
   /** Set false for dialogs that must not close by accident (e.g. while saving). */
@@ -31,9 +40,13 @@ export function Dialog({
   open,
   onClose,
   title,
+  eyebrow,
   description,
+  subheader,
   children,
   footer,
+  footerStart,
+  bodyTone = 'plain',
   size = 'md',
   closeLabel = 'Close',
   dismissible = true,
@@ -68,6 +81,7 @@ export function Dialog({
         <div className={styles.panel}>
           <header className={styles.head}>
             <div>
+              {eyebrow && <p className={styles.eyebrow}>{eyebrow}</p>}
               <h2 id={titleId} className={styles.title}>
                 {title}
               </h2>
@@ -83,8 +97,18 @@ export function Dialog({
               </button>
             )}
           </header>
-          {children && <div className={styles.body}>{children}</div>}
-          {footer && <footer className={styles.foot}>{footer}</footer>}
+          {subheader && <div className={styles.subheader}>{subheader}</div>}
+          {children && (
+            <div className={[styles.body, bodyTone === 'sections' && styles.bodySections].filter(Boolean).join(' ')}>
+              {children}
+            </div>
+          )}
+          {(footer || footerStart) && (
+            <footer className={styles.foot}>
+              {footerStart && <div className={styles.footStart}>{footerStart}</div>}
+              {footer}
+            </footer>
+          )}
         </div>
       )}
     </dialog>
