@@ -4,6 +4,10 @@
  * Clear it from the browser dev tools (Application › Local storage) to start fresh.
  *
  * Never import this from components: only from a module's `api/` files.
+ *
+ * Never store passwords, codes, tokens or personal IDs here: localStorage is plain text that
+ * any script on the page can read (CodeQL blocks the pull request). Keep such mock data in
+ * memory instead, like src/shared/lib/mock/users.mock.ts does.
  */
 
 const PREFIX = 'tms-mock:';
@@ -32,6 +36,16 @@ export function writeMock<T>(key: string, value: T): void {
     window.localStorage.setItem(PREFIX + key, JSON.stringify(value));
   } catch {
     // ignore: mock data is best-effort
+  }
+}
+
+/** Delete a stored collection (e.g. one an older version of the app saved). */
+export function forgetMock(key: string): void {
+  if (!isBrowser()) return;
+  try {
+    window.localStorage.removeItem(PREFIX + key);
+  } catch {
+    // ignore
   }
 }
 

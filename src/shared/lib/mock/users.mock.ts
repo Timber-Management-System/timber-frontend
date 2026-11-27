@@ -9,7 +9,7 @@
  */
 import type { RoleKey } from '@/shared/lib/auth/roles';
 
-import { readMock, writeMock } from '../mock-store';
+import { forgetMock } from '../mock-store';
 
 export type MockUserStatus = 'ACTIVE' | 'LOCKED' | 'DEACTIVATED';
 
@@ -231,12 +231,24 @@ function seed(): MockUserRecord[] {
   return rows.map((row, i) => ({ ...base, ...row, createdAt: hoursAgo(5000 - i * 100) }));
 }
 
+/**
+ * The directory is kept in memory only, never in localStorage: the records hold passwords and
+ * staff IDs, which must not be stored in the browser in clear text, even as demo data.
+ * Sign-in, sign-out and page changes keep it (they don't reload the page); a browser refresh
+ * resets it to the seed above, so `Timber@123` always works again after a refresh.
+ */
+let directory: MockUserRecord[] | null = null;
+
 export function readMockUsers(): MockUserRecord[] {
-  return readMock(KEY, seed);
+  if (!directory) {
+    directory = seed();
+    forgetMock(KEY); // remove the copy older versions of the mock saved in the browser
+  }
+  return directory.map((u) => ({ ...u }));
 }
 
 export function writeMockUsers(users: MockUserRecord[]): void {
-  writeMock(KEY, users);
+  directory = users.map((u) => ({ ...u }));
 }
 
 export function updateMockUser(id: string, change: Partial<MockUserRecord>): MockUserRecord | undefined {

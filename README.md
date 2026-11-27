@@ -56,7 +56,7 @@ Open <http://localhost:3000>. You are sent to the sign-in page.
 
 ### Demo sign-in (mock mode)
 
-Until the backend is ready, `NEXT_PUBLIC_USE_MOCK_API=true` runs the app on built-in sample data (stored in your browser). Every demo account uses the password **`Timber@123`**:
+Until the backend is ready, `NEXT_PUBLIC_USE_MOCK_API=true` runs the app on built-in sample data. Records are kept in your browser; user accounts are kept in memory only (no passwords are saved in the browser), so a page refresh resets them. Every demo account uses the password **`Timber@123`**:
 
 | Email                   | Role                  | Notes                                                        |
 | ----------------------- | --------------------- | ------------------------------------------------------------ |
