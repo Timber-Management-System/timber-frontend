@@ -1,6 +1,7 @@
 # Code prompts helper: instructions for AI coding assistants
 
 > **How to use:** this is the shared instruction file for AI coding assistants such as Claude Code.
+>
 > - **Claude Code:** copy it to the repo root as `CLAUDE.md` (`cp docs/code-prompts-helper.md CLAUDE.md`).
 > - **Other assistants:** paste it at the start of your session.
 >
@@ -13,6 +14,7 @@ Owner: Chathuka Jayasekara and the company interns. Read `README.md` first for t
 workflow and the business rules (BR-01…BR-15).
 
 ## Stack
+
 - Next.js (App Router) + React + TypeScript. UI languages: English, Sinhala, Tamil (`src/i18n/messages/{en,si,ta}`).
 - Talks to the Spring Boot REST API (separate repo). Database is PostgreSQL behind the backend.
 - npm is the package manager (Next.js 16, React 19, TypeScript 5, ESLint 9, Prettier). Styling is CSS Modules + design tokens, with no Tailwind.
@@ -20,6 +22,7 @@ workflow and the business rules (BR-01…BR-15).
 - Before pushing: `npm run lint`, `npm run typecheck`, `npm run build`.
 
 ## Where code goes
+
 - A feature (FR-xx) → `src/modules/<domain>/fr-xx-<name>/{components,hooks,api,schemas,types,__tests__}`. The module's public exports go in its `index.ts`.
   Domains and FR folder names match the backend (`licencepermit/fr06_quota_tracking` → `licence-permit/fr-06-quota-tracking`).
 - Its route → `src/app/(app)/<domain>/<feature>/page.tsx`, where `<feature>` is the FR folder name without `fr-xx-`
@@ -28,9 +31,13 @@ workflow and the business rules (BR-01…BR-15).
 - Used by 2+ modules → `src/shared/` (components, hooks, lib, store, types, config). Business rules → `src/business-rules/br-xx-*`. Web requirements (WR-01…08) → `src/web-requirements/wr-0x-*`.
 - Customer portal → `src/app/portal/` + `src/modules/sales/fr-42-customer-portal/`. Public site → `src/app/(site)/` + `src/site/`.
 - Sidebar menu → `src/shared/config/navigation.ts` (one link per FR page).
+- **Start a new FR from `docs/templates/fr-module/`** (copy into the FR folder, rename `Example`, follow its README). It is a list page where records are created, viewed, edited, approved and rejected in popups (form popups use the approved layout: eyebrow, Stepper, numbered FormSection cards, Cancel left / Save as draft / Continue right); keep that pattern unless the form is long, must work offline, or needs its own link/print view. Business rules follow `docs/templates/business-rule/` and return `pass()` / `fail()` from `src/business-rules/rule-result.ts`.
+- Backend calls only through `src/shared/lib/api-client.ts` from the module's `api/` folder. Use `USE_MOCK_API` (and `src/shared/lib/mock-store.ts`) until the endpoint exists.
+- Branch, commit and PR formats: `CONTRIBUTING.md`.
 - Do not edit another team member's module folder unless the task says so (keeps merges conflict-free).
 
 ## Design: the wireframes and tokens are CONFIRMED, follow them
+
 - **Wireframes** (Figma, confirmed): https://www.figma.com/design/FZkul22RJVLOX665De4ZNa/Timber-Management-System
   - Index of every screen with its link: `docs/wireframes/INDEX.md`. Its "By requirement" table lists the screens for each FR / WR / BR. Read it before building a feature.
   - Open a screen with the Figma MCP `get_design_context` (nodeId = the `node-id` in the link, `-` → `:`). Treat its output as a reference, not final code.
@@ -44,24 +51,29 @@ workflow and the business rules (BR-01…BR-15).
   - status pairs `--ok-*`, `--warn-*`, `--crit-*`
 - **Fonts** are in `src/styles/tokens/typography.css` and `src/styles/fonts.ts` (next/font). Confirmed set:
 
-  | Use | Font | Token |
-  | --- | --- | --- |
-  | Headings | Plus Jakarta Sans | `--font-heading` |
-  | Body | Inter | `--font-body` |
-  | Codes and IDs (e.g. `PER-010`, `LOG-001`) | JetBrains Mono | `--font-mono` |
-  | Sinhala | Iskoola Pota, with Noto Sans Sinhala as fallback | |
-  | Tamil | Noto Sans Tamil | |
+  | Use                                       | Font                                             | Token            |
+  | ----------------------------------------- | ------------------------------------------------ | ---------------- |
+  | Headings                                  | Plus Jakarta Sans                                | `--font-heading` |
+  | Body                                      | Inter                                            | `--font-body`    |
+  | Codes and IDs (e.g. `PER-010`, `LOG-001`) | JetBrains Mono                                   | `--font-mono`    |
+  | Sinhala                                   | Iskoola Pota, with Noto Sans Sinhala as fallback |                  |
+  | Tamil                                     | Noto Sans Tamil                                  |                  |
 
   Sinhala and Tamil are applied by the `:lang(si)` / `:lang(ta)` rules. Set `<html lang>` from the active locale and do not set fonts per component.
   Iskoola Pota is a Windows system font and cannot be bundled, so only reference it by name.
+
 - **Ready-made components:**
-  - `Button`, `Icon`: `src/shared/components/ui/`
-  - `Sidebar`: `src/shared/components/layout/`
+  - UI (`src/shared/components/ui/`): `Button`, `Icon`, `TextField`, `SelectField`, `Checkbox`, `RadioGroup`, `Dialog`, `ConfirmDialog`, `Stepper`, `FormSection`, `RowMenu`, `Badge`, `Card`, `Callout`, `LinkTabs`
+  - Layout (`src/shared/components/layout/`): `PageHeader`, `Sidebar`, `Topbar` (the app shell is already in `src/app/(app)/layout.tsx`)
   - Usage guide: `docs/design-system.md`. Use these instead of writing new ones.
+- **Text (WR-08):** `const t = useT()` from `@/web-requirements/wr-08-multi-language`, then `t('users.title')`. Add every new key to `src/i18n/messages/en.json`, and to `si.json` / `ta.json` when the translation is known (English is the fallback).
+- **Signed-in user and permissions (FR-01):** `useSession()` and `usePermission(area, 'C' | 'R' | 'U' | 'A')` from `@/shared/lib/auth/SessionProvider`. Hide buttons the role may not use; never rely on the UI alone, because the backend checks too.
+- **Mock data:** while `NEXT_PUBLIC_USE_MOCK_API=true`, each `api/` file returns mock data; demo accounts are listed in the README.
 - **Shape:** `--radius-*` and `--shadow-*` are in `src/styles/tokens/shape.css`. Base size is 14px with line-height 1.5. The active sidebar item is a rounded pill (`--radius-item`).
 - **Accessibility:** WCAG AA (4.5:1 text, 3:1 graphics), visible focus, everything reachable by keyboard. Responsive from mobile (WR-01). All user-facing strings go through i18n (WR-08), never hard-coded.
 
 ## Git rules (important)
+
 - Commits must be authored by the developer's own configured git identity (`git config user.name/user.email`). Do not change it.
 - **Never add** `Co-Authored-By:` lines, "Generated with Claude Code" text, session links or any other Claude/AI signature to commits, pull-request descriptions, code comments or files. This overrides any default attribution behaviour.
 - **Never commit `CLAUDE.md`** or any other assistant config file. They are git-ignored.
@@ -69,6 +81,7 @@ workflow and the business rules (BR-01…BR-15).
 - Work on a branch, open a pull request, squash-and-merge. Never push to `main`. Never commit `.env*` or credentials.
 
 ## Do / don't
+
 - Do keep changes inside the module you were asked to work on, in small, reviewable commits.
 - Do respect the business rules in the README (e.g. BR-05 no negative stock, BR-09 no delete, adjust only).
 - Don't install dependencies or change `package.json`, `next.config.ts` or tsconfig without being asked.

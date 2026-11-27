@@ -1,0 +1,146 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-control);
+  background: var(--tt-sidebar-bg);
+  color: var(--tt-amber-500);
+}
+
+.brandText strong {
+  display: block;
+  color: var(--tt-text-primary);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.brandText small {
+  display: block;
+  color: var(--tt-text-muted);
+  font-size: var(--text-xs);
+}
+
+.card {
+  width: 100%;
+  padding: 32px 36px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-panel);
+  background: var(--tt-surface-card);
+  box-shadow: var(--shadow-card);
+}
+
+.title {
+  margin: 0 0 6px;
+  color: var(--tt-text-primary);
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.intro {
+  margin: 0 0 22px;
+  color: var(--tt-text-muted);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.link {
+  color: var(--tt-text-link);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--tt-green-400);
+  outline-offset: 2px;
+}
+
+.linkButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  letter-spacing: 0.5em;
+  text-align: center;
+}
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: -4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tt-text-muted);
+}
+
+.ruleOk {
+  color: var(--ok-fg);
+  font-weight: 600;
+}
+
+.footer {
+  margin: 0;
+  color: var(--tt-text-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 24px 20px;
+  }
+}

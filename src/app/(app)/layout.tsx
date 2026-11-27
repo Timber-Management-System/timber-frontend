@@ -1,16 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { Sidebar } from '@/shared/components/layout/Sidebar';
-import { NAVIGATION } from '@/shared/config/navigation';
+import { AppShell } from '@/modules/user-access/fr-01-authentication';
 
-import styles from './layout.module.css';
-
-/** Shell for every logged-in page: sidebar (Option B) + page content. */
+/** Every logged-in page: session, role-filtered sidebar, top bar and access check (FR-01). */
 export default function AppLayout({ children }: { children: ReactNode }) {
-  return (
-    <div className={styles.shell}>
-      <Sidebar groups={NAVIGATION} />
-      <main className={styles.main}>{children}</main>
-    </div>
-  );
+  return <AppShell>{children}</AppShell>;
 }

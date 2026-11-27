@@ -1,0 +1,55 @@
+name: Bug report
+description: Something is not working.
+title: "fix(fr-xx): "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Branch name for the fix: `fix/fr-<number>-<short-name>`, e.g. `fix/fr-12-approval-button-disabled`.
+        **Security problem?** Don't open an issue. Use Security → Report a vulnerability (see SECURITY.md).
+  - type: input
+    id: requirement
+    attributes:
+      label: Requirement / module
+      placeholder: FR-12 Tree approval
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      placeholder: /site-tree/tree-approval
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: Add screenshots or the error message.
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options: ["Desktop", "Tablet", "Phone"]
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: Chrome 140 on Windows

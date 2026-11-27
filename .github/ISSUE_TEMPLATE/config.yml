@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Developer guide (branches, commits, templates)
+    url: https://github.com/Timber-Management-System/timber-frontend/blob/main/CONTRIBUTING.md
+    about: Read this before your first task.
+  - name: Report a security problem
+    url: https://github.com/Timber-Management-System/timber-frontend/security/policy
+    about: Never report security problems in a public issue.
