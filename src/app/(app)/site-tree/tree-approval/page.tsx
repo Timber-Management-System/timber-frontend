@@ -1,11 +1,5 @@
-import { PagePlaceholder } from '@/shared/components/layout/PagePlaceholder';
+import { ApprovalTable } from '@/modules/site-tree/fr-12-tree-approval';
 
 export default function Page() {
-  return (
-    <PagePlaceholder
-      title="Approval queue"
-      requirement="FR-12"
-      codeFolder="src/modules/site-tree/fr-12-tree-approval"
-    />
-  );
+  return <ApprovalTable />;
 }

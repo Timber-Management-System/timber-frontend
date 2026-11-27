@@ -1,0 +1,1 @@
+export { ApprovalTable } from './components/ApprovalTable';
