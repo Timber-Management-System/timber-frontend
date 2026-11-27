@@ -18,16 +18,16 @@ This repo is **only the frontend**. Business rules, quota checks and calculation
 
 ## 🛠 Tech Stack
 
-| Technology | Used for |
-| --- | --- |
-| **Next.js 16** (App Router) | Pages, routing, layouts |
-| **React 19** | UI |
-| **TypeScript 5** | Type safety |
-| **CSS Modules + design tokens** | Styling (responsive, phone → desktop). See [Design System](#-design-system---colours-fonts-buttons-sidebar). |
-| **PWA** (service worker + IndexedDB) | Offline field mode with later sync |
-| ESLint 9 + Prettier | Code quality and formatting |
-| **GitHub Actions** | CI: lint, type check, build, Dependency Review, Repo safety scan, CodeQL |
-| **Vercel** | Hosting (preview per PR, production from `main`) |
+| Technology                           | Used for                                                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| **Next.js 16** (App Router)          | Pages, routing, layouts                                                                                      |
+| **React 19**                         | UI                                                                                                           |
+| **TypeScript 5**                     | Type safety                                                                                                  |
+| **CSS Modules + design tokens**      | Styling (responsive, phone → desktop). See [Design System](#-design-system---colours-fonts-buttons-sidebar). |
+| **PWA** (service worker + IndexedDB) | Offline field mode with later sync                                                                           |
+| ESLint 9 + Prettier                  | Code quality and formatting                                                                                  |
+| **GitHub Actions**                   | CI: lint, type check, build, Dependency Review, Repo safety scan, CodeQL                                     |
+| **Vercel**                           | Hosting (preview per PR, production from `main`)                                                             |
 
 ---
 
@@ -52,16 +52,39 @@ npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000>. It goes straight to `/dashboard`.
+Open <http://localhost:3000>. You are sent to the sign-in page.
 
-| Command | What it does |
-| --- | --- |
-| `npm run dev` | Start the development server with hot reload |
-| `npm run build` | Build for production (CI runs this on every PR) |
-| `npm run start` | Run the production build |
-| `npm run lint` | Check the code with ESLint |
-| `npm run typecheck` | Check TypeScript types |
-| `npm run format` | Format the code in `src/` with Prettier |
+### Demo sign-in (mock mode)
+
+Until the backend is ready, `NEXT_PUBLIC_USE_MOCK_API=true` runs the app on built-in sample data. Records are kept in your browser; user accounts are kept in memory only (no passwords are saved in the browser), so a page refresh resets them. Every demo account uses the password **`Timber@123`**:
+
+| Email                   | Role                  | Notes                                                        |
+| ----------------------- | --------------------- | ------------------------------------------------------------ |
+| `admin@timberco.lk`     | Administrator         | Asks for the MFA code **`123456`** (backup code `ABCD-1234`) |
+| `nimal@timberco.lk`     | Compliance Officer    | MFA on: code `123456`                                        |
+| `anura@timberco.lk`     | Management            |                                                              |
+| `owner@timberco.lk`     | Company Owner         |                                                              |
+| `asela@timberco.lk`     | Forestry Supervisor   |                                                              |
+| `kasun@timberco.lk`     | Field Team            |                                                              |
+| `dilini@timberco.lk`    | Yard / Mill Manager   |                                                              |
+| `mahesh@timberco.lk`    | Sawmill Manager       |                                                              |
+| `nuwan@timberco.lk`     | Transport Coordinator |                                                              |
+| `amali@timberco.lk`     | Sales Officer         |                                                              |
+| `tharindu@timberco.lk`  | Accountant            |                                                              |
+| `priyanka@timberco.lk`  | Purchasing Officer    |                                                              |
+| `auditor@forest.gov.lk` | Auditor / Regulator   | Read-only                                                    |
+| `ruwan@timberco.lk`     | Sales Officer         | **Locked**: unlock it from Users › Reset password            |
+
+Each role sees its own dashboard and only the menu items it may open. To start from fresh sample data, clear the site's local storage in your browser's dev tools.
+
+| Command             | What it does                                    |
+| ------------------- | ----------------------------------------------- |
+| `npm run dev`       | Start the development server with hot reload    |
+| `npm run build`     | Build for production (CI runs this on every PR) |
+| `npm run start`     | Run the production build                        |
+| `npm run lint`      | Check the code with ESLint                      |
+| `npm run typecheck` | Check TypeScript types                          |
+| `npm run format`    | Format the code in `src/` with Prettier         |
 
 Use `npm ci`, not `npm install`, after cloning or pulling. Only admins add or update packages (see [Security Rules](#-security-rules-public-repo)).
 
@@ -71,27 +94,27 @@ Use `npm ci`, not `npm install`, after cloning or pulling. Only admins add or up
 
 The design is **confirmed**. Build every screen with these building blocks, and don't invent new colours, buttons or menus.
 
-| What | Where to find it |
-| --- | --- |
-| **Colour palette** | `src/styles/tokens/colors.css`: use the `--tt-*` variables (preview below) |
-| **Fonts & text sizes** | `src/styles/tokens/typography.css` and `src/styles/fonts.ts` |
-| **Corners & shadows** | `src/styles/tokens/shape.css` |
-| **Button** | `src/shared/components/ui/Button.tsx` |
-| **Icons** | `src/shared/components/ui/Icon.tsx` |
-| **Sidebar** | `src/shared/components/layout/Sidebar.tsx`, with the menu in `src/shared/config/navigation.ts` |
-| **Full guide with code examples** | 📘 [docs/design-system.md](docs/design-system.md) |
-| **Wireframes (Figma, confirmed)** | [Timber Management System wireframes](https://www.figma.com/design/FZkul22RJVLOX665De4ZNa/Timber-Management-System) |
-| **Instructions for AI assistants** | [docs/code-prompts-helper.md](docs/code-prompts-helper.md) |
+| What                               | Where to find it                                                                                                    |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Colour palette**                 | `src/styles/tokens/colors.css`: use the `--tt-*` variables (preview below)                                          |
+| **Fonts & text sizes**             | `src/styles/tokens/typography.css` and `src/styles/fonts.ts`                                                        |
+| **Corners & shadows**              | `src/styles/tokens/shape.css`                                                                                       |
+| **Button**                         | `src/shared/components/ui/Button.tsx`                                                                               |
+| **Icons**                          | `src/shared/components/ui/Icon.tsx`                                                                                 |
+| **Sidebar**                        | `src/shared/components/layout/Sidebar.tsx`, with the menu in `src/shared/config/navigation.ts`                      |
+| **Full guide with code examples**  | 📘 [docs/design-system.md](docs/design-system.md)                                                                   |
+| **Wireframes (Figma, confirmed)**  | [Timber Management System wireframes](https://www.figma.com/design/FZkul22RJVLOX665De4ZNa/Timber-Management-System) |
+| **Instructions for AI assistants** | [docs/code-prompts-helper.md](docs/code-prompts-helper.md)                                                          |
 
 **Fonts:**
 
-| Use | Font |
-| --- | --- |
-| Headings | Plus Jakarta Sans |
-| Body text | Inter |
-| IDs and codes (`PER-010`, `LOG-001`) | JetBrains Mono |
-| Sinhala | Iskoola Pota, with Noto Sans Sinhala as fallback |
-| Tamil | Noto Sans Tamil |
+| Use                                  | Font                                             |
+| ------------------------------------ | ------------------------------------------------ |
+| Headings                             | Plus Jakarta Sans                                |
+| Body text                            | Inter                                            |
+| IDs and codes (`PER-010`, `LOG-001`) | JetBrains Mono                                   |
+| Sinhala                              | Iskoola Pota, with Noto Sans Sinhala as fallback |
+| Tamil                                | Noto Sans Tamil                                  |
 
 ### Colour palette
 
@@ -99,9 +122,19 @@ The design is **confirmed**. Build every screen with these building blocks, and 
 
 ```css
 /* Always use the token name, never the hex value */
-.card  { background: var(--tt-surface-card); border: 1px solid var(--tt-border-default); border-radius: var(--radius-card); }
-.title { color: var(--tt-text-primary); font-family: var(--font-heading); }
-.badge { background: var(--warn-bg); color: var(--warn-fg); }
+.card {
+  background: var(--tt-surface-card);
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-card);
+}
+.title {
+  color: var(--tt-text-primary);
+  font-family: var(--font-heading);
+}
+.badge {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
 ```
 
 ### Buttons
@@ -125,6 +158,7 @@ import { Icon } from '@/shared/components/ui/Icon';
 The sidebar is already in `src/app/(app)/layout.tsx`, so every logged-in page gets it. To add or rename a menu page, edit `src/shared/config/navigation.ts`, which is a shared file, so ask an admin first.
 
 **Quick rules**
+
 1. **No hex colours in components.** Use the `--tt-*` tokens. If a colour is missing, ask an admin to add a token.
 2. **Amber (`primary`) is for the one main action** on a screen. Everything else uses `secondary` or `ghost`.
 3. **Use the status pairs** (`--ok-*`, `--warn-*`, `--crit-*`) for badges and alerts.
@@ -132,9 +166,11 @@ The sidebar is already in `src/app/(app)/layout.tsx`, so every logged-in page ge
 5. **All text the user sees goes through i18n.**
 
 ---
+
 ## 🧩 Modules - who builds what
 
 **One requirement = one folder = one page.** Every functional requirement (FR-01 … FR-58) in the proposal has:
+
 - its own **module folder**: `src/modules/<domain>/fr-xx-<name>/`
 - its own **page**: `src/app/(app)/<domain>/<name>/page.tsx`
 
@@ -142,123 +178,123 @@ When you get an FR task, work only inside that FR's folders. This is the main wa
 
 Folder names match the backend, so you can always find the matching API. For example, backend `licencepermit/fr06_quota_tracking` is frontend `licence-permit/fr-06-quota-tracking`.
 
-| Area | Domain folder | Requirements | Backend module | Phase |
-| --- | --- | --- | --- | --- |
-| A. Users & access | `user-access` | FR-01 – 02 | `useraccess` | 1 |
-| B. Licences & permits | `licence-permit` | FR-04 – 09 | `licencepermit` | 1–2 |
-| C. Sites & trees | `site-tree` | FR-10 – 14 | `sitetree` | 1–2 |
-| D. Felling & logs | `felling` | FR-15 – 19 | `felling` | 1–2 |
-| E. Transport | `transport` | FR-20 – 23 | `transport` | 2 |
-| F. Sawmill production | `sawmill` | FR-24 – 28 | `sawmill` | 2 |
-| G. Inventory | `inventory` | FR-29 – 34 | `inventory` | 1–2 |
-| H. Customers & sales | `sales` | FR-35 – 43 | `sales` | 1–3 |
-| I. Procurement | `procurement` | FR-44 – 45 | `procurement` | 2 |
-| J. Finance & costing | `finance` | FR-46 – 49 | `finance` | 2–3 |
-| K. Reports | `reports` | FR-50 – 55 | `reports` | 1 |
-| L. Audit, notifications & admin | `audit-admin` | FR-03, FR-56 – 58 | `auditadmin` | 1 |
+| Area                            | Domain folder    | Requirements      | Backend module  | Phase |
+| ------------------------------- | ---------------- | ----------------- | --------------- | ----- |
+| A. Users & access               | `user-access`    | FR-01 – 02        | `useraccess`    | 1     |
+| B. Licences & permits           | `licence-permit` | FR-04 – 09        | `licencepermit` | 1–2   |
+| C. Sites & trees                | `site-tree`      | FR-10 – 14        | `sitetree`      | 1–2   |
+| D. Felling & logs               | `felling`        | FR-15 – 19        | `felling`       | 1–2   |
+| E. Transport                    | `transport`      | FR-20 – 23        | `transport`     | 2     |
+| F. Sawmill production           | `sawmill`        | FR-24 – 28        | `sawmill`       | 2     |
+| G. Inventory                    | `inventory`      | FR-29 – 34        | `inventory`     | 1–2   |
+| H. Customers & sales            | `sales`          | FR-35 – 43        | `sales`         | 1–3   |
+| I. Procurement                  | `procurement`    | FR-44 – 45        | `procurement`   | 2     |
+| J. Finance & costing            | `finance`        | FR-46 – 49        | `finance`       | 2–3   |
+| K. Reports                      | `reports`        | FR-50 – 55        | `reports`       | 1     |
+| L. Audit, notifications & admin | `audit-admin`    | FR-03, FR-56 – 58 | `auditadmin`    | 1     |
 
 <details>
 <summary><b>All 58 requirements: folder and page URL</b></summary>
 
-| FR | Module folder `src/modules/…` | Page URL |
-| --- | --- | --- |
-| FR-01 | `user-access/fr-01-authentication` | `/login`, `/user-access/roles` |
-| FR-02 | `user-access/fr-02-user-management` | `/user-access/user-management` |
-| FR-03 | `audit-admin/fr-03-audit-log` | `/audit-admin/audit-log` |
-| FR-04 | `licence-permit/fr-04-company-licence` | `/licence-permit/company-licence` |
-| FR-05 | `licence-permit/fr-05-felling-permit` | `/licence-permit/felling-permit` |
-| FR-06 | `licence-permit/fr-06-quota-tracking` | `/licence-permit/quota-tracking` |
-| FR-07 | `licence-permit/fr-07-expiry-alerts` | `/licence-permit/expiry-alerts` |
-| FR-08 | `licence-permit/fr-08-transport-permit` | `/licence-permit/transport-permit` |
-| FR-09 | `licence-permit/fr-09-permit-documents` | `/licence-permit/permit-documents` |
-| FR-10 | `site-tree/fr-10-site-lot` | `/site-tree/site-lot` |
-| FR-11 | `site-tree/fr-11-tree-survey` | `/site-tree/tree-survey` |
-| FR-12 | `site-tree/fr-12-tree-approval` | `/site-tree/tree-approval` |
-| FR-13 | `site-tree/fr-13-protected-species` | `/site-tree/protected-species` |
-| FR-14 | `site-tree/fr-14-replanting` | `/site-tree/replanting` |
-| FR-15 | `felling/fr-15-work-orders` | `/felling/work-orders` |
-| FR-16 | `felling/fr-16-felled-trees` | `/felling/felled-trees` |
-| FR-17 | `felling/fr-17-log-tags` | `/felling/log-tags` |
-| FR-18 | `felling/fr-18-equipment-safety` | `/felling/equipment-safety` |
-| FR-19 | `felling/fr-19-offline-capture` | `/felling/offline-capture` |
-| FR-20 | `transport/fr-20-trips` | `/transport/trips` |
-| FR-21 | `transport/fr-21-delivery-notes` | `/transport/delivery-notes` |
-| FR-22 | `transport/fr-22-reconciliation` | `/transport/reconciliation` |
-| FR-23 | `transport/fr-23-vehicles-drivers` | `/transport/vehicles-drivers` |
-| FR-24 | `sawmill/fr-24-log-receiving` | `/sawmill/log-receiving` |
-| FR-25 | `sawmill/fr-25-processing-orders` | `/sawmill/processing-orders` |
-| FR-26 | `sawmill/fr-26-production-output` | `/sawmill/production-output` |
-| FR-27 | `sawmill/fr-27-machine-usage` | `/sawmill/machine-usage` |
-| FR-28 | `sawmill/fr-28-quality-grading` | `/sawmill/quality-grading` |
-| FR-29 | `inventory/fr-29-stock-overview` | `/inventory/stock-overview` |
-| FR-30 | `inventory/fr-30-stock-by-location` | `/inventory/stock-by-location` |
-| FR-31 | `inventory/fr-31-stock-movements` | `/inventory/stock-movements` |
-| FR-32 | `inventory/fr-32-stock-take-alerts` | `/inventory/stock-take-alerts` |
-| FR-33 | `inventory/fr-33-traceability` | `/inventory/traceability` |
-| FR-34 | `inventory/fr-34-stock-valuation` | `/inventory/stock-valuation` |
-| FR-35 | `sales/fr-35-customers` | `/sales/customers` |
-| FR-36 | `sales/fr-36-quotations-orders` | `/sales/quotations-orders` |
-| FR-37 | `sales/fr-37-pricing` | `/sales/pricing` |
-| FR-38 | `sales/fr-38-dispatch` | `/sales/dispatch` |
-| FR-39 | `sales/fr-39-invoicing-payments` | `/sales/invoicing-payments` |
-| FR-40 | `sales/fr-40-credit-control` | `/sales/credit-control` |
-| FR-41 | `sales/fr-41-returns-complaints` | `/sales/returns-complaints` |
-| FR-42 | `sales/fr-42-customer-portal` | `/portal` |
-| FR-43 | `sales/fr-43-export-sales` | `/sales/export-sales` |
+| FR    | Module folder `src/modules/…`                 | Page URL                                 |
+| ----- | --------------------------------------------- | ---------------------------------------- |
+| FR-01 | `user-access/fr-01-authentication`            | `/login`, `/user-access/roles`           |
+| FR-02 | `user-access/fr-02-user-management`           | `/user-access/user-management`           |
+| FR-03 | `audit-admin/fr-03-audit-log`                 | `/audit-admin/audit-log`                 |
+| FR-04 | `licence-permit/fr-04-company-licence`        | `/licence-permit/company-licence`        |
+| FR-05 | `licence-permit/fr-05-felling-permit`         | `/licence-permit/felling-permit`         |
+| FR-06 | `licence-permit/fr-06-quota-tracking`         | `/licence-permit/quota-tracking`         |
+| FR-07 | `licence-permit/fr-07-expiry-alerts`          | `/licence-permit/expiry-alerts`          |
+| FR-08 | `licence-permit/fr-08-transport-permit`       | `/licence-permit/transport-permit`       |
+| FR-09 | `licence-permit/fr-09-permit-documents`       | `/licence-permit/permit-documents`       |
+| FR-10 | `site-tree/fr-10-site-lot`                    | `/site-tree/site-lot`                    |
+| FR-11 | `site-tree/fr-11-tree-survey`                 | `/site-tree/tree-survey`                 |
+| FR-12 | `site-tree/fr-12-tree-approval`               | `/site-tree/tree-approval`               |
+| FR-13 | `site-tree/fr-13-protected-species`           | `/site-tree/protected-species`           |
+| FR-14 | `site-tree/fr-14-replanting`                  | `/site-tree/replanting`                  |
+| FR-15 | `felling/fr-15-work-orders`                   | `/felling/work-orders`                   |
+| FR-16 | `felling/fr-16-felled-trees`                  | `/felling/felled-trees`                  |
+| FR-17 | `felling/fr-17-log-tags`                      | `/felling/log-tags`                      |
+| FR-18 | `felling/fr-18-equipment-safety`              | `/felling/equipment-safety`              |
+| FR-19 | `felling/fr-19-offline-capture`               | `/felling/offline-capture`               |
+| FR-20 | `transport/fr-20-trips`                       | `/transport/trips`                       |
+| FR-21 | `transport/fr-21-delivery-notes`              | `/transport/delivery-notes`              |
+| FR-22 | `transport/fr-22-reconciliation`              | `/transport/reconciliation`              |
+| FR-23 | `transport/fr-23-vehicles-drivers`            | `/transport/vehicles-drivers`            |
+| FR-24 | `sawmill/fr-24-log-receiving`                 | `/sawmill/log-receiving`                 |
+| FR-25 | `sawmill/fr-25-processing-orders`             | `/sawmill/processing-orders`             |
+| FR-26 | `sawmill/fr-26-production-output`             | `/sawmill/production-output`             |
+| FR-27 | `sawmill/fr-27-machine-usage`                 | `/sawmill/machine-usage`                 |
+| FR-28 | `sawmill/fr-28-quality-grading`               | `/sawmill/quality-grading`               |
+| FR-29 | `inventory/fr-29-stock-overview`              | `/inventory/stock-overview`              |
+| FR-30 | `inventory/fr-30-stock-by-location`           | `/inventory/stock-by-location`           |
+| FR-31 | `inventory/fr-31-stock-movements`             | `/inventory/stock-movements`             |
+| FR-32 | `inventory/fr-32-stock-take-alerts`           | `/inventory/stock-take-alerts`           |
+| FR-33 | `inventory/fr-33-traceability`                | `/inventory/traceability`                |
+| FR-34 | `inventory/fr-34-stock-valuation`             | `/inventory/stock-valuation`             |
+| FR-35 | `sales/fr-35-customers`                       | `/sales/customers`                       |
+| FR-36 | `sales/fr-36-quotations-orders`               | `/sales/quotations-orders`               |
+| FR-37 | `sales/fr-37-pricing`                         | `/sales/pricing`                         |
+| FR-38 | `sales/fr-38-dispatch`                        | `/sales/dispatch`                        |
+| FR-39 | `sales/fr-39-invoicing-payments`              | `/sales/invoicing-payments`              |
+| FR-40 | `sales/fr-40-credit-control`                  | `/sales/credit-control`                  |
+| FR-41 | `sales/fr-41-returns-complaints`              | `/sales/returns-complaints`              |
+| FR-42 | `sales/fr-42-customer-portal`                 | `/portal`                                |
+| FR-43 | `sales/fr-43-export-sales`                    | `/sales/export-sales`                    |
 | FR-44 | `procurement/fr-44-suppliers-purchase-orders` | `/procurement/suppliers-purchase-orders` |
-| FR-45 | `procurement/fr-45-goods-received` | `/procurement/goods-received` |
-| FR-46 | `finance/fr-46-costing` | `/finance/costing` |
-| FR-47 | `finance/fr-47-wages` | `/finance/wages` |
-| FR-48 | `finance/fr-48-accounting-export` | `/finance/accounting-export` |
-| FR-49 | `finance/fr-49-profitability` | `/finance/profitability` |
-| FR-50 | `reports/fr-50-permit-utilization` | `/reports/permit-utilization` |
-| FR-51 | `reports/fr-51-felling-production` | `/reports/felling-production` |
-| FR-52 | `reports/fr-52-inventory-ageing` | `/reports/inventory-ageing` |
-| FR-53 | `reports/fr-53-sales-receivables` | `/reports/sales-receivables` |
-| FR-54 | `reports/fr-54-traceability-audit` | `/reports/traceability-audit` |
-| FR-55 | `reports/fr-55-export-scheduled` | `/reports/export-scheduled` |
-| FR-56 | `audit-admin/fr-56-notifications` | `/audit-admin/notifications` |
-| FR-57 | `audit-admin/fr-57-master-data` | `/audit-admin/master-data` |
-| FR-58 | `audit-admin/fr-58-backup-config` | `/audit-admin/backup-config` |
+| FR-45 | `procurement/fr-45-goods-received`            | `/procurement/goods-received`            |
+| FR-46 | `finance/fr-46-costing`                       | `/finance/costing`                       |
+| FR-47 | `finance/fr-47-wages`                         | `/finance/wages`                         |
+| FR-48 | `finance/fr-48-accounting-export`             | `/finance/accounting-export`             |
+| FR-49 | `finance/fr-49-profitability`                 | `/finance/profitability`                 |
+| FR-50 | `reports/fr-50-permit-utilization`            | `/reports/permit-utilization`            |
+| FR-51 | `reports/fr-51-felling-production`            | `/reports/felling-production`            |
+| FR-52 | `reports/fr-52-inventory-ageing`              | `/reports/inventory-ageing`              |
+| FR-53 | `reports/fr-53-sales-receivables`             | `/reports/sales-receivables`             |
+| FR-54 | `reports/fr-54-traceability-audit`            | `/reports/traceability-audit`            |
+| FR-55 | `reports/fr-55-export-scheduled`              | `/reports/export-scheduled`              |
+| FR-56 | `audit-admin/fr-56-notifications`             | `/audit-admin/notifications`             |
+| FR-57 | `audit-admin/fr-57-master-data`               | `/audit-admin/master-data`               |
+| FR-58 | `audit-admin/fr-58-backup-config`             | `/audit-admin/backup-config`             |
 
 </details>
 
 ### Web requirements (shared features)
 
-| WR | Folder | What it is | Backend |
-| --- | --- | --- | --- |
-| WR-01 | `src/web-requirements/wr-01-responsive-layout` | Works on phone, tablet, desktop | – |
-| WR-02 | `src/web-requirements/wr-02-role-dashboards` | Role-based dashboard (`/dashboard`) | `dashboard/wr02` |
-| WR-03 | `src/web-requirements/wr-03-global-search` | Search logs, permits, customers, orders (`/search`) | `search/wr03` |
-| WR-04 | `src/web-requirements/wr-04-qr-scanning` | Camera QR scanning | – |
-| WR-05 | `src/web-requirements/wr-05-offline-sync` | Offline storage and sync for field screens | `sync/wr05` |
-| WR-06 | `src/web-requirements/wr-06-map-view` | Map of sites and trees | – |
-| WR-07 | `src/web-requirements/wr-07-printing` | Printable delivery notes, invoices, QR labels | – |
-| WR-08 | `src/web-requirements/wr-08-multi-language` | English, Sinhala, Tamil | – |
-| WR-09 | `src/modules/sales/fr-42-customer-portal` + `src/app/portal/` | Customer portal | `sales/fr42` |
-| WR-10 | `src/site/` + `src/app/(site)/` | Public website (optional) | `website/wr10` |
+| WR    | Folder                                                        | What it is                                          | Backend          |
+| ----- | ------------------------------------------------------------- | --------------------------------------------------- | ---------------- |
+| WR-01 | `src/web-requirements/wr-01-responsive-layout`                | Works on phone, tablet, desktop                     | –                |
+| WR-02 | `src/web-requirements/wr-02-role-dashboards`                  | Role-based dashboard (`/dashboard`)                 | `dashboard/wr02` |
+| WR-03 | `src/web-requirements/wr-03-global-search`                    | Search logs, permits, customers, orders (`/search`) | `search/wr03`    |
+| WR-04 | `src/web-requirements/wr-04-qr-scanning`                      | Camera QR scanning                                  | –                |
+| WR-05 | `src/web-requirements/wr-05-offline-sync`                     | Offline storage and sync for field screens          | `sync/wr05`      |
+| WR-06 | `src/web-requirements/wr-06-map-view`                         | Map of sites and trees                              | –                |
+| WR-07 | `src/web-requirements/wr-07-printing`                         | Printable delivery notes, invoices, QR labels       | –                |
+| WR-08 | `src/web-requirements/wr-08-multi-language`                   | English, Sinhala, Tamil                             | –                |
+| WR-09 | `src/modules/sales/fr-42-customer-portal` + `src/app/portal/` | Customer portal                                     | `sales/fr42`     |
+| WR-10 | `src/site/` + `src/app/(site)/`                               | Public website (optional)                           | `website/wr10`   |
 
 ### Business rules
 
 Each rule has a folder in `src/business-rules/`. The frontend checks the rules to give early, clear messages. **The backend always has the final say.**
 
-| BR | Folder | Rule |
-| --- | --- | --- |
-| BR-01 | `br-01-permit-quota` | No felling without an approved, valid permit with quota left |
-| BR-02 | `br-02-protected-species` | Protected species can never be selected for felling |
-| BR-03 | `br-03-log-traceability` | Every log keeps its unique ID linked to its tree and permit |
-| BR-04 | `br-04-transport-permit` | Transport needs a valid transport permit and delivery note |
-| BR-05 | `br-05-no-negative-stock` | Stock can't go negative; sell only available stock |
-| BR-06 | `br-06-expired-licence-block` | Expired licences or permits block related transactions |
-| BR-07 | `br-07-approvals` | Price changes, stock adjustments and write-offs need approval |
-| BR-08 | `br-08-credit-limit` | No new dispatch for a customer over their credit limit without approval |
+| BR    | Folder                        | Rule                                                                          |
+| ----- | ----------------------------- | ----------------------------------------------------------------------------- |
+| BR-01 | `br-01-permit-quota`          | No felling without an approved, valid permit with quota left                  |
+| BR-02 | `br-02-protected-species`     | Protected species can never be selected for felling                           |
+| BR-03 | `br-03-log-traceability`      | Every log keeps its unique ID linked to its tree and permit                   |
+| BR-04 | `br-04-transport-permit`      | Transport needs a valid transport permit and delivery note                    |
+| BR-05 | `br-05-no-negative-stock`     | Stock can't go negative; sell only available stock                            |
+| BR-06 | `br-06-expired-licence-block` | Expired licences or permits block related transactions                        |
+| BR-07 | `br-07-approvals`             | Price changes, stock adjustments and write-offs need approval                 |
+| BR-08 | `br-08-credit-limit`          | No new dispatch for a customer over their credit limit without approval       |
 | BR-09 | `br-09-no-delete-adjust-only` | Permit-linked records can't be deleted, only corrected by a logged adjustment |
-| BR-10 | `br-10-entry-deadline` | Felling and log records must be entered within the agreed number of days |
-| BR-11 | `br-11-transport-tolerance` | Loaded vs received difference over tolerance triggers an investigation |
-| BR-12 | `br-12-export-documents` | Export sales need valid export documents before dispatch |
-| BR-13 | `br-13-volume-method` | One volume method (Smalian or Huber), set in master data |
-| BR-14 | `br-14-yield-wastage` | Yield % + wastage % = 100%, same unit (m³) and basis |
-| BR-15 | `br-15-bark-basis` | Every volume states under-bark or over-bark; same basis for input and output |
+| BR-10 | `br-10-entry-deadline`        | Felling and log records must be entered within the agreed number of days      |
+| BR-11 | `br-11-transport-tolerance`   | Loaded vs received difference over tolerance triggers an investigation        |
+| BR-12 | `br-12-export-documents`      | Export sales need valid export documents before dispatch                      |
+| BR-13 | `br-13-volume-method`         | One volume method (Smalian or Huber), set in master data                      |
+| BR-14 | `br-14-yield-wastage`         | Yield % + wastage % = 100%, same unit (m³) and basis                          |
+| BR-15 | `br-15-bark-basis`            | Every volume states under-bark or over-bark; same basis for input and output  |
 
 ---
 
@@ -317,6 +353,7 @@ timber-frontend/
 ```
 
 **How a page works:**
+
 1. The page `src/app/(app)/inventory/stock-overview/page.tsx` imports from `src/modules/inventory/fr-29-stock-overview` (its `index.ts`).
 2. That module's `components/` use its `api/` functions.
 3. Those go through the shared API client in `src/shared/lib/`.
@@ -339,11 +376,11 @@ git pull origin main                                      # 4. newest main BEFOR
 git push -u origin feature/fr-12-tree-approval            # 5. push, then open a PR on GitHub
 ```
 
-| | Format | Example |
-| --- | --- | --- |
-| **Branch** | `type/fr-number-short-name` | `feature/fr-12-tree-approval`, `fix/fr-12-approval-button-disabled`, `feature/br-05-no-negative-stock` |
-| **Commit** | `type(fr-number): what you did` | `feat(fr-12): add approval status badge` |
-| **PR title** | same as a commit | `feat(fr-12): tree approval list` |
+|              | Format                          | Example                                                                                                |
+| ------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Branch**   | `type/fr-number-short-name`     | `feature/fr-12-tree-approval`, `fix/fr-12-approval-button-disabled`, `feature/br-05-no-negative-stock` |
+| **Commit**   | `type(fr-number): what you did` | `feat(fr-12): add approval status badge`                                                               |
+| **PR title** | same as a commit                | `feat(fr-12): tree approval list`                                                                      |
 
 **Issues:** create tasks with the issue forms (**FR task**, **Business rule**, **Bug**). They ask for the requirement, folder and branch name.
 

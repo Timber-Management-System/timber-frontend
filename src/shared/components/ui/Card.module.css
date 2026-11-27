@@ -1,0 +1,48 @@
+.card {
+  min-width: 0;
+  padding: 20px 22px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-card);
+  background: var(--tt-surface-card);
+  box-shadow: var(--shadow-card);
+}
+
+.flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.flush .head {
+  padding: 18px 20px 14px;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.flush .head {
+  margin-bottom: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--tt-text-primary);
+  font-size: var(--text-md);
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--tt-text-muted);
+  font-size: var(--text-sm);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
