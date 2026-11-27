@@ -1,0 +1,47 @@
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  font-size: var(--text-sm);
+}
+
+.icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.body {
+  min-width: 0;
+}
+
+.title {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.ok {
+  border-color: var(--tt-green-100);
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+}
+
+.warn {
+  border-color: var(--tt-warn-line);
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+.crit {
+  border-color: var(--tt-crit-200);
+  background: var(--tt-crit-50);
+  color: var(--tt-danger-700);
+}
+
+.info {
+  border-color: var(--tt-border-default);
+  background: var(--tt-surface-subtle);
+  color: var(--tt-text-secondary);
+}

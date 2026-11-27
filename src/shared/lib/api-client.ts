@@ -9,6 +9,12 @@
  */
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
+
+/**
+ * true = every module uses its built-in mock data (no backend needed).
+ * Controlled by NEXT_PUBLIC_USE_MOCK_API in .env.local / Vercel. Anything except "false" means mock.
+ */
+export const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API !== 'false';
 const TIMEOUT_MS = Number(process.env.NEXT_PUBLIC_API_TIMEOUT_MS ?? 30000);
 
 /** Thrown when the backend answers with an error status (4xx / 5xx). */

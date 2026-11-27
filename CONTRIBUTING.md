@@ -1,6 +1,7 @@
 # Developer guide: how to work on TimberTrack
 
 Read this once before your first task. It covers:
+
 - setting up your own work environment
 - picking a task
 - naming your branch
@@ -49,13 +50,13 @@ npm run dev                       # http://localhost:3000
 type/fr-number-short-name
 ```
 
-| Type | Use it for | Example |
-| --- | --- | --- |
-| `feature/` | New FR work | `feature/fr-12-tree-approval` |
-| `fix/` | A bug | `fix/fr-12-approval-button-disabled` |
-| `docs/` | Documentation only | `docs/fr-12-readme-update` |
-| `refactor/` | Cleaning code, no new behaviour | `refactor/fr-12-approval-hooks` |
-| `feature/br-…` | A business rule | `feature/br-05-no-negative-stock` |
+| Type           | Use it for                      | Example                              |
+| -------------- | ------------------------------- | ------------------------------------ |
+| `feature/`     | New FR work                     | `feature/fr-12-tree-approval`        |
+| `fix/`         | A bug                           | `fix/fr-12-approval-button-disabled` |
+| `docs/`        | Documentation only              | `docs/fr-12-readme-update`           |
+| `refactor/`    | Cleaning code, no new behaviour | `refactor/fr-12-approval-hooks`      |
+| `feature/br-…` | A business rule                 | `feature/br-05-no-negative-stock`    |
 
 - Use **small letters and dashes** only: no spaces, no capitals, and no branches named after yourself.
 - **The FR (or BR) number comes first**, so we can find the branch quickly.
@@ -142,10 +143,16 @@ Your FR folder already exists with empty sub-folders. Copy the template into it:
 cp -r docs/templates/fr-module/* src/modules/site-tree/fr-12-tree-approval/
 ```
 
+The template is a working list page where records are **created, viewed, edited, approved and
+rejected in popups** (no page loads), with permissions, translations and mock data already wired.
+Read `docs/templates/fr-module/README.md` for the full steps and for **when to use a popup or a page**.
+
 Then:
 
 1. **Rename** `Example` / `example` to your feature everywhere (files and code): `ExamplePage` → `TreeApprovalPage`, `example.api.ts` → `tree-approval.api.ts` …
-2. **Point the page at your module**. Replace the placeholder in `src/app/(app)/site-tree/tree-approval/page.tsx`:
+   Set `AREA` in the page to your permission area.
+2. **Move the text** from `messages.en.json` into `src/i18n/messages/en.json` under your own key (e.g. `treeApproval.*`), then delete `messages.en.json` and the copied `README.md` from your folder.
+3. **Point the page at your module**. Replace the placeholder in `src/app/(app)/site-tree/tree-approval/page.tsx`:
    ```tsx
    import { TreeApprovalPage } from '@/modules/site-tree/fr-12-tree-approval';
 
@@ -153,23 +160,24 @@ Then:
      return <TreeApprovalPage />;
    }
    ```
-3. **Build the screen from the Figma wireframe** for your FR, using the design system (`docs/design-system.md`).
+4. **Build the screen from the Figma wireframe** for your FR, using the design system (`docs/design-system.md`).
 
-| Template file | What goes in it |
-| --- | --- |
-| `index.ts` | What the page imports. Nothing else imports from inside your folder. |
-| `components/` | Your screens and parts, with a `.module.css` next to each, using tokens only |
-| `hooks/` | Loading data for components (loading and error states) |
-| `api/` | Backend calls through `@/shared/lib/api-client`, with a `USE_MOCK` switch until the backend is ready |
-| `schemas/` | Form validation. Errors are i18n keys. |
-| `types/` | TypeScript types that match the backend DTOs |
-| `__tests__/` | Tests (the test runner isn't decided yet, so see the README in there) |
+| Template file | What goes in it                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `index.ts`    | What the page imports. Nothing else imports from inside your folder.                                                 |
+| `components/` | Your screens and popups (list page, form popup, details popup), with a `.module.css` next to each, using tokens only |
+| `hooks/`      | Loading data for components (loading and error states)                                                               |
+| `api/`        | Backend calls through `@/shared/lib/api-client`, with mock data while `NEXT_PUBLIC_USE_MOCK_API=true`                |
+| `schemas/`    | Form validation. Errors are i18n keys.                                                                               |
+| `types/`      | TypeScript types that match the backend DTOs                                                                         |
+| `__tests__/`  | Tests (the test runner isn't decided yet, so see the README in there)                                                |
 
 ---
 
 ## 9. Business rules (BR-01 … BR-15)
 
 The rules are listed in the README. Each one has a folder in `src/business-rules/`. A rule is **one pure function**:
+
 - no API calls, no React
 - it returns `pass()` or `fail(rule, code, messageKey)` from `src/business-rules/rule-result.ts`
 

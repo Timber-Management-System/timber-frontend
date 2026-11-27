@@ -36,13 +36,18 @@ import styles from './Sidebar.module.css';
  */
 
 export interface NavLink {
-  /** Unique id, also used as the i18n key `nav.<id>` and as the badge key. */
+  /** Unique id, also used as the i18n key `nav.<id>.label` and as the badge key. */
   id: string;
   /** English fallback label. */
   label: string;
   href: string;
   /** Requirement ID from the proposal, e.g. 'FR-05'. For reference only. */
   requirement?: string;
+  /**
+   * Permission area that decides who sees this link in the menu (e.g. 'users-settings').
+   * Leave out to use the area of the page itself.
+   */
+  area?: string;
 }
 
 export interface NavItem {
@@ -141,18 +146,19 @@ export function Sidebar({ groups, user, badges = {}, t = fallbackOnly }: Sidebar
   const uid = useId();
   const flyoutId = `${uid}-flyout`;
 
-  const label = (id: string, fallback: string) => t(`nav.${id}`, fallback);
+  const label = (id: string, fallback: string) => t(`nav.${id}.label`, fallback);
   const badgeFor = (item: NavItem) =>
     badges[item.id] ?? (item.children ?? []).reduce((sum, c) => sum + (badges[c.id] ?? 0), 0);
 
   // Reset during render (React's recommended pattern, no extra effect):
   // after navigating, open the active module and close any flyout; switching
   // between phone and desktop width also closes the flyout.
-  const [seen, setSeen] = useState({ pathname, rail });
-  if (seen.pathname !== pathname || seen.rail !== rail) {
-    setSeen({ pathname, rail });
-    if (seen.pathname !== pathname) setExpanded(activeParent);
-    setFlyout(null);
+  // Also reacts when the active module changes without navigating (e.g. the menu loads after sign-in).
+  const [seen, setSeen] = useState({ pathname, rail, activeParent });
+  if (seen.pathname !== pathname || seen.rail !== rail || seen.activeParent !== activeParent) {
+    setSeen({ pathname, rail, activeParent });
+    if (seen.pathname !== pathname || seen.activeParent !== activeParent) setExpanded(activeParent);
+    if (seen.pathname !== pathname || seen.rail !== rail) setFlyout(null);
   }
 
   // Flyout: keep it on screen, focus the first page, close on outside click / Escape / resize / scroll.
