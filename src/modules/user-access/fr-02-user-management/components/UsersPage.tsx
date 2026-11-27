@@ -8,6 +8,7 @@ import { Badge, type BadgeTone } from '@/shared/components/ui/Badge';
 import { Button } from '@/shared/components/ui/Button';
 import { Callout } from '@/shared/components/ui/Callout';
 import { Icon } from '@/shared/components/ui/Icon';
+import { RowMenu } from '@/shared/components/ui/RowMenu';
 import { SelectField } from '@/shared/components/ui/SelectField';
 import { TextField } from '@/shared/components/ui/TextField';
 import { usePermission } from '@/shared/lib/auth/SessionProvider';
@@ -19,7 +20,6 @@ import { useUsers } from '../hooks/useUsers';
 import type { User, UserFilters, UserStatus } from '../types/user.types';
 
 import { ResetUserPasswordDialog } from './ResetUserPasswordDialog';
-import { RowMenu } from './RowMenu';
 import { UserFormDialog } from './UserFormDialog';
 import styles from './UsersPage.module.css';
 import { UserStatusDialog } from './UserStatusDialog';

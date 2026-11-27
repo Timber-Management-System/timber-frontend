@@ -2,9 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 
-import { Icon, type IconName } from '@/shared/components/ui/Icon';
-
-import styles from './UsersPage.module.css';
+import { Icon, type IconName } from './Icon';
+import styles from './RowMenu.module.css';
 
 export interface RowMenuItem {
   label: string;
@@ -13,7 +12,17 @@ export interface RowMenuItem {
   danger?: boolean;
 }
 
-/** The ••• menu on each user row (S-01.5): Edit, Reset password, Deactivate / Reactivate. */
+/**
+ * The ••• actions menu at the end of a table row (e.g. View, Edit, Approve, Reject).
+ * Arrow keys move between items, Escape closes and returns focus to the button.
+ *
+ *   <RowMenu label={t('common.moreActions', { name: row.reference })} items={[
+ *     { label: t('common.view'), icon: 'eye', onSelect: () => open('view', row) },
+ *   ]} />
+ *
+ * Pass only the actions the signed-in role may use (usePermission). If the list is empty,
+ * nothing is shown.
+ */
 export function RowMenu({ label, items }: { label: string; items: RowMenuItem[] }) {
   const [open, setOpen] = useState(false);
   const menuId = useId();
@@ -29,6 +38,8 @@ export function RowMenu({ label, items }: { label: string; items: RowMenuItem[] 
     document.addEventListener('pointerdown', onDown);
     return () => document.removeEventListener('pointerdown', onDown);
   }, [open]);
+
+  if (items.length === 0) return null;
 
   const onKeyDown = (e: ReactKeyboardEvent) => {
     const entries = [...(wrap.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]') ?? [])];
@@ -48,11 +59,11 @@ export function RowMenu({ label, items }: { label: string; items: RowMenuItem[] 
   };
 
   return (
-    <div className={styles.menuWrap} ref={wrap} onKeyDown={onKeyDown}>
+    <div className={styles.wrap} ref={wrap} onKeyDown={onKeyDown}>
       <button
         ref={button}
         type="button"
-        className={styles.menuButton}
+        className={styles.button}
         aria-label={label}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -68,7 +79,7 @@ export function RowMenu({ label, items }: { label: string; items: RowMenuItem[] 
               key={item.label}
               type="button"
               role="menuitem"
-              className={[styles.menuItem, item.danger && styles.menuDanger].filter(Boolean).join(' ')}
+              className={[styles.item, item.danger && styles.danger].filter(Boolean).join(' ')}
               onClick={() => {
                 setOpen(false);
                 item.onSelect();

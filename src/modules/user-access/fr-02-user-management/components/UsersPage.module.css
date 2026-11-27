@@ -27,6 +27,7 @@
 }
 
 .tableWrap {
+  position: relative; /* keeps hidden (sr-only) labels inside the scroll box, so phones don't get a wide page */
   overflow-x: auto;
 }
 
@@ -90,83 +91,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-}
-
-/* Row menu */
-.menuWrap {
-  position: relative;
-  display: inline-block;
-}
-
-.menuButton {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 0;
-  border-radius: var(--radius-control);
-  background: transparent;
-  color: var(--tt-text-secondary);
-  cursor: pointer;
-}
-
-.menuButton:hover,
-.menuButton[aria-expanded='true'] {
-  background: var(--tt-surface-muted);
-}
-
-.menuButton:focus-visible {
-  outline: 2px solid var(--tt-green-400);
-}
-
-.menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  min-width: 200px;
-  padding: 6px;
-  border: 1px solid var(--tt-border-default);
-  border-radius: var(--radius-item);
-  background: var(--tt-surface-card);
-  box-shadow: var(--shadow-pop);
-}
-
-.menuItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
-  border: 0;
-  border-radius: var(--radius-control);
-  background: transparent;
-  color: var(--tt-text-secondary);
-  font: inherit;
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.menuItem:hover,
-.menuItem:focus-visible {
-  background: var(--tt-bg-page);
-  color: var(--tt-text-primary);
-  outline: 0;
-}
-
-.menuItem:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--tt-green-400);
-}
-
-.menuDanger {
-  color: var(--tt-danger-700);
-}
-
-.menuDanger:hover {
-  background: var(--tt-crit-50);
-  color: var(--tt-danger-700);
 }
 
 /* Dialog forms */

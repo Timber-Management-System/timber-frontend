@@ -19,12 +19,28 @@
     "savedOk": "Saved.",
     "search": "Search",
     "undo": "Undo",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "view": "View",
+    "approve": "Approve",
+    "reject": "Reject",
+    "save": "Save",
+    "reason": "Reason",
+    "details": "Details",
+    "moreActions": "More actions for {name}",
+    "saveError": "Could not save. Please try again.",
+    "noRecords": "No records found."
   },
   "validation": {
     "required": "This field is required.",
     "email": "Enter a valid email address.",
-    "minLength": "Enter at least {min} characters."
+    "minLength": "Enter at least {min} characters.",
+    "positiveNumber": "Enter a number greater than 0.",
+    "tooLong": "Use {max} characters or fewer."
+  },
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
   },
   "time": {
     "today": "Today",
