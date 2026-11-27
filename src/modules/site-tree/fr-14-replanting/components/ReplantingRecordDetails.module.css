@@ -1,0 +1,120 @@
+.container {
+  width: 100%;
+  padding: 32px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--tt-text-primary);
+  margin: 0 0 8px;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--tt-text-secondary);
+  margin: 0;
+}
+
+.card {
+  background: var(--tt-surface-card);
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: var(--tt-text-primary);
+  margin: 0 0 16px;
+}
+
+.recordId {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--tt-text-primary);
+  margin: 0 0 24px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field dt {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--tt-text-secondary);
+}
+
+.field dd {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--tt-text-primary);
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-control);
+  overflow-wrap: anywhere;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.completed {
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+}
+
+.inProgress {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+.pending {
+  background: var(--tt-surface-page);
+  color: var(--tt-text-secondary);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+  }
+}

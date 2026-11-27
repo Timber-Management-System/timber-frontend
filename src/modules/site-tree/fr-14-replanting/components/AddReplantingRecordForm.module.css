@@ -1,0 +1,101 @@
+
+.container {
+  width: 100%;
+  padding: 32px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--tt-text-primary);
+  margin: 0 0 8px;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--tt-text-secondary);
+  margin: 0;
+}
+
+.card {
+  background: var(--tt-surface-card);
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--tt-text-secondary);
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-control);
+  background: var(--tt-surface-card);
+  color: var(--tt-text-primary);
+  font: inherit;
+}
+
+.input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.validationErrors {
+  grid-column: 1 / -1;
+  padding: 12px 16px;
+  border-radius: var(--radius-control);
+  background: var(--crit-bg);
+  color: var(--crit-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+}
+
+.validationErrors p {
+  margin: 4px 0;
+}
+
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+}
