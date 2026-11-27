@@ -6,6 +6,8 @@ import { Button } from '@/shared/components/ui/Button';
 import { Icon } from '@/shared/components/ui/Icon';
 import { createFelledTree } from '../api/felled-trees.api';
 import type { FelledTreeCreateInput } from '../types/felled-trees.types';
+import { FelledTreeDetails } from './FelledTreeDetails';
+import type { FelledTree } from '../types/felled-trees.types';
 
 import { useFelledTrees } from '../hooks/useFelledTrees';
 import type { FellingStatus } from '../types/felled-trees.types';
@@ -19,6 +21,8 @@ const STATUS_CLASS: Record<FellingStatus, string> = {
 
 export function FelledTreesPage() {
   const [showAddForm, setShowAddForm] = useState(false);
+  const [selectedRecord, setSelectedRecord] =
+  useState<FelledTree | null>(null);
   const { items, loading, error, setItems } = useFelledTrees();
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
@@ -50,7 +54,7 @@ export function FelledTreesPage() {
     handleReset();
     setShowAddForm(false);
   }
-  
+
   // Validate and apply selected filters.
   function handleSearch() {
     if (dateFrom && dateTo && dateFrom > dateTo) {
@@ -114,6 +118,18 @@ export function FelledTreesPage() {
     );
   });
 
+  
+  if (selectedRecord) {
+    return (
+      <section className={styles.page}>
+        <FelledTreeDetails
+          record={selectedRecord}
+          onBack={() => setSelectedRecord(null)}
+          onEdit={() => {}}
+        />
+      </section>
+    );
+}
   if (showAddForm) {
   return (
     <section className={styles.page}>
@@ -297,8 +313,12 @@ return (
 
                       <td>
                         <div className={styles.actions}>
-                          <Button variant="ghost" size="sm" disabled>
-                            View
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedRecord(item)}
+                            >
+                              View
                           </Button>
 
                           <Button variant="ghost" size="sm" disabled>
