@@ -34,7 +34,7 @@ import type { ExampleDecision, ExampleItem } from '../types/example.types';
 import { ExampleDetailsDialog } from './ExampleDetailsDialog';
 import { ExampleFormDialog } from './ExampleFormDialog';
 import styles from './ExamplePage.module.css';
-import { STATUS_TONE, statusKey } from './status';
+import { STATUS_TONE, isEditable, statusKey } from './status';
 
 /** TODO: your FR's permission area (AREAS in src/shared/lib/auth/permissions.ts). */
 const AREA: Area = 'trees-felling';
@@ -80,7 +80,7 @@ export function ExamplePage() {
     const actions: RowMenuItem[] = [
       { label: t('common.view'), icon: 'eye', onSelect: () => open({ kind: 'view', item }) },
     ];
-    if (canEdit && pending)
+    if (canEdit && isEditable(item.status))
       actions.push({ label: t('common.edit'), icon: 'edit', onSelect: () => open({ kind: 'edit', item }) });
     if (canApprove && pending) {
       actions.push(
@@ -125,8 +125,8 @@ export function ExamplePage() {
                   <th scope="col" className={styles.num}>
                     {t('example.field.quantity')}
                   </th>
+                  <th scope="col">{t('example.field.date')}</th>
                   <th scope="col">{t('example.field.status')}</th>
-                  <th scope="col">{t('example.field.updatedAt')}</th>
                   <th scope="col">
                     <span className="sr-only">{t('common.actions')}</span>
                   </th>
@@ -142,12 +142,12 @@ export function ExamplePage() {
                       </button>
                     </td>
                     <td>{item.name}</td>
-                    <td>{item.site}</td>
-                    <td className={styles.num}>{item.quantity}</td>
+                    <td>{item.site || '—'}</td>
+                    <td className={styles.num}>{item.quantity ?? '—'}</td>
+                    <td>{item.date ? formatDate(item.date, locale) : '—'}</td>
                     <td>
                       <Badge tone={STATUS_TONE[item.status]}>{t(statusKey(item.status))}</Badge>
                     </td>
-                    <td>{formatDate(item.updatedAt, locale)}</td>
                     <td className={styles.actions}>
                       <RowMenu label={t('common.moreActions', { name: item.reference })} items={actionsFor(item)} />
                     </td>
@@ -164,8 +164,13 @@ export function ExamplePage() {
         <ExampleFormDialog
           item={popup.kind === 'edit' ? popup.item : undefined}
           onClose={close}
-          onSaved={(item, created) =>
-            saved(item, t(created ? 'example.createdMsg' : 'example.updatedMsg', { ref: item.reference }))
+          onSaved={(item, { created, draft }) =>
+            saved(
+              item,
+              t(draft ? 'example.draftMsg' : created ? 'example.createdMsg' : 'example.updatedMsg', {
+                ref: item.reference,
+              }),
+            )
           }
         />
       )}

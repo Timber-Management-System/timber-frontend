@@ -16,7 +16,7 @@ import { useLocale, useT } from '@/web-requirements/wr-08-multi-language';
 import type { ExampleItem } from '../types/example.types';
 
 import styles from './ExamplePage.module.css';
-import { STATUS_TONE, statusKey } from './status';
+import { STATUS_TONE, isEditable, statusKey } from './status';
 
 export function ExampleDetailsDialog({
   item,
@@ -34,6 +34,7 @@ export function ExampleDetailsDialog({
   const t = useT();
   const locale = useLocale();
   const pending = item.status === 'PENDING';
+  const editable = isEditable(item.status);
 
   const rows: [string, ReactNode][] = [
     [
@@ -42,9 +43,10 @@ export function ExampleDetailsDialog({
         {item.reference}
       </span>,
     ],
+    [t('example.field.date'), item.date ? formatDate(item.date, locale) : '—'],
     [t('example.field.name'), item.name],
-    [t('example.field.site'), item.site],
-    [t('example.field.quantity'), item.quantity],
+    [t('example.field.site'), item.site || '—'],
+    [t('example.field.quantity'), item.quantity ?? '—'],
     [
       t('example.field.status'),
       <Badge key="status" tone={STATUS_TONE[item.status]}>
@@ -67,7 +69,7 @@ export function ExampleDetailsDialog({
           <Button variant="secondary" onClick={onClose}>
             {t('common.close')}
           </Button>
-          {pending && onEdit && (
+          {editable && onEdit && (
             <Button variant="secondary" onClick={onEdit}>
               {t('common.edit')}
             </Button>

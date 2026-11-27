@@ -31,7 +31,7 @@ workflow and the business rules (BR-01…BR-15).
 - Used by 2+ modules → `src/shared/` (components, hooks, lib, store, types, config). Business rules → `src/business-rules/br-xx-*`. Web requirements (WR-01…08) → `src/web-requirements/wr-0x-*`.
 - Customer portal → `src/app/portal/` + `src/modules/sales/fr-42-customer-portal/`. Public site → `src/app/(site)/` + `src/site/`.
 - Sidebar menu → `src/shared/config/navigation.ts` (one link per FR page).
-- **Start a new FR from `docs/templates/fr-module/`** (copy into the FR folder, rename `Example`, follow its README). It is a list page where records are created, viewed, edited, approved and rejected in popups; keep that pattern unless the form is long, must work offline, or needs its own link/print view. Business rules follow `docs/templates/business-rule/` and return `pass()` / `fail()` from `src/business-rules/rule-result.ts`.
+- **Start a new FR from `docs/templates/fr-module/`** (copy into the FR folder, rename `Example`, follow its README). It is a list page where records are created, viewed, edited, approved and rejected in popups (form popups use the approved layout: eyebrow, Stepper, numbered FormSection cards, Cancel left / Save as draft / Continue right); keep that pattern unless the form is long, must work offline, or needs its own link/print view. Business rules follow `docs/templates/business-rule/` and return `pass()` / `fail()` from `src/business-rules/rule-result.ts`.
 - Backend calls only through `src/shared/lib/api-client.ts` from the module's `api/` folder. Use `USE_MOCK_API` (and `src/shared/lib/mock-store.ts`) until the endpoint exists.
 - Branch, commit and PR formats: `CONTRIBUTING.md`.
 - Do not edit another team member's module folder unless the task says so (keeps merges conflict-free).
@@ -63,7 +63,7 @@ workflow and the business rules (BR-01…BR-15).
   Iskoola Pota is a Windows system font and cannot be bundled, so only reference it by name.
 
 - **Ready-made components:**
-  - UI (`src/shared/components/ui/`): `Button`, `Icon`, `TextField`, `SelectField`, `Checkbox`, `RadioGroup`, `Dialog`, `ConfirmDialog`, `RowMenu`, `Badge`, `Card`, `Callout`, `LinkTabs`
+  - UI (`src/shared/components/ui/`): `Button`, `Icon`, `TextField`, `SelectField`, `Checkbox`, `RadioGroup`, `Dialog`, `ConfirmDialog`, `Stepper`, `FormSection`, `RowMenu`, `Badge`, `Card`, `Callout`, `LinkTabs`
   - Layout (`src/shared/components/layout/`): `PageHeader`, `Sidebar`, `Topbar` (the app shell is already in `src/app/(app)/layout.tsx`)
   - Usage guide: `docs/design-system.md`. Use these instead of writing new ones.
 - **Text (WR-08):** `const t = useT()` from `@/web-requirements/wr-08-multi-language`, then `t('users.title')`. Add every new key to `src/i18n/messages/en.json`, and to `si.json` / `ta.json` when the translation is known (English is the fallback).
