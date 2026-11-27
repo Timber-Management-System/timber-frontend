@@ -260,14 +260,22 @@ export function StorageLocationsPage() {
 
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
+            <colgroup>
+              <col style={{ width: '22%' }} />
+              <col style={{ width: '26%' }} />
+              <col style={{ width: '13%' }} />
+              <col style={{ width: '15%' }} />
+              <col style={{ width: '12%' }} />
+              <col style={{ width: '12%' }} />
+            </colgroup>
             <thead>
               <tr>
                 <th>Location</th>
                 <th>Type</th>
-                <th>Items</th>
-                <th>Volume (m³)</th>
-                <th>Oldest (days)</th>
-                <th style={{ textAlign: 'right' }}>Action</th>
+                <th className={styles.alignRight}>Items</th>
+                <th className={styles.alignRight}>Volume (m³)</th>
+                <th className={styles.alignRight}>Oldest (days)</th>
+                <th className={styles.alignRight}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -282,10 +290,10 @@ export function StorageLocationsPage() {
                   >
                     <td className={styles.locationNameCell}>{zone.name}</td>
                     <td>{zone.subtitle || zone.type}</td>
-                    <td className={styles.numberCell}>{zone.itemCount}</td>
-                    <td className={styles.numberCell}>{zone.volumeM3.toFixed(1)}</td>
-                    <td className={styles.numberCell}>{zone.oldestDays}</td>
-                    <td style={{ textAlign: 'right' }}>
+                    <td className={`${styles.numberCell} ${styles.alignRight}`}>{zone.itemCount}</td>
+                    <td className={`${styles.numberCell} ${styles.alignRight}`}>{zone.volumeM3.toFixed(1)}</td>
+                    <td className={`${styles.numberCell} ${styles.alignRight}`}>{zone.oldestDays}</td>
+                    <td className={styles.alignRight}>
                       <button
                         type="button"
                         className={styles.btnTableView}

@@ -246,6 +246,8 @@
   width: 100%;
   border-collapse: collapse;
   font-size: var(--text-sm);
+  table-layout: fixed;
+  min-width: 680px;
 }
 
 .table th {
@@ -265,6 +267,11 @@
   border-bottom: 1px solid var(--tt-divider);
   color: var(--tt-text-primary);
   white-space: nowrap;
+}
+
+.table th.alignRight,
+.table td.alignRight {
+  text-align: right;
 }
 
 .table tr:nth-child(even) td {

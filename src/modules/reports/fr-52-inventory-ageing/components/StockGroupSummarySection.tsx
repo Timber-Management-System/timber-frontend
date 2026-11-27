@@ -43,9 +43,17 @@ export function StockGroupSummarySection({
 
       <div className={styles.tableResponsive}>
         <table className={styles.table}>
+          <colgroup>
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '13%' }} />
+            <col style={{ width: '16%' }} />
+            <col style={{ width: '15%' }} />
+            <col style={{ width: '16%' }} />
+            <col style={{ width: '15%' }} />
+          </colgroup>
           <thead>
             <tr>
-              <th>{groupBy}</th>
+              <th className={styles.alignLeft}>{groupBy}</th>
               <th className={styles.alignRight}>Items</th>
               <th className={styles.alignRight}>Volume (m³)</th>
               <th className={styles.alignRight}>% of stock</th>

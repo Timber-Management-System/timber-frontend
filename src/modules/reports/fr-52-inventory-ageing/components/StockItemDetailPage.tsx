@@ -252,6 +252,15 @@ export function StockItemDetailPage({ itemId }: StockItemDetailPageProps) {
 
         <div className={styles.tableResponsive}>
           <table className={styles.table}>
+            <colgroup>
+              <col style={{ width: '15%' }} />
+              <col style={{ width: '16%' }} />
+              <col style={{ width: '14%' }} />
+              <col style={{ width: '15%' }} />
+              <col style={{ width: '14%' }} />
+              <col style={{ width: '13%' }} />
+              <col style={{ width: '13%' }} />
+            </colgroup>
             <thead>
               <tr>
                 <th>Date</th>

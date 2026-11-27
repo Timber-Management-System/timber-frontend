@@ -82,6 +82,11 @@ export function AgeingSection({ buckets, isLoading = false }: AgeingSectionProps
         <div className={styles.tablePanel}>
           <div className={styles.tableWrapper}>
             <table className={styles.table}>
+              <colgroup>
+                <col style={{ width: '44%' }} />
+                <col style={{ width: '28%' }} />
+                <col style={{ width: '28%' }} />
+              </colgroup>
               <thead>
                 <tr>
                   <th>Age bucket</th>

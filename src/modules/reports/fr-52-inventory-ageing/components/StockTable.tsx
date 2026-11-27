@@ -100,6 +100,19 @@ export function StockTable({
         <>
           <div className={styles.tableResponsive}>
             <table className={styles.table}>
+              <colgroup>
+                <col style={{ width: '11%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '8%' }} />
+                <col style={{ width: '6%' }} />
+                <col style={{ width: '11%' }} />
+                <col style={{ width: '9%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '9%' }} />
+                <col style={{ width: '8%' }} />
+                <col style={{ width: '9%' }} />
+                <col style={{ width: '7%' }} />
+              </colgroup>
               <thead>
                 <tr>
                   <th>Item code</th>

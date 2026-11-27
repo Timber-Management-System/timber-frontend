@@ -435,6 +435,8 @@
   border-collapse: collapse;
   font-size: 12px;
   text-align: left;
+  table-layout: fixed;
+  min-width: 620px;
 }
 
 .table th {
@@ -443,12 +445,23 @@
   font-weight: 600;
   color: var(--tt-text-primary);
   border-bottom: 1px solid var(--tt-border-default);
+  text-align: left;
 }
 
 .table td {
   padding: 12px 14px;
   border-bottom: 1px solid var(--tt-border-default);
   color: var(--tt-text-secondary);
+}
+
+.table th.alignRight,
+.table td.alignRight {
+  text-align: right;
+}
+
+.table th.alignCenter,
+.table td.alignCenter {
+  text-align: center;
 }
 
 .table tr:last-child td {

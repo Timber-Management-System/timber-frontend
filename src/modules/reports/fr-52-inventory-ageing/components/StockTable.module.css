@@ -38,6 +38,8 @@
   border-collapse: collapse;
   font-size: var(--text-sm);
   text-align: left;
+  table-layout: fixed;
+  min-width: 980px;
 }
 
 .table th {
@@ -49,6 +51,7 @@
   padding: 0.625rem 0.875rem;
   border-bottom: 1px solid var(--tt-border-default);
   white-space: nowrap;
+  text-align: left;
 }
 
 .table td {
@@ -56,6 +59,16 @@
   border-bottom: 1px solid var(--tt-divider);
   color: var(--tt-text-primary);
   white-space: nowrap;
+}
+
+.table th.alignRight,
+.table td.alignRight {
+  text-align: right;
+}
+
+.table th.alignCenter,
+.table td.alignCenter {
+  text-align: center;
 }
 
 .row {

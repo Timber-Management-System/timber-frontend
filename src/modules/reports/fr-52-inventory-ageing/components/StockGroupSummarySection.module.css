@@ -68,12 +68,22 @@
 
 .tableResponsive {
   overflow-x: auto;
+  width: 100%;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--text-sm);
+  table-layout: fixed;
+  min-width: 680px;
+}
+
+.table th,
+.table td {
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--tt-divider);
+  white-space: nowrap;
 }
 
 .table th {
@@ -83,16 +93,11 @@
   font-size: var(--text-xs);
   font-weight: 700;
   text-align: left;
-  padding: 0.625rem 0.875rem;
   border-bottom: 1px solid var(--tt-border-default);
-  white-space: nowrap;
 }
 
 .table td {
-  padding: 0.625rem 0.875rem;
-  border-bottom: 1px solid var(--tt-divider);
   color: var(--tt-text-primary);
-  white-space: nowrap;
 }
 
 .table tr:nth-child(even) td {
@@ -103,12 +108,31 @@
   border-bottom: none;
 }
 
-.keyText {
-  font-weight: 600;
+.table th.alignLeft,
+.table td.alignLeft {
+  text-align: left;
+}
+
+.table th.alignRight,
+.table td.alignRight {
+  text-align: right;
+}
+
+.table th.alignCenter,
+.table td.alignCenter {
+  text-align: center;
+}
+
+.alignLeft {
+  text-align: left;
 }
 
 .alignRight {
   text-align: right;
+}
+
+.keyText {
+  font-weight: 600;
 }
 
 .tabularNum {
