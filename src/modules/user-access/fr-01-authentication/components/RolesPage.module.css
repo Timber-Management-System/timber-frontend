@@ -61,6 +61,7 @@
 }
 
 .tableWrap {
+  position: relative; /* keeps hidden (sr-only) labels inside the scroll box, so phones don't get a wide page */
   margin-top: 12px;
   overflow-x: auto;
   border: 1px solid var(--tt-divider);

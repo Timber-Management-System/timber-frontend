@@ -631,6 +631,7 @@
 
 /* ---------- Tables ---------- */
 .tableWrap {
+  position: relative; /* keeps hidden (sr-only) labels inside the scroll box, so phones don't get a wide page */
   overflow-x: auto;
 }
 
