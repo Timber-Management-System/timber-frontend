@@ -1,0 +1,75 @@
+.wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--tt-text-secondary);
+  cursor: pointer;
+}
+
+.button:hover,
+.button[aria-expanded='true'] {
+  background: var(--tt-surface-muted);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--tt-green-400);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 6px;
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-item);
+  background: var(--tt-surface-card);
+  box-shadow: var(--shadow-pop);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--tt-text-secondary);
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--tt-bg-page);
+  color: var(--tt-text-primary);
+  outline: 0;
+}
+
+.item:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--tt-green-400);
+}
+
+.danger {
+  color: var(--tt-danger-700);
+}
+
+.danger:hover {
+  background: var(--tt-crit-50);
+  color: var(--tt-danger-700);
+}

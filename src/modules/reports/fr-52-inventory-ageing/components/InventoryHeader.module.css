@@ -1,0 +1,121 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-xs);
+  color: var(--tt-text-muted);
+}
+
+.crumbParent {
+  color: var(--tt-text-muted);
+}
+
+.crumbSeparator {
+  color: var(--tt-border-strong);
+}
+
+.crumbCurrent {
+  color: var(--tt-text-secondary);
+  font-weight: 500;
+}
+
+.topRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.timestampBadge {
+  font-size: var(--text-xs);
+  color: var(--tt-text-secondary);
+  background: var(--tt-surface-header);
+  border: 1px solid var(--tt-border-default);
+  border-radius: var(--radius-control, 4px);
+  padding: 0.25rem 0.625rem;
+}
+
+.stateToolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--tt-surface-subtle);
+  border: 1px dashed var(--tt-border-strong);
+  border-radius: var(--radius-control, 4px);
+  padding: 0.2rem 0.5rem;
+}
+
+.stateToolbarLabel {
+  font-size: var(--text-xs);
+  color: var(--tt-text-muted);
+  margin-right: 0.25rem;
+  font-weight: 500;
+}
+
+.stateButton {
+  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  border: none;
+  background: transparent;
+  color: var(--tt-text-secondary);
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.stateButton:hover {
+  background: var(--tt-surface-card);
+  color: var(--tt-text-primary);
+}
+
+.stateActive {
+  background: var(--tt-green-500);
+  color: var(--tt-text-on-primary);
+  font-weight: 600;
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--tt-text-primary);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.subtitle {
+  font-size: var(--text-sm);
+  color: var(--tt-text-muted);
+  margin: 0.25rem 0 0 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}

@@ -1,7 +1,8 @@
-import { PagePlaceholder } from '@/shared/components/layout/PagePlaceholder';
+import { LoginPage } from '@/modules/user-access/fr-01-authentication';
 
-export default function Page() {
-  return (
-    <PagePlaceholder title="Log in" requirement="FR-01" codeFolder="src/modules/user-access/fr-01-authentication" />
-  );
+type Search = Promise<{ next?: string; reason?: string }>;
+
+export default async function Page({ searchParams }: { searchParams: Search }) {
+  const { next, reason } = await searchParams;
+  return <LoginPage next={next} reason={reason} />;
 }

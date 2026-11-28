@@ -1,7 +1,5 @@
-import { PagePlaceholder } from '@/shared/components/layout/PagePlaceholder';
+import { UsersPage } from '@/modules/user-access/fr-02-user-management';
 
 export default function Page() {
-  return (
-    <PagePlaceholder title="Users" requirement="FR-02" codeFolder="src/modules/user-access/fr-02-user-management" />
-  );
+  return <UsersPage />;
 }

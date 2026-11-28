@@ -6,6 +6,7 @@ import '@/styles/tokens/index.css';
 import './globals.css';
 import { DEFAULT_LOCALE, isLocale, LOCALE_COOKIE } from '@/i18n/config';
 import { fontVariables } from '@/styles/fonts';
+import { I18nProvider } from '@/web-requirements/wr-08-multi-language';
 
 export const metadata: Metadata = {
   title: 'TimberTrack',
@@ -17,7 +18,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return (
     <html lang={locale} className={fontVariables}>
-      <body>{children}</body>
+      <body>
+        <I18nProvider locale={locale}>{children}</I18nProvider>
+      </body>
     </html>
   );
 }
