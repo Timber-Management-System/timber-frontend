@@ -1,13 +1,22 @@
-
 'use client';
 
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import { Icon } from '@/shared/components/ui/Icon';
 import { Button } from '@/shared/components/ui/Button';
+import { Icon } from '@/shared/components/ui/Icon';
+import { Dialog } from '@/shared/components/ui/Dialog';
+import { FormSection } from '@/shared/components/ui/FormSection';
+import { Stepper } from '@/shared/components/ui/Stepper';
+import { TextField } from '@/shared/components/ui/TextField';
+import { Callout } from '@/shared/components/ui/Callout';
+import { Badge } from '@/shared/components/ui/Badge';
 
-import type { Trip, Log } from '../types/log-receiving.types';
+import type {
+  Trip,
+  Log,
+} from '../types/log-receiving.types';
+
 import { getReceiptNo } from '../types/log-receiving.types';
 
 import {
@@ -19,13 +28,12 @@ import {
 import { logs } from '../api/mockReceivingData';
 
 import RemoveLogModal from './RemoveLogModal';
+import ReceiptModal from './ReceiptModal';
 
 import styles from './receiving.module.css';
 
 
-// ==================================================
-// FR-24 — Receive Logs
-// ==================================================
+// Existing route compatibility
 
 export default function ReceiveTrip({
   params,
@@ -37,20 +45,6 @@ export default function ReceiveTrip({
   const [trip, setTrip] =
     useState<Trip | null | undefined>(null);
 
-  const [input, setInput] = useState('');
-
-  const [candidate, setCandidate] =
-    useState<Log | null>(null);
-
-  const [removeCandidate, setRemoveCandidate] =
-    useState<Log | null>(null);
-
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-
-
-  // ---------- Load Trip ----------
-
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setTrip(getTrip(tripId));
@@ -59,27 +53,116 @@ export default function ReceiveTrip({
     return () => window.clearTimeout(timer);
   }, [tripId]);
 
+  if (!trip) {
+    return (
+      <p>
+        {trip === null
+          ? 'Loading trip...'
+          : 'Trip not found.'}
+      </p>
+    );
+  }
 
-  // ---------- Find Log ----------
+  return <LegacyReceipt trip={trip} />;
+}
 
-  function find(id: string) {
-    if (!trip || trip.status === 'Completed') {
-      return;
-    }
 
-    const result = verifyLog(trip, id);
+function LegacyReceipt({ trip }: { trip: Trip }) {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <>
+      <Link href="/sawmill/log-receiving">
+        Back to Dashboard
+      </Link>
+
+      {open && (
+        trip.status === 'Completed' ? (
+          <ReceiptModal
+            trip={trip}
+            onClose={() => setOpen(false)}
+          />
+        ) : (
+          <ReceivingFormDialog
+            trip={trip}
+            onClose={() => setOpen(false)}
+          />
+        )
+      )}
+    </>
+  );
+}
+
+
+// Receiving Form Dialog
+
+interface ReceivingFormDialogProps {
+  trip: Trip;
+  onClose: () => void;
+}
+
+
+export function ReceivingFormDialog({
+  trip: initialTrip,
+  onClose,
+}: ReceivingFormDialogProps) {
+  const [trip, setTrip] = useState(initialTrip);
+  const [step, setStep] = useState(0);
+  const [input, setInput] = useState('');
+
+  const [candidate, setCandidate] =
+    useState<Log | null>(null);
+
+  const [removeCandidate, setRemoveCandidate] =
+    useState<Log | null>(null);
+
+  const [rejectCandidate, setRejectCandidate] =
+    useState<Log | null>(null);
+
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  const receiptNo = getReceiptNo(trip);
+
+  const unresolved = trip.logIds.filter(
+    (id) =>
+      !trip.received.includes(id) &&
+      !trip.rejected.includes(id)
+  );
+
+  const totalVolume = trip.received.reduce(
+    (sum, id) => sum + (logs[id]?.volume ?? 0),
+    0
+  );
+
+  const receiptDetails = {
+    'Receipt No.': receiptNo,
+    'Trip No.': trip.id,
+    Source: trip.origin,
+    Vehicle: trip.vehicle,
+    Driver: trip.driver,
+    'Delivery Date': trip.date,
+    'Expected Logs': String(trip.logIds.length),
+  };
+
+
+  // Find and Verify Log
+
+  function findLog() {
+    const result = verifyLog(trip, input);
 
     setCandidate(result.log || null);
     setError(result.error || '');
     setMessage('');
-    setInput(id);
   }
 
 
-  // ---------- Accept or Reject Log ----------
+  // Accept or Reject Log
 
-  function update(field: 'received' | 'rejected') {
-    if (!candidate || !trip || trip.status === 'Completed') {
+  function updateLog(
+    field: 'received' | 'rejected'
+  ) {
+    if (!candidate || trip.status === 'Completed') {
       return;
     }
 
@@ -91,16 +174,9 @@ export default function ReceiveTrip({
       return;
     }
 
-    if (
-      field === 'rejected' &&
-      !window.confirm('Reject this log?')
-    ) {
-      return;
-    }
-
     const updated: Trip = {
       ...trip,
-      receiptNo: getReceiptNo(trip),
+      receiptNo,
       [field]: [...trip[field], candidate.id],
       status: 'In Progress',
     };
@@ -109,7 +185,9 @@ export default function ReceiveTrip({
 
     setMessage(
       `${candidate.id} ${
-        field === 'received' ? 'verified' : 'rejected'
+        field === 'received'
+          ? 'verified'
+          : 'rejected'
       } successfully.`
     );
 
@@ -119,11 +197,10 @@ export default function ReceiveTrip({
   }
 
 
-  // ---------- Remove Verified Log ----------
+  // Remove Verified Log
 
   function removeLog() {
     if (
-      !trip ||
       !removeCandidate ||
       trip.status === 'Completed' ||
       !trip.received.includes(removeCandidate.id)
@@ -154,571 +231,509 @@ export default function ReceiveTrip({
   }
 
 
-  // ---------- Complete Receipt ----------
+  // Save Receipt Progress
 
-  function complete() {
-    if (!trip || trip.status === 'Completed') {
-      return;
-    }
-
-    const unresolved = trip.logIds.filter(
-      (id) =>
-        !trip.received.includes(id) &&
-        !trip.rejected.includes(id)
-    );
-
-    if (unresolved.length > 0) {
-      setError(
-        `${unresolved.length} expected log(s) are still unverified.`
-      );
-
-      setMessage('');
+  function saveProgress() {
+    if (trip.status === 'Completed') {
       return;
     }
 
     const updated: Trip = {
       ...trip,
-      receiptNo: getReceiptNo(trip),
-      status: 'Completed',
+      receiptNo,
+      status: 'In Progress',
     };
 
-    setTrip(saveTrip(updated));
-
-    setMessage('Receipt completed successfully.');
-    setCandidate(null);
-    setError('');
+    saveTrip(updated);
+    onClose();
   }
 
 
-  // ---------- Loading State ----------
+  // Complete Receipt
 
-  if (!trip) {
+  function completeReceipt() {
+    if (unresolved.length > 0) {
+      setError(
+        `${unresolved.length} expected log(s) are still unverified.`
+      );
+
+      return;
+    }
+
+    const updated: Trip = {
+      ...trip,
+      receiptNo,
+      status: 'Completed',
+    };
+
+    saveTrip(updated);
+    onClose();
+  }
+
+
+  // Verified Logs Table
+
+  function renderScannedLogs(
+    allowRemoval: boolean
+  ) {
     return (
-      <div className={styles.main}>
-        <div className={styles.content}>
-          <p>
-            {trip === null
-              ? 'Loading trip...'
-              : 'Trip not found.'}
-          </p>
+      <section className={styles.panel}>
+        <div className={styles['panel-heading']}>
+          <div>
+            <h2>Scanned Logs</h2>
 
-          <Link href="/sawmill/log-receiving">
-            Back to Dashboard
-          </Link>
+            <p className={styles.muted}>
+              Verified logs added to this receipt.
+            </p>
+          </div>
+
+          <Badge tone="neutral">
+            {trip.received.length} / {trip.logIds.length}
+          </Badge>
         </div>
-      </div>
+
+        <div className={styles['table-wrap']}>
+          <table className={styles.scannedTable}>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Log ID</th>
+                <th>Tree ID</th>
+                <th>Species</th>
+                <th>Dia. (cm)</th>
+                <th>Length (m)</th>
+                <th>Volume (m³)</th>
+                <th>Status</th>
+
+                {allowRemoval && <th>Action</th>}
+              </tr>
+            </thead>
+
+            <tbody>
+              {trip.received.map((id, index) => {
+                const log = logs[id];
+
+                return (
+                  <tr key={id}>
+                    <td>{index + 1}</td>
+
+                    <td className={styles.strong}>
+                      {id}
+                    </td>
+
+                    <td>{log?.treeId ?? 'N/A'}</td>
+                    <td>{log?.species ?? 'N/A'}</td>
+                    <td>{log?.diameter ?? 'N/A'}</td>
+                    <td>{log?.length ?? 'N/A'}</td>
+
+                    <td>
+                      {log
+                        ? log.volume.toFixed(3)
+                        : 'N/A'}
+                    </td>
+
+                    <td>
+                      <Badge tone="ok">
+                        Verified
+                      </Badge>
+                    </td>
+
+                    {allowRemoval && (
+                      <td>
+                        {log && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              setRemoveCandidate(log)
+                            }
+                          >
+                            <span className={styles.removeAction}>
+                              Remove
+                            </span>
+                          </Button>
+                        )}
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
+
+              {trip.received.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={allowRemoval ? 9 : 8}
+                    className={styles.emptyState}
+                  >
+                    No verified logs have been added
+                    to this receipt yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
     );
   }
 
 
-  // ---------- Receipt Calculations ----------
-
-  const done = trip.status === 'Completed';
-
-  const receiptNo = getReceiptNo(trip);
-
-  const unresolved = trip.logIds.filter(
-    (id) =>
-      !trip.received.includes(id) &&
-      !trip.rejected.includes(id)
-  );
-
-  const totalVolume = trip.received.reduce(
-    (sum, id) => sum + (logs[id]?.volume ?? 0),
-    0
-  );
-
-
-  // ==================================================
-  // Page UI
-  // ==================================================
+  // Dialog Interface
 
   return (
-    <div className={styles.main}>
-
-      {/* Top Navigation */}
-
-      <header className={styles.topbar}>
-        <div>
-          Operations
-          <span> / Yard Receiving / {trip.id}</span>
-        </div>
-
-        <span className={styles['demo-label']}>
-          DEMO DATA
-        </span>
-      </header>
-
-
-      <div className={styles.content}>
-
-        <Link
-          href="/sawmill/log-receiving"
-          className={styles.back}
-        >
-          Back to Dashboard
-        </Link>
-
-
-        {/* Page Heading */}
-
-        <div className={styles['page-title']}>
-          <div>
-            <p className={styles.eyebrow}>
-              FR-24 · RECEIVING SESSION
-            </p>
-
-            <h1>
-              {done ? 'Receipt Details' : 'Receive Logs'}
-            </h1>
-
-            <p className={styles.muted}>
-              Verify logs against the selected delivery trip.
-            </p>
-          </div>
-
-          <span
-            className={`${styles.status} ${
-              styles[
-                trip.status.toLowerCase().replace(' ', '-')
-              ]
-            }`}
+    <>
+      <Dialog
+        open
+        size="lg"
+        bodyTone="sections"
+        eyebrow="FR-24 · LOG RECEIVING"
+        title={
+          initialTrip.status === 'Pending'
+            ? 'New Receipt'
+            : 'Edit Receipt'
+        }
+        description={`${receiptNo} · ${trip.id}`}
+        onClose={onClose}
+        subheader={
+          <Stepper
+            steps={[
+              'Receipt details',
+              'Verify logs',
+              'Review',
+            ]}
+            current={step}
+            label="Receipt progress"
+            completedLabel="Completed"
+            onStepClick={setStep}
+          />
+        }
+        footerStart={
+          <Button
+            variant="ghost"
+            onClick={onClose}
           >
-            {trip.status}
-          </span>
-        </div>
-
-
-        {/* Receipt Details */}
-
-        <section className={styles.panel}>
-          <div className={styles['panel-heading']}>
-            <h2>Receipt Details</h2>
-
-            <span className={styles['count-chip']}>
-              {trip.id}
-            </span>
-          </div>
-
-          <div className={styles.receiptDetailsGrid}>
-
-            <div>
-              <small>Receipt No.</small>
-
-              <strong className={styles.receiptId}>
-                {receiptNo}
-              </strong>
-            </div>
-
-            <div>
-              <small>Trip / Delivery No.</small>
-              <strong>{trip.id}</strong>
-            </div>
-
-            <div>
-              <small>Source</small>
-              <strong>{trip.origin}</strong>
-            </div>
-
-            <div>
-              <small>Vehicle</small>
-              <strong>{trip.vehicle}</strong>
-            </div>
-
-            <div>
-              <small>Driver</small>
-              <strong>{trip.driver}</strong>
-            </div>
-
-            <div>
-              <small>Delivery Date</small>
-              <strong>{trip.date}</strong>
-            </div>
-
-            <div>
-              <small>Expected Logs</small>
-              <strong>{trip.logIds.length}</strong>
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* Scan or Find a Log */}
-
-        {!done && (
-          <section className={styles.panel}>
-
-            <div className={styles['panel-heading']}>
-              <div>
-                <h2>Scan or Find a Log</h2>
-
-                <p className={styles.muted}>
-                  Verify a log using its unique Log ID.
-                </p>
-              </div>
-            </div>
-
-            <div className={styles.lookupSection}>
-
-              <label
-                htmlFor="log-id"
-                className={styles.lookupLabel}
+            Close
+          </Button>
+        }
+        footer={
+          <>
+            {step > 0 && (
+              <Button
+                variant="secondary"
+                onClick={() => setStep(step - 1)}
               >
-                Log ID
-              </label>
-
-              <div className={styles.lookupRow}>
-
-                <input
-                  id="log-id"
-                  placeholder="e.g. LOG-001"
-                  value={input}
-                  onChange={(e) => {
-                    setInput(e.target.value);
-                    setCandidate(null);
-                    setError('');
-                    setMessage('');
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      find(input);
-                    }
-                  }}
-                />
-
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  onClick={() => find(input)}
-                  leftIcon={
-                    <Icon name="search" size={17} />
-                  }
-                >
-                  Find Log
-                </Button>
-
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  disabled
-                  title="Camera scanning is not implemented yet"
-                >
-                  Scan QR Code
-                </Button>
-
-              </div>
-
-              <p className={styles.lookupHint}>
-                QR scanning is currently unavailable.
-                Use manual Log ID entry.
-              </p>
-
-            </div>
-
-
-            {/* Error Message */}
-
-            {error && (
-              <div
-                role="alert"
-                className={`${styles.notice} ${styles.error}`}
-              >
-                <Icon name="warning" size={18} />
-
-                {error}
-              </div>
+                Back
+              </Button>
             )}
 
+            <Button
+              variant="secondary"
+              onClick={saveProgress}
+            >
+              Save Progress
+            </Button>
 
-            {/* Success Message */}
-
-            {message && (
-              <div
-                role="status"
-                className={`${styles.notice} ${styles.success}`}
+            {step < 2 ? (
+              <Button
+                variant="primary"
+                onClick={() => setStep(step + 1)}
               >
-                <Icon name="check" size={18} />
-
-                {message}
-              </div>
+                Continue
+              </Button>
+            ) : (
+              <Button
+                variant="primary"
+                disabled={unresolved.length > 0}
+                onClick={completeReceipt}
+              >
+                Complete Receipt
+              </Button>
             )}
+          </>
+        }
+      >
+        <div
+          className={`${styles.main} ${styles.dialogContent}`}
+        >
+
+          {/* Step 1 — Receipt Details */}
+
+          {step === 0 && (
+            <FormSection
+              number="01"
+              title="Receipt details"
+            >
+              {Object.entries(receiptDetails).map(
+                ([label, value]) => (
+                  <TextField
+                    key={label}
+                    label={label}
+                    value={value}
+                    readOnly
+                  />
+                )
+              )}
+            </FormSection>
+          )}
 
 
-            {/* Log Verification */}
+          {/* Step 2 — Verify Logs */}
 
-            {candidate && (
-              <div className={styles.verification}>
+          {step === 1 && (
+            <>
+              <FormSection
+                number="02"
+                title="Scan or find a log"
+              >
+                <div className={styles.fullWidth}>
+                  <div className={styles.lookupRow}>
+                    <TextField
+                      label="Log ID"
+                      placeholder="e.g. LOG-001"
+                      value={input}
+                      onChange={(event) => {
+                        setInput(event.target.value);
+                        setCandidate(null);
+                        setError('');
+                        setMessage('');
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                          event.preventDefault();
+                          findLog();
+                        }
+                      }}
+                    />
 
-                <div className={styles['verification-title']}>
-                  <div>
-                    <h3>Log Verification</h3>
+                    <Button
+                      variant="secondary"
+                      onClick={findLog}
+                      leftIcon={
+                        <Icon
+                          name="search"
+                          size={17}
+                        />
+                      }
+                    >
+                      Find Log
+                    </Button>
 
-                    <p className={styles.muted}>
-                      Review the log details before adding.
-                    </p>
+                    <Button
+                      variant="secondary"
+                      disabled
+                    >
+                      Scan QR Code
+                    </Button>
                   </div>
 
-                  <span
-                    className={`${styles.status} ${styles.verified}`}
-                  >
-                    Verified
-                  </span>
+                  <p className={styles.lookupHint}>
+                    QR scanning is currently unavailable.
+                    Use manual Log ID entry.
+                  </p>
                 </div>
 
-                <div
-                  className={`${styles['details-grid']} ${styles.verificationGrid}`}
-                >
+                {error && (
+                  <div className={styles.fullWidth}>
+                    <Callout tone="crit">
+                      {error}
+                    </Callout>
+                  </div>
+                )}
 
-                  <div>
-                    <small>Log ID</small>
-                    <strong>{candidate.id}</strong>
+                {message && (
+                  <div className={styles.fullWidth}>
+                    <Callout tone="ok">
+                      {message}
+                    </Callout>
+                  </div>
+                )}
+              </FormSection>
+
+
+              {/* Log Verification Details */}
+
+              {candidate && (
+                <section className={styles.panel}>
+                  <div className={styles['panel-heading']}>
+                    <div>
+                      <h2>Log Verification</h2>
+
+                      <p className={styles.muted}>
+                        Review the log before adding.
+                      </p>
+                    </div>
+
+                    <Badge tone="ok">
+                      Verified
+                    </Badge>
                   </div>
 
-                  <div>
-                    <small>Tree ID</small>
-                    <strong>{candidate.treeId}</strong>
+                  <div className={styles.verification}>
+                    <dl className={styles.dialogDetails}>
+                      <div>
+                        <dt>Log ID</dt>
+                        <dd>{candidate.id}</dd>
+                      </div>
+
+                      <div>
+                        <dt>Tree ID</dt>
+                        <dd>{candidate.treeId}</dd>
+                      </div>
+
+                      <div>
+                        <dt>Species</dt>
+                        <dd>{candidate.species}</dd>
+                      </div>
+
+                      <div>
+                        <dt>Trip No.</dt>
+                        <dd>{candidate.tripId}</dd>
+                      </div>
+
+                      <div>
+                        <dt>Diameter</dt>
+                        <dd>{candidate.diameter} cm</dd>
+                      </div>
+
+                      <div>
+                        <dt>Length</dt>
+                        <dd>{candidate.length} m</dd>
+                      </div>
+                    </dl>
+
+                    <div className={styles.volumeHighlight}>
+                      <span>Volume</span>
+
+                      <strong>
+                        {candidate.volume.toFixed(3)} m³
+                      </strong>
+                    </div>
+
+                    <Callout tone="ok">
+                      Matched to this trip.
+                      Not previously received.
+                    </Callout>
+
+                    <div className={styles.actions}>
+                      <Button
+                        variant="danger"
+                        onClick={() =>
+                          setRejectCandidate(candidate)
+                        }
+                      >
+                        Reject
+                      </Button>
+
+                      <Button
+                        variant="primary"
+                        onClick={() =>
+                          updateLog('received')
+                        }
+                      >
+                        Add to Receipt
+                      </Button>
+                    </div>
                   </div>
+                </section>
+              )}
 
-                  <div>
-                    <small>Species</small>
-                    <strong>{candidate.species}</strong>
-                  </div>
+              {renderScannedLogs(true)}
 
-                  <div>
-                    <small>Trip No.</small>
-                    <strong>{candidate.tripId}</strong>
-                  </div>
-
-                  <div>
-                    <small>Diameter</small>
-                    <strong>{candidate.diameter} cm</strong>
-                  </div>
-
-                  <div>
-                    <small>Length</small>
-                    <strong>{candidate.length} m</strong>
-                  </div>
-
-                </div>
-
-                <div className={styles.volumeHighlight}>
-                  <span>Volume</span>
+              <div className={styles.receiptTotals}>
+                <div className={styles.totalItem}>
+                  <small>Total Logs</small>
 
                   <strong>
-                    {candidate.volume.toFixed(3)} m³
+                    {trip.received.length}/
+                    {trip.logIds.length}
                   </strong>
                 </div>
 
-                <p className={styles.verificationMessage}>
-                  <Icon name="check" size={16} />
+                <div className={styles.totalItem}>
+                  <small>Total Volume</small>
 
-                  Matched to this trip · Not previously received
-                </p>
-
-                <div className={styles.actions}>
-
-                  <Button
-                    variant="danger"
-                    onClick={() => update('rejected')}
-                  >
-                    Reject
-                  </Button>
-
-                  <Button
-                    variant="primary"
-                    onClick={() => update('received')}
-                  >
-                    Add to Receipt
-                  </Button>
-
+                  <strong>
+                    {totalVolume.toFixed(3)} m³
+                  </strong>
                 </div>
-
               </div>
-            )}
-
-          </section>
-        )}
-
-
-        {/* Scanned Logs Table */}
-
-        <section className={styles.panel}>
-
-          <div className={styles['panel-heading']}>
-            <div>
-              <h2>Scanned Logs</h2>
-
-              <p className={styles.muted}>
-                Verified logs added to this receipt.
-              </p>
-            </div>
-
-            <span className={styles['count-chip']}>
-              {trip.received.length} / {trip.logIds.length} verified
-            </span>
-          </div>
-
-          <div className={styles['table-wrap']}>
-
-            <table className={styles.scannedTable}>
-
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Log ID</th>
-                  <th>Tree ID</th>
-                  <th>Species</th>
-                  <th>Dia. (cm)</th>
-                  <th>Length (m)</th>
-                  <th>Volume (m³)</th>
-                  <th>Status</th>
-
-                  {!done && <th>Action</th>}
-                </tr>
-              </thead>
-
-              <tbody>
-
-                {/* Display Only Verified Logs */}
-
-                {trip.received.map((id, index) => {
-                  const log = logs[id];
-
-                  return (
-                    <tr key={id}>
-
-                      <td>{index + 1}</td>
-
-                      <td className={styles.strong}>
-                        {id}
-                      </td>
-
-                      <td>{log?.treeId ?? 'N/A'}</td>
-
-                      <td>{log?.species ?? 'N/A'}</td>
-
-                      <td>{log?.diameter ?? 'N/A'}</td>
-
-                      <td>{log?.length ?? 'N/A'}</td>
-
-                      <td>
-                        {log
-                          ? log.volume.toFixed(3)
-                          : 'N/A'}
-                      </td>
-
-                      <td>
-                        <span
-                          className={`${styles.status} ${styles.verified}`}
-                        >
-                          Verified
-                        </span>
-                      </td>
-
-                      {!done && (
-                        <td>
-                          {log && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              aria-label={`Remove ${id}`}
-                              onClick={() =>
-                                setRemoveCandidate(log)
-                              }
-                            >
-                              <span className={styles.removeAction}>
-                                Remove
-                              </span>
-                            </Button>
-                          )}
-                        </td>
-                      )}
-
-                    </tr>
-                  );
-                })}
-
-
-                {/* Empty Table State */}
-
-                {trip.received.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={done ? 8 : 9}
-                      className={styles.emptyState}
-                    >
-                      No verified logs have been added
-                      to this receipt yet.
-                    </td>
-                  </tr>
-                )}
-
-              </tbody>
-
-            </table>
-
-          </div>
-        </section>
-
-
-        {/* Receipt Totals */}
-
-        <section className={styles.receiptTotals}>
-
-          <div className={styles.totalItem}>
-            <small>Total Logs</small>
-
-            <strong>
-              {trip.received.length}/{trip.logIds.length}
-            </strong>
-          </div>
-
-          <div className={styles.totalItem}>
-            <small>Total Volume</small>
-
-            <strong>
-              {totalVolume.toFixed(3)} m³
-            </strong>
-          </div>
-
-          {!done && (
-            <Button
-              variant="primary"
-              disabled={unresolved.length > 0}
-              onClick={complete}
-            >
-              Complete Receipt
-            </Button>
+            </>
           )}
 
-          {!done && (
-            <p className={styles.completionHint}>
-              Complete after all expected logs have been
-              accepted or rejected.
-            </p>
+
+          {/* Step 3 — Review Receipt */}
+
+          {step === 2 && (
+            <>
+              <FormSection
+                number="03"
+                title="Review receipt"
+              >
+                <TextField
+                  label="Receipt No."
+                  value={receiptNo}
+                  readOnly
+                />
+
+                <TextField
+                  label="Trip No."
+                  value={trip.id}
+                  readOnly
+                />
+
+                <TextField
+                  label="Expected Logs"
+                  value={String(trip.logIds.length)}
+                  readOnly
+                />
+
+                <TextField
+                  label="Verified Logs"
+                  value={String(trip.received.length)}
+                  readOnly
+                />
+
+                <TextField
+                  label="Rejected Logs"
+                  value={String(trip.rejected.length)}
+                  readOnly
+                />
+
+                <TextField
+                  label="Unverified Logs"
+                  value={String(unresolved.length)}
+                  readOnly
+                />
+
+                <TextField
+                  label="Total Volume"
+                  value={`${totalVolume.toFixed(3)} m³`}
+                  readOnly
+                />
+              </FormSection>
+
+              {renderScannedLogs(false)}
+
+              {unresolved.length > 0 ? (
+                <Callout tone="warn">
+                  {unresolved.length} expected log(s)
+                  are still unverified. Return to the
+                  verification step before completing
+                  this receipt.
+                </Callout>
+              ) : (
+                <Callout tone="ok">
+                  All expected logs have been reconciled.
+                  This receipt is ready to complete.
+                </Callout>
+              )}
+            </>
           )}
-
-        </section>
-
-
-        {/* Completed Receipt Notice */}
-
-        {done && (
-          <div
-            className={`${styles.notice} ${styles.success}`}
-          >
-            <Icon name="check" size={18} />
-
-            Receipt completed. This prototype does not
-            update real inventory.
-          </div>
-        )}
-
-      </div>
+        </div>
+      </Dialog>
 
 
-      {/* Remove Log Confirmation Modal */}
+      {/* Remove Log Confirmation */}
 
       {removeCandidate && (
         <RemoveLogModal
@@ -728,6 +743,62 @@ export default function ReceiveTrip({
         />
       )}
 
-    </div>
+
+      {/* Reject Log Confirmation */}
+
+      {rejectCandidate && (
+        <Dialog
+          open
+          size="sm"
+          title="Reject log?"
+          onClose={() => setRejectCandidate(null)}
+          footer={
+            <>
+              <Button
+                variant="secondary"
+                onClick={() => setRejectCandidate(null)}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                variant="danger"
+                onClick={() => {
+                  updateLog('rejected');
+                  setRejectCandidate(null);
+                }}
+              >
+                Reject
+              </Button>
+            </>
+          }
+        >
+          <dl className={styles.dialogDetails}>
+            <div>
+              <dt>Log ID</dt>
+              <dd>{rejectCandidate.id}</dd>
+            </div>
+
+            <div>
+              <dt>Species</dt>
+              <dd>{rejectCandidate.species}</dd>
+            </div>
+
+            <div>
+              <dt>Volume</dt>
+              <dd>
+                {rejectCandidate.volume.toFixed(3)} m³
+              </dd>
+            </div>
+          </dl>
+
+          <Callout tone="warn">
+            This log will be recorded as rejected
+            and will not be included in the received
+            timber volume.
+          </Callout>
+        </Dialog>
+      )}
+    </>
   );
 }

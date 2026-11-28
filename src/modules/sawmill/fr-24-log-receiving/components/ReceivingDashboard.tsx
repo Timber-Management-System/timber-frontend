@@ -1,11 +1,10 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 
 import { Icon } from '@/shared/components/ui/Icon';
 import { Button } from '@/shared/components/ui/Button';
+import { Badge } from '@/shared/components/ui/Badge';
 
 import type { Trip } from '../types/log-receiving.types';
 
@@ -14,26 +13,17 @@ import {
   resetDemo,
 } from '../api/receivingApi';
 
+import { ReceivingFormDialog } from './ReceiveLogs';
 import ReceiptModal from './ReceiptModal';
 
 import styles from './receiving.module.css';
 
-
-// ==================================================
-// FR-24 — Yard Receiving Dashboard
-// ==================================================
-
 export default function Dashboard() {
-
-  // ---------- Dashboard State ----------
-
   const [trips, setTrips] = useState<Trip[]>([]);
+  const [editing, setEditing] = useState<Trip | null>(null);
 
   const [selectedReceipt, setSelectedReceipt] =
     useState<Trip | null>(null);
-
-
-  // ---------- Load Delivery Trips ----------
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -43,258 +33,212 @@ export default function Dashboard() {
     return () => window.clearTimeout(timer);
   }, []);
 
-
-  // ---------- Calculate Delivery Statistics ----------
-
   const counts = {
     pending: trips.filter(
-      (t) => t.status === 'Pending'
+      (trip) => trip.status === 'Pending'
     ).length,
 
     progress: trips.filter(
-      (t) => t.status === 'In Progress'
+      (trip) => trip.status === 'In Progress'
     ).length,
 
     completed: trips.filter(
-      (t) => t.status === 'Completed'
+      (trip) => trip.status === 'Completed'
     ).length,
   };
 
+  function closeReceivingDialog() {
+    setEditing(null);
+    setTrips(getTrips());
+  }
 
-  // ---------- Dashboard UI ----------
+  function reset() {
+    resetDemo();
+    setTrips(getTrips());
+    setEditing(null);
+    setSelectedReceipt(null);
+  }
 
   return (
-    <div>
-      <div className={styles.main}>
+    <div className={styles.main}>
+      <header className={styles.topbar}>
+        <div>
+          Operations <span>/ Yard Receiving</span>
+        </div>
 
-        {/* Top Navigation Bar */}
+        <span className={styles['demo-label']}>
+          DEMO DATA
+        </span>
+      </header>
 
-        <header className={styles.topbar}>
+      <div className={styles.content}>
+        <div className={styles['page-title']}>
           <div>
-            Operations <span>/ Yard Receiving</span>
+            <p className={styles.eyebrow}>
+              FR-24 · LOG INTAKE
+            </p>
+
+            <h1>Yard Receiving</h1>
+
+            <p className={styles.muted}>
+              Track arriving deliveries, verify logs and
+              complete yard receipts.
+            </p>
           </div>
 
-          <span className={styles['demo-label']}>
-            DEMO DATA
-          </span>
-        </header>
+          <Button
+            variant="secondary"
+            onClick={reset}
+          >
+            Reset demo
+          </Button>
+        </div>
 
+        {/* Dashboard Statistics */}
 
-        <div className={styles.content}>
+        <section className={styles.stats}>
+          <div className={styles.stat}>
+            <span className={styles['stat-icon']}>
+              <Icon name="truck" size={22} />
+            </span>
 
-          {/* Page Heading */}
+            <p>Pending Deliveries</p>
+            <strong>{counts.pending}</strong>
+          </div>
 
-          <div className={styles['page-title']}>
+          <div className={styles.stat}>
+            <span className={styles['stat-icon']}>
+              <Icon name="calendar" size={22} />
+            </span>
+
+            <p>In Progress</p>
+            <strong>{counts.progress}</strong>
+          </div>
+
+          <div className={styles.stat}>
+            <span className={styles['stat-icon']}>
+              <Icon name="check" size={22} />
+            </span>
+
+            <p>Completed</p>
+            <strong>{counts.completed}</strong>
+          </div>
+        </section>
+
+        {/* Incoming Deliveries */}
+
+        <section className={styles.panel}>
+          <div className={styles['panel-heading']}>
             <div>
-              <p className={styles.eyebrow}>
-                FR-24 · LOG INTAKE
-              </p>
-
-              <h1>Yard Receiving</h1>
+              <h2>Incoming Deliveries</h2>
 
               <p className={styles.muted}>
-                Track arriving deliveries, verify logs and
-                complete yard receipts.
+                Select a trip to start or continue receiving.
               </p>
             </div>
 
-            <Button
-              variant="secondary"
-              onClick={() => {
-                resetDemo();
-                setTrips(getTrips());
-                setSelectedReceipt(null);
-              }}
-            >
-              Reset demo
-            </Button>
+            <span className={styles['count-chip']}>
+              {trips.length} trips
+            </span>
           </div>
 
+          <div className={styles['table-wrap']}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Trip No.</th>
+                  <th>Origin</th>
+                  <th>Vehicle</th>
+                  <th>Expected</th>
+                  <th>Received</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
 
-          {/* Dashboard Statistics */}
+              <tbody>
+                {trips.map((trip) => (
+                  <tr key={trip.id}>
+                    <td className={styles.strong}>
+                      {trip.id}
+                    </td>
 
-          <section className={styles.stats}>
+                    <td>{trip.origin}</td>
+                    <td>{trip.vehicle}</td>
+                    <td>{trip.logIds.length} logs</td>
+                    <td>{trip.received.length} logs</td>
 
-            {/* Pending Deliveries */}
+                    <td>
+                      <Badge
+                        tone={
+                          trip.status === 'Completed'
+                            ? 'ok'
+                            : trip.status === 'In Progress'
+                              ? 'warn'
+                              : 'neutral'
+                        }
+                      >
+                        {trip.status}
+                      </Badge>
+                    </td>
 
-            <div className={styles.stat}>
-              <span className={styles['stat-icon']}>
-                <Icon name="truck" size={22} />
-              </span>
+                    <td>
+                      <button
+                        type="button"
+                        className={`${styles['table-action']} ${styles.receiptAction}`}
+                        onClick={() => {
+                          if (trip.status === 'Completed') {
+                            setSelectedReceipt(trip);
+                          } else {
+                            setEditing(trip);
+                          }
+                        }}
+                      >
+                        {trip.status === 'Completed'
+                          ? 'View Receipt'
+                          : trip.status === 'In Progress'
+                            ? 'Continue'
+                            : 'Start Receiving'}
 
-              <p>Pending Deliveries</p>
-
-              <strong>{counts.pending}</strong>
-            </div>
-
-
-            {/* Deliveries In Progress */}
-
-            <div className={styles.stat}>
-              <span className={styles['stat-icon']}>
-                <Icon name="calendar" size={22} />
-              </span>
-
-              <p>In Progress</p>
-
-              <strong>{counts.progress}</strong>
-            </div>
-
-
-            {/* Completed Deliveries */}
-
-            <div className={styles.stat}>
-              <span className={styles['stat-icon']}>
-                <Icon name="check" size={22} />
-              </span>
-
-              <p>Completed</p>
-
-              <strong>{counts.completed}</strong>
-            </div>
-
-          </section>
-
-
-          {/* Incoming Deliveries */}
-
-          <section className={styles.panel}>
-            <div className={styles['panel-heading']}>
-              <div>
-                <h2>Incoming Deliveries</h2>
-
-                <p className={styles.muted}>
-                  Select a trip to start or continue receiving.
-                </p>
-              </div>
-
-              <span className={styles['count-chip']}>
-                {trips.length} trips
-              </span>
-            </div>
-
-
-            {/* Deliveries Table */}
-
-            <div className={styles['table-wrap']}>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Trip No.</th>
-                    <th>Origin</th>
-                    <th>Vehicle</th>
-                    <th>Expected</th>
-                    <th>Received</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                        <Icon
+                          name="chevronRight"
+                          size={15}
+                        />
+                      </button>
+                    </td>
                   </tr>
-                </thead>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-                <tbody>
-                  {trips.map((t) => (
-                    <tr key={t.id}>
+        <p className={styles.hint}>
+          <Icon name="box" size={16} />
 
-                      <td className={styles.strong}>
-                        {t.id}
-                      </td>
-
-                      <td>{t.origin}</td>
-
-                      <td>{t.vehicle}</td>
-
-                      <td>{t.logIds.length} logs</td>
-
-                      <td>{t.received.length} logs</td>
-
-
-                      {/* Delivery Status */}
-
-                      <td>
-                        <span
-                          className={`${styles.status} ${
-                            styles[
-                              t.status
-                                .toLowerCase()
-                                .replace(' ', '-')
-                            ]
-                          }`}
-                        >
-                          {t.status}
-                        </span>
-                      </td>
-
-
-                      {/* Delivery Actions */}
-
-                      <td>
-                        {t.status === 'Completed' ? (
-
-                          <button
-                            type="button"
-                            className={`${styles['table-action']} ${styles.receiptAction}`}
-                            onClick={() => {
-                              setSelectedReceipt(t);
-                            }}
-                          >
-                            View Receipt
-
-                            <Icon
-                              name="chevronRight"
-                              size={15}
-                            />
-                          </button>
-
-                        ) : (
-
-                          <Link
-                            className={styles['table-action']}
-                            href={`/sawmill/log-receiving/${t.id}`}
-                          >
-                            {t.status === 'In Progress'
-                              ? 'Continue'
-                              : 'Start Receiving'}
-
-                            <Icon
-                              name="chevronRight"
-                              size={15}
-                            />
-                          </Link>
-
-                        )}
-                      </td>
-
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-
-          {/* Prototype Information */}
-
-          <p className={styles.hint}>
-            <Icon name="box" size={16} />
-
-            Sample trip and log data are stored in your
-            browser for this prototype.
-          </p>
-
-        </div>
+          Sample trip and log data are stored in your
+          browser for this prototype.
+        </p>
       </div>
 
+      {/* Start or Edit Receipt Dialog */}
 
-      {/* Receipt Details Modal */}
+      {editing && (
+        <ReceivingFormDialog
+          key={editing.id}
+          trip={editing}
+          onClose={closeReceivingDialog}
+        />
+      )}
+
+      {/* View Completed Receipt Dialog */}
 
       {selectedReceipt && (
         <ReceiptModal
           trip={selectedReceipt}
-          onClose={() => {
-            setSelectedReceipt(null);
-          }}
+          onClose={() => setSelectedReceipt(null)}
         />
       )}
-
     </div>
   );
 }
